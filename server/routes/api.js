@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.route('/')
   .get((req, res) => {
-    res.status(200).send('Hello World!');
+    res.status(200).send('Hello ANNA!');
   })
   .post((req, res) => {
     console.log('in the correct route');
