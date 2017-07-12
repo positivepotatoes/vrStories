@@ -4,9 +4,10 @@ const redisClient = require('redis').createClient();
 
 module.exports.verify = (req, res, next) => {
   if (req.isAuthenticated()) {
+    console.log('is authenticated!');
     return next();
   }
-  res.redirect('/login');
+  res.redirect('/auth/facebook');
 };
 
 module.exports.session = session({
