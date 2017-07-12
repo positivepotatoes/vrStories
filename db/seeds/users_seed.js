@@ -29,7 +29,7 @@ exports.seed = function (knex, Promise) {
       console.error('ERROR: failed to create auth');
     })
     .catch(() => {
-      console.log('WARNING: defualt user already exists.');
+      console.log('WARNING: default user already exists.');
     });
 
 };

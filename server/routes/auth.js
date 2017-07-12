@@ -8,26 +8,6 @@ router.route('/')
     res.render('index.ejs');
   });
 
-router.route('/login')
-  .get((req, res) => {
-    res.render('login.ejs', { message: req.flash('loginMessage') });
-  })
-  .post(middleware.passport.authenticate('local-login', {
-    successRedirect: '/profile',
-    failureRedirect: '/login',
-    failureFlash: true
-  }));
-
-router.route('/signup')
-  .get((req, res) => {
-    res.render('signup.ejs', { message: req.flash('signupMessage') });
-  })
-  .post(middleware.passport.authenticate('local-signup', {
-    successRedirect: '/profile',
-    failureRedirect: '/signup',
-    failureFlash: true
-  }));
-
 router.route('/profile')
   .get(middleware.auth.verify, (req, res) => {
     res.render('profile.ejs', {
@@ -41,17 +21,8 @@ router.route('/logout')
     res.redirect('/');
   });
 
-router.get('/auth/google', middleware.passport.authenticate('google', {
-  scope: ['email', 'profile']
-}));
-
-router.get('/auth/google/callback', middleware.passport.authenticate('google', {
-  successRedirect: '/profile',
-  failureRedirect: '/login'
-}));
-
 router.get('/auth/facebook', middleware.passport.authenticate('facebook', {
-  scope: ['public_profile', 'email']
+  scope: ['public_profile', 'email', 'user_friends']
 }));
 
 router.get('/auth/facebook/callback', middleware.passport.authenticate('facebook', {
@@ -60,11 +31,28 @@ router.get('/auth/facebook/callback', middleware.passport.authenticate('facebook
   failureFlash: true
 }));
 
-router.get('/auth/twitter', middleware.passport.authenticate('twitter'));
-
-router.get('/auth/twitter/callback', middleware.passport.authenticate('twitter', {
-  successRedirect: '/profile',
-  failureRedirect: '/login'
-}));
-
 module.exports = router;
+
+
+// USE FOR LOCAL LOGIN/SIGN UP
+//
+// router.route('/login')
+//   .get((req, res) => {
+//     console.log('in /login')
+//     res.render('login.ejs', { message: req.flash('loginMessage') });
+//   })
+//   .post(middleware.passport.authenticate('local-login', {
+//     successRedirect: '/profile',
+//     failureRedirect: '/login',
+//     failureFlash: true
+//   }));
+
+// router.route('/signup')
+//   .get((req, res) => {
+//     res.render('signup.ejs', { message: req.flash('signupMessage') });
+//   })
+//   .post(middleware.passport.authenticate('local-signup', {
+//     successRedirect: '/profile',
+//     failureRedirect: '/signup',
+//     failureFlash: true
+//   }));
