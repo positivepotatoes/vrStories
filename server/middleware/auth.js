@@ -4,7 +4,6 @@ const redisClient = require('redis').createClient();
 
 module.exports.verify = (req, res, next) => {
   if (req.isAuthenticated()) {
-    console.log('authenticated in middleware.auth!');
     return next();
   }
   res.redirect('/auth/facebook');

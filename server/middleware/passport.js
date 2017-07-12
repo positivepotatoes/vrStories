@@ -6,6 +6,7 @@ const config = require('config')['passport'];
 const models = require('../../db/models');
 
 passport.serializeUser((profile, done) => {
+  console.log('called serialize');
   done(null, profile.id);
 });
 
@@ -83,12 +84,10 @@ const getOrCreateOAuthProfile = (type, oauthProfile, done) => {
     })
     .then(profile => {
       if (profile) {
-        console.log('IN THEN', profile.serialize());
         done(null, profile.serialize());
       }
     })
     .catch(() => {
-      console.log('IN CATCH');
       // TODO: This is not working because redirect to login uses req.flash('loginMessage')
       // and there is no access to req here
       done(null, null, {
