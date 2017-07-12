@@ -10,7 +10,6 @@ router.route('/')
 
 router.route('/profile')
   .get(middleware.auth.verify, (req, res) => {
-    console.log('successfully logged in, routed to /profile');
     res.render('profile.ejs', {
       user: req.user // get the user out of session and pass to template
     });

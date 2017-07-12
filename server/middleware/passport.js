@@ -6,7 +6,6 @@ const config = require('config')['passport'];
 const models = require('../../db/models');
 
 passport.serializeUser((profile, done) => {
-  console.log('called serialize');
   done(null, profile.id);
 });
 
