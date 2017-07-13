@@ -9,7 +9,7 @@ const router = express.Router();
 //     res.render('index.ejs');
 //   });
 
-// EDITED BY DAVID
+// ADDED BY DAVID
 router.get('/api/authenticate', (req, res) => {
   var response = {
     authenticated: req.isAuthenticated(),
@@ -18,7 +18,7 @@ router.get('/api/authenticate', (req, res) => {
   res.send(response);
 });
 
-// EDITED BY DAVID
+// ADDED BY DAVID
 router.get('/login', (req, res) => {
   res.redirect('/auth/facebook');
 });
