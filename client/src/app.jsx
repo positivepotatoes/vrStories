@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import FriendList from './components/FriendList.jsx';
 import Login from './components/Login.jsx';
+import Home from './components/Home.jsx';
 import {
   BrowserRouter as Router,
   Route,
@@ -40,19 +41,13 @@ class App extends React.Component {
   render () {
     const { authenticated, user } = this.state;
 
-    let login;
-    let friendsList = <FriendList authenticated={authenticated} user={user}/>;
-
-    if (!authenticated) {
-      login = <a href='/login'>Login with Facebook</a>;
-      friendsList = null;
-    }
-
     return (
       <div>
         <h1>VR Stories</h1>
-        {login}
-        {friendsList}
+        {!authenticated 
+          ? <Login />
+          : <Home user={user}/>
+        }
       </div>
     );
   }

@@ -1,18 +1,17 @@
 import React from 'react';
 
-class Login extends React.Component {
+class Home extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-
     return (
       <div>
-        <a href='/login'>Login with Facebook</a>
+        Welcome Home {this.props.user.display}! 
       </div>
     );
   }
 }
 
-export default Login;
+export default Home;
