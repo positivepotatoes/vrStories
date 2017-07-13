@@ -2,14 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // ADDED BY DAVID
 import axios from 'axios';
+
 import Login from './components/Login.jsx';
 import Home from './components/Home.jsx';
 import FriendList from './components/FriendList.jsx';
+
 import {
   BrowserRouter as Router,
   Route,
   Link,
-  HashRouter // MAY NOT NEED HASHROUTER BUT LEAVING IT IN FOR NOW JUST IN CASE REACT ROUTING IS NEEDED
+  Redirect,
+  withRouter
 } from 'react-router-dom';
 
 class App extends React.Component {
@@ -52,5 +55,6 @@ class App extends React.Component {
     );
   }
 }
+
 
 ReactDOM.render(<App />, document.getElementById('app'));
