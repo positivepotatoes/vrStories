@@ -1,21 +1,55 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import $ from 'jquery';
+// ADDED BY DAVID
+import axios from 'axios';
+import Login from './components/Login.jsx';
+import Home from './components/Home.jsx';
 import FriendList from './components/FriendList.jsx';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  HashRouter // MAY NOT NEED HASHROUTER BUT LEAVING IT IN FOR NOW JUST IN CASE REACT ROUTING IS NEEDED
+} from 'react-router-dom';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentVideo: ''
-    }
+      currentVideo: '',
+      authenticated: false,
+      user: {},
+      friends: []
+    };
+    this.authenticate = this.authenticate.bind(this);
+  }
+
+  componentDidMount() {
+    this.authenticate();
+  }
+
+  authenticate() {
+    axios.get('/api/authenticate')
+      .then(response => {
+        this.setState({
+          authenticated: response.data.authenticated,
+          user: response.data.user
+        });
+      });
   }
 
   render () {
-    return (<div>
-      <h1>VR Stories</h1>
-      <FriendList />
-    </div>)
+    const { authenticated, user } = this.state;
+
+    return (
+      <div>
+        <h1>VR Stories</h1>
+        {!authenticated 
+          ? <Login/>
+          : <Home user={user}/>
+        }
+      </div>
+    );
   }
 }
 

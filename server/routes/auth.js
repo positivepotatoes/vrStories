@@ -1,12 +1,34 @@
 const express = require('express');
 const middleware = require('../middleware');
-
 const router = express.Router();
 
-router.route('/')
-  .get(middleware.auth.verify, (req, res) => {
-    res.render('index.ejs');
-  });
+// EDITED BY DAVID
+// want to delete below
+// router.route('/')
+//   .get(middleware.auth.verify, (req, res) => {
+//     res.render('index.ejs');
+//   });
+
+// ADDED BY DAVID
+router.get('/api/authenticate', (req, res) => {
+  var response = {
+    authenticated: req.isAuthenticated(),
+    user: req.user
+  };
+  res.send(response);
+});
+
+// ADDED BY DAVID
+router.get('/login', (req, res) => {
+  res.redirect('/auth/facebook');
+});
+
+// EDITED BY DAVID
+// want to delete below
+// router.get('/home', (req, res) => {
+//   console.log(req.user, res);
+//   res.send();
+// });
 
 router.route('/profile')
   .get(middleware.auth.verify, (req, res) => {
@@ -26,13 +48,14 @@ router.get('/auth/facebook', middleware.passport.authenticate('facebook', {
 }));
 
 router.get('/auth/facebook/callback', middleware.passport.authenticate('facebook', {
-  successRedirect: '/profile',
+  successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
 }));
 
-module.exports = router;
 
+
+module.exports = router;
 
 // USE FOR LOCAL LOGIN/SIGN UP
 //
