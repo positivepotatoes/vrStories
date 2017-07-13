@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // ADDED BY DAVID
 import axios from 'axios';
-import FriendList from './components/FriendList.jsx';
 import Login from './components/Login.jsx';
 import Home from './components/Home.jsx';
+import FriendList from './components/FriendList.jsx';
 import {
   BrowserRouter as Router,
   Route,
@@ -45,7 +45,7 @@ class App extends React.Component {
       <div>
         <h1>VR Stories</h1>
         {!authenticated 
-          ? <Login />
+          ? <Login/>
           : <Home user={user}/>
         }
       </div>
