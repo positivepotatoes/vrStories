@@ -23,6 +23,7 @@
     "express": "^4.15.2",
     "express-session": "^1.15.1",
     "grunt-pg": "https://github.com/watsoncj/grunt-pg.git",
+    "jquery": "^3.2.1",
     "knex": "^0.12.9",
     "morgan": "^1.8.1",
     "passport": "^0.3.2",
@@ -33,6 +34,8 @@
     "pg": "^6.1.5",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-dropzone": "^3.13.3",
+    "react-s3-uploader": "^4.2.0",
     "redis": "^2.7.1"
   },
   "devDependencies": {
