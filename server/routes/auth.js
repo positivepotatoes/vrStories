@@ -9,7 +9,6 @@ const router = express.Router();
 //     res.render('index.ejs');
 //   });
 
-// ADDED BY DAVID
 router.route('/authenticate')
   .get((req, res) => {
     var response = {
@@ -19,18 +18,10 @@ router.route('/authenticate')
     res.send(response);
   });
 
-// ADDED BY DAVID
 router.route('/login')
   .get((req, res) => {
     res.redirect('/auth/facebook');
   });
-
-// EDITED BY DAVID
-// // want to delete below
-// router.route('/home')
-//   .get(middleware.auth.verify, (req, res) => {
-//     res.send(req.body);
-//   });
 
 router.route('/profile')
   .get(middleware.auth.verify, (req, res) => {
@@ -50,12 +41,10 @@ router.get('/auth/facebook', middleware.passport.authenticate('facebook', {
 }));
 
 router.get('/auth/facebook/callback', middleware.passport.authenticate('facebook', {
-  successRedirect: '/home',
+  successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
 }));
-
-
 
 module.exports = router;
 

@@ -10,10 +10,6 @@ module.exports.verify = (req, res, next) => {
   next();
 };
 
-// module.exports.verifyAuth = (req, res, next) => {
-//   next();
-// };
-
 module.exports.session = session({
   store: new RedisStore({
     client: redisClient,
