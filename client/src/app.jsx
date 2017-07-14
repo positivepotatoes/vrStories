@@ -11,7 +11,8 @@ import {
   Route,
   Link,
   Redirect,
-  withRouter
+  withRouter,
+  Switch
 } from 'react-router-dom';
 
 class App extends React.Component {
@@ -44,17 +45,16 @@ class App extends React.Component {
     const { authenticated, user } = this.state;
 
     return (
-      <Router>
-        <div>
-          <h1>VR Stories</h1>
-          {!authenticated 
-            ? <Login/>
-            : <Home user={user}/>
-          }
-        </div>
-      </Router>
+      <div>
+        <h1>VR Stories</h1>
+        {!authenticated
+          ? <Login/>
+          : <Home user={user}/>
+        }
+      </div>
     );
   }
+
 }
 
 
