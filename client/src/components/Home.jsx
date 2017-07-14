@@ -1,5 +1,6 @@
 import React from 'react';
 import VRFrame from './VRFrame.jsx';
+import FriendList from './FriendList.jsx';
 
 class Home extends React.Component {
   constructor(props) {
@@ -9,7 +10,8 @@ class Home extends React.Component {
   render() {
     return (
       <div>
-        Welcome Home {this.props.user.display}! 
+        Welcome Home {this.props.user.display}!
+        <FriendList user={this.props.user}/>
         <VRFrame />
       </div>
     );

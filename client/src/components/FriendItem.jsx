@@ -2,7 +2,7 @@ import React from 'react';
 
 const FriendItem = (props) => (
   <div>
-    <li></li>
+    <li>{props.friend.name}</li>
   </div>
 )
 
