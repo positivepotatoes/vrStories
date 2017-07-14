@@ -1,16 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// ADDED BY DAVID
+
 import axios from 'axios';
 import Login from './components/Login.jsx';
 import Home from './components/Home.jsx';
 import FriendList from './components/FriendList.jsx';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  HashRouter // MAY NOT NEED HASHROUTER BUT LEAVING IT IN FOR NOW JUST IN CASE REACT ROUTING IS NEEDED
-} from 'react-router-dom';
 
 class App extends React.Component {
   constructor(props) {
@@ -29,7 +23,7 @@ class App extends React.Component {
   }
 
   authenticate() {
-    axios.get('/api/authenticate')
+    axios.get('/authenticate')
       .then(response => {
         this.setState({
           authenticated: response.data.authenticated,
@@ -38,19 +32,23 @@ class App extends React.Component {
       });
   }
 
+ 
+
   render () {
     const { authenticated, user } = this.state;
 
     return (
       <div>
         <h1>VR Stories</h1>
-        {!authenticated 
+        {!authenticated
           ? <Login/>
           : <Home user={user}/>
         }
       </div>
     );
   }
+
 }
+
 
 ReactDOM.render(<App />, document.getElementById('app'));

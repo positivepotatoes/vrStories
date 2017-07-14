@@ -9,26 +9,19 @@ const router = express.Router();
 //     res.render('index.ejs');
 //   });
 
-// ADDED BY DAVID
-router.get('/api/authenticate', (req, res) => {
-  var response = {
-    authenticated: req.isAuthenticated(),
-    user: req.user
-  };
-  res.send(response);
-});
+router.route('/authenticate')
+  .get((req, res) => {
+    var response = {
+      authenticated: req.isAuthenticated(),
+      user: req.user
+    };
+    res.send(response);
+  });
 
-// ADDED BY DAVID
-router.get('/login', (req, res) => {
-  res.redirect('/auth/facebook');
-});
-
-// EDITED BY DAVID
-// want to delete below
-// router.get('/home', (req, res) => {
-//   console.log(req.user, res);
-//   res.send();
-// });
+router.route('/login')
+  .get((req, res) => {
+    res.redirect('/auth/facebook');
+  });
 
 router.route('/profile')
   .get(middleware.auth.verify, (req, res) => {
@@ -52,8 +45,6 @@ router.get('/auth/facebook/callback', middleware.passport.authenticate('facebook
   failureRedirect: '/login',
   failureFlash: true
 }));
-
-
 
 module.exports = router;
 
