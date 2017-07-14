@@ -21,11 +21,11 @@ app.use(express.static(path.join(__dirname, '../public/dist/')));
 app.use('/', routes.auth);
 app.use('/api', routes.api);
 app.use('/api/profiles', routes.profiles);
+app.use('/api/stories', routes.stories);
 
 // ADDED BY DAVID WILL PROBABLY REMOVE, THIS IS FOR REACT HASH ROUTER BUT LEAVING FOR NOW JUST IN CASE
-app.get('*', (req, res) => {
-  console.log('* req', req);
-  res.sendFile(path.resolve(__dirname, '../public/dist/index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.resolve(__dirname, '../public/dist/index.html'));
+// });
 
 module.exports = app;

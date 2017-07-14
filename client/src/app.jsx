@@ -6,15 +6,6 @@ import Login from './components/Login.jsx';
 import Home from './components/Home.jsx';
 import FriendList from './components/FriendList.jsx';
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect,
-  withRouter,
-  Switch
-} from 'react-router-dom';
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -40,6 +31,8 @@ class App extends React.Component {
         });
       });
   }
+
+ 
 
   render () {
     const { authenticated, user } = this.state;
