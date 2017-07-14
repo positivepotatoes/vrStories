@@ -1,13 +1,13 @@
-# Project Name
+# VR Stories
 
-The project description
+An app to share 360 degree videos with your facebook friends in a 'stories' format.
 
-## Team
+## Positive Potatoes
 
-- teamMember
-- teamMember
-- teamMember
-- teamMember
+- Anna Zharkova
+- Alexander Schnapp
+- Corey Chau
+- David Oh
 
 ## Roadmap
 
@@ -34,7 +34,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 - Node 6.9.x
 - Redis 3.2.x
 - Postgresql 9.6.x
-- etc
+- React Native
+- ReactJS
+- ReactVR
 
 ## Development
 
