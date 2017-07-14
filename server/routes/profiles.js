@@ -18,8 +18,4 @@ router.route('/:id/friends')
   .get(ProfileController.getFriends)
 ;
 
-router.route('/:id/addstory')
-  .get(ProfileController.addStory)
-;
-
 module.exports = router;
