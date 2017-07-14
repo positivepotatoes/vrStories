@@ -10,25 +10,27 @@ const router = express.Router();
 //   });
 
 // ADDED BY DAVID
-router.get('/api/authenticate', (req, res) => {
-  var response = {
-    authenticated: req.isAuthenticated(),
-    user: req.user
-  };
-  res.send(response);
-});
+router.route('/authenticate')
+  .get((req, res) => {
+    var response = {
+      authenticated: req.isAuthenticated(),
+      user: req.user
+    };
+    res.send(response);
+  });
 
 // ADDED BY DAVID
-router.get('/login', (req, res) => {
-  res.redirect('/auth/facebook');
-});
+router.route('/login')
+  .get((req, res) => {
+    res.redirect('/auth/facebook');
+  });
 
 // EDITED BY DAVID
-// want to delete below
-// router.get('/home', (req, res) => {
-//   console.log(req.user, res);
-//   res.send();
-// });
+// // want to delete below
+// router.route('/home')
+//   .get(middleware.auth.verify, (req, res) => {
+//     res.send(req.body);
+//   });
 
 router.route('/profile')
   .get(middleware.auth.verify, (req, res) => {
@@ -48,7 +50,7 @@ router.get('/auth/facebook', middleware.passport.authenticate('facebook', {
 }));
 
 router.get('/auth/facebook/callback', middleware.passport.authenticate('facebook', {
-  successRedirect: '/home',
+  successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
 }));

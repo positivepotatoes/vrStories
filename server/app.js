@@ -23,9 +23,9 @@ app.use('/api', routes.api);
 app.use('/api/profiles', routes.profiles);
 
 // ADDED BY DAVID WILL PROBABLY REMOVE, THIS IS FOR REACT HASH ROUTER BUT LEAVING FOR NOW JUST IN CASE
-app.get('*', (req, res) => {
-  console.log('* req', req);
-  res.sendFile(path.resolve(__dirname, '../public/dist/index.html'));
-});
+// app.get('*', (req, res) => {
+//   console.log('* req', req);
+//   res.sendFile(path.resolve(__dirname, '../public/dist/index.html'));
+// });
 
 module.exports = app;
