@@ -12,7 +12,7 @@ exports.up = function(knex, Promise) {
     }),
     knex.schema.createTableIfNotExists('videos', function(table) {
       table.increments('id').unsigned().primary();
-      table.integer('user_id').references('profiles.id');
+      table.integer('profile_id').references('profiles.id');
       table.string('aws_link').nullable();
       table.timestamps(true, true);
       table.string('metadata').nullable();
