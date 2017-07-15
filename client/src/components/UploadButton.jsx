@@ -1,8 +1,8 @@
 import React from 'react';
-import Dropzone from 'react-dropzone';
 import axios from 'axios';
+import { Menu, Button } from 'semantic-ui-react';
 
-class Upload extends React.Component {
+class UploadButton extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -11,19 +11,16 @@ class Upload extends React.Component {
     console.log('acceptedFiles:', acceptedFiles);
     let formData = new FormData();
     formData.append('file', acceptedFiles[0]);
-    formData.append('userId', this.props.user.id);
     axios.post('/api/upload', formData);
   }
 
   render() {
     return (
-      <div className="dropzone">
-        <Dropzone onDrop={this.onDrop.bind(this)}>
-          <p>Drop a file here</p>
-        </Dropzone>
-      </div>
+      <Menu.Item>
+        <Button>uploadButton here</Button>
+      </Menu.Item>
     );
   }
 }
 
-export default Upload;
+export default UploadButton;

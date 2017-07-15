@@ -46,9 +46,9 @@ class App extends React.Component {
 
     return (
       <div>
-        <Menu size='large' vertical>
-          <Menu.Item header>
-            VR Stories <Icon name='child'/>
+        <Menu size='massive' vertical>
+          <Menu.Item>
+            <Header as='h1'>VR Stories <Icon name='child'/></Header>
           </Menu.Item>
           {!authenticated
             ? <Menu.Item href='/login'>Login with Facebook</Menu.Item>
