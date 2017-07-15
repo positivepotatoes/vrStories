@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const ProfileController = require('../controllers').Upload;
+const Upload = require('../controllers').Upload;
 
-router.route('/').post(() => {
-  console.log('12312312312');
-});
+router.route('/').post(Upload.save);
 
 module.exports = router;
