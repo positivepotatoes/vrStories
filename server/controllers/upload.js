@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-const AWSconfig = require('config')['AWS'];
+const AWSconfig = require('config')['aws'];
 
 AWS.config.update({
   accessKeyId: AWSconfig.s3.accessKeyId,
