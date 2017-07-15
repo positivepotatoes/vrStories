@@ -31,8 +31,16 @@ passport.use('facebook', new FacebookStrategy({
   callbackURL: config.Facebook.callbackURL,
   profileFields: ['id', 'emails', 'name']
 },
-(accessToken, refreshToken, profile, done) => getOrCreateOAuthProfile('facebook', profile, done))
+(accessToken, refreshToken, profile, done) => {
+  test(profile);
+  getOrCreateOAuthProfile('facebook', profile, done)
+  
+})
 );
+
+const test = (profile) => {
+  console.log(profile);
+};
 
 const getOrCreateOAuthProfile = (type, oauthProfile, done) => {
   return models.Auth.where({ type, oauth_id: oauthProfile.id }).fetch({
