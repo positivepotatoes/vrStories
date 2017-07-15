@@ -29,17 +29,26 @@ passport.use('facebook', new FacebookStrategy({
   clientID: config.Facebook.clientID,
   clientSecret: config.Facebook.clientSecret,
   callbackURL: config.Facebook.callbackURL,
-  profileFields: ['id', 'emails', 'name']
+  profileFields: ['id', 'emails', 'name', 'friends']
 },
 (accessToken, refreshToken, profile, done) => {
-  test(profile);
+  makeFriendList(profile);
   getOrCreateOAuthProfile('facebook', profile, done);
   
 })
 );
 
-const test = (profile) => {
-  console.log(profile);
+const makeFriendList = (profile) => {
+  console.log('insidemakefriendlist', profile._json.friends.data);
+  const friendList = profile._json.friends.data;
+  // for each friend, check the sql server to see if the friend exists
+  friendList.forEach((friend) => {
+    console.log('friend--------', friend);
+    // 
+    // this gives name and id, so need to check friendship table for user id = user where id = fbid
+  });
+  // if not exist, create the friendship
+  // if it does, continue as normal
 };
 
 const getOrCreateOAuthProfile = (type, oauthProfile, done) => {
