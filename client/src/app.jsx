@@ -6,7 +6,7 @@ import Login from './components/Login.jsx';
 import Home from './components/Home.jsx';
 import FriendList from './components/FriendList.jsx';
 import VRFrame from './components/VRFrame.jsx';
-
+import MediaFrame from './components/MediaFrame.jsx';
 import { Menu, Grid } from 'semantic-ui-react';
 
 class App extends React.Component {
@@ -55,7 +55,8 @@ class App extends React.Component {
             </Menu>
           </Grid.Column>
           <Grid.Column width={8}>
-            <VRFrame />
+            <MediaFrame />
+            {/* <VRFrame /> */}
           </Grid.Column>
         </Grid.Row>
       </Grid>
