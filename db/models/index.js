@@ -1,4 +1,4 @@
 module.exports.Auth = require('./auths');
 module.exports.Profile = require('./profiles');
-module.exports.Friendships = require('./friendships');
-module.exports.Stories = require('./stories');
+module.exports.Friendship = require('./friendships');
+module.exports.Story = require('./stories');

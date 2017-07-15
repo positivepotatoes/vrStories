@@ -11,6 +11,7 @@ class Upload extends React.Component {
     console.log('acceptedFiles:', acceptedFiles);
     let formData = new FormData();
     formData.append('file', acceptedFiles[0]);
+    formData.append('userId', this.props.user.id);
     axios.post('/api/upload', formData);
   }
 

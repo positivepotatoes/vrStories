@@ -16,7 +16,7 @@ class Home extends React.Component {
         <Menu size='large' vertical>
           <Menu.Item>
             Welcome Home {this.props.user.display}!
-            <Upload />
+            <Upload user={this.props.user}/>
           </Menu.Item>
           <FriendList user={this.props.user}/>
         </Menu>

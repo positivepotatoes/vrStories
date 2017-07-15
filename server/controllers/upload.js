@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const AWSconfig = require('config')['AWS'];
+const models = require('../../db/models');
 
 AWS.config.update({
   accessKeyId: AWSconfig.s3.accessKeyId,
@@ -9,7 +10,16 @@ AWS.config.update({
 let s3 = new AWS.S3();
 
 module.exports.save = (req, res) => {
-  let params = { Bucket: 'vrstories', Key: Date.now().toString(), Body: req.files[0].buffer, ContentType: req.files[0].mimetype};
+  var key = Date.now().toString();
+
+  var userId = req.body.userId;
+  var awsLink = 'https://s3-us-west-1.amazonaws.com/vrstories/' + key;
+
+  // send aws link & userId to db
+  models.Story.forge({ profile_id: userId, aws_link: awsLink })
+    .save();
+
+  let params = { Bucket: 'vrstories', Key: key, Body: req.files[0].buffer, ContentType: req.files[0].mimetype};
   s3.putObject(params, (err, data) => {
     if (err) {
       console.log(err);
