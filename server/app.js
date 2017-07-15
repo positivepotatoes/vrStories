@@ -3,7 +3,6 @@ const express = require('express');
 const path = require('path');
 const middleware = require('./middleware');
 const routes = require('./routes');
-const multer = require('multer');
 const app = express();
 
 app.use(middleware.morgan('dev'));
@@ -17,6 +16,9 @@ app.use(middleware.passport.session());
 app.use(middleware.flash());
 
 app.use(express.static(path.join(__dirname, '../public/dist/')));
+
+let upload = middleware.multer();
+app.use(upload.any());
 
 app.use('/', routes.auth);
 app.use('/api', routes.api);
