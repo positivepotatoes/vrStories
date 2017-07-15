@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "postinstall": "webpack -p",
-    "start": "nodemon server",
+    "start": "nodemon server/index.js",
     "test": "NODE_ENV=test grunt test",
     "build": "webpack --watch"
   },
