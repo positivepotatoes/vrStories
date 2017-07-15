@@ -2,7 +2,7 @@ import React from 'react';
 
 const VRFrame = (props) => (
   <div>
-    <iframe src="http://localhost:8081/vr/index.html"></iframe>
+    <iframe src="https://www.sheldonbrown.com/web_sample1.html"></iframe>
   </div>
 );
 

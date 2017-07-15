@@ -2,6 +2,7 @@ import React from 'react';
 import VRFrame from './VRFrame.jsx';
 import FriendList from './FriendList.jsx';
 import Upload from './Upload.jsx';
+import { Menu } from 'semantic-ui-react';
 
 class Home extends React.Component {
   constructor(props) {
@@ -11,10 +12,11 @@ class Home extends React.Component {
   render() {
     return (
       <div>
-        Welcome Home {this.props.user.display}!
-        <Upload />
+        <Menu.Item>
+          Welcome Home {this.props.user.display}!
+          <Upload />
+        </Menu.Item>
         <FriendList user={this.props.user}/>
-        <VRFrame />
       </div>
     );
   }
