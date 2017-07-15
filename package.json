@@ -4,7 +4,6 @@
   "scripts": {
     "postinstall": "webpack -p",
     "start": "nodemon server/index.js",
-    // "test": "NODE_ENV=test grunt test",
     "build": "webpack --watch"
   },
   "author": "Hack Reactor",
