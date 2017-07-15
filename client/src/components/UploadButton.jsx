@@ -7,6 +7,7 @@ class UploadButton extends React.Component {
     super(props);
   }
 
+  // the function below is copied from Upload component, need to implement this later!
   onDrop(acceptedFiles, rejectedFiles) {
     console.log('acceptedFiles:', acceptedFiles);
     let formData = new FormData();

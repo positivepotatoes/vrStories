@@ -55,7 +55,6 @@ class App extends React.Component {
             : <Home user={user}/>
           }
         </Menu>
-
         {mediaFrame}
       </div>
     );

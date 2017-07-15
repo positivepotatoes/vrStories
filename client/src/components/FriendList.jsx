@@ -1,6 +1,5 @@
 import React from 'react';
 import FriendItem from './FriendItem.jsx';
-import { Menu } from 'semantic-ui-react';
 
 var mockFriends = [
   { name: 'Corey' },
