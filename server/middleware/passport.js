@@ -33,7 +33,7 @@ passport.use('facebook', new FacebookStrategy({
 },
 (accessToken, refreshToken, profile, done) => {
   test(profile);
-  getOrCreateOAuthProfile('facebook', profile, done)
+  getOrCreateOAuthProfile('facebook', profile, done);
   
 })
 );
