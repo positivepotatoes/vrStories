@@ -46,7 +46,7 @@ class App extends React.Component {
           <Grid.Column width={6}>
             <Menu vertical size='large'>
               <Menu.Item>
-                <Menu.Header>VR Stories</Menu.Header>
+                <Menu.Header as='h1'>VR Stories</Menu.Header>
               </Menu.Item>  
               {!authenticated
                 ? <Menu.Item href='/login'>Login with Facebook</Menu.Item>
