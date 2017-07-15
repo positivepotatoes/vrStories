@@ -12,16 +12,15 @@ class FriendList extends React.Component {
     super(props);
     this.state = {
       friends: mockFriends
-    }
+    };
   }
 
   render () {
     return (
       <div>
-        <p>Hi {this.props.user.display}! Your session is still active :)</p>
-        {this.state.friends.map((friend) => {
-          return ( <FriendItem friend={friend} /> )
-        })}
+        {
+          this.state.friends.map((friend, i) => <FriendItem key={i} friend={friend}/>)
+        }
       </div>
     );
   }

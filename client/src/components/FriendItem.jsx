@@ -1,9 +1,8 @@
 import React from 'react';
+import { Menu } from 'semantic-ui-react';
 
 const FriendItem = (props) => (
-  <div>
-    <li>{props.friend.name}</li>
-  </div>
-)
+  <Menu.Item onClick={() => console.log('you onClicked me! but I have not been set up yet :)')}>{props.friend.name}</Menu.Item>
+);
 
 export default FriendItem;
