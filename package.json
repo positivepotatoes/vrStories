@@ -2,7 +2,7 @@
   "name": "course.thesis",
   "version": "1.0.0",
   "scripts": {
-    "postinstall": "curl -s https://raw.githubusercontent.com/reactorcore/pomander/master/bin/install | bash",
+    "postinstall": "webpack -p",
     "start": "nodemon server",
     "test": "NODE_ENV=test grunt test",
     "build": "webpack --watch"
@@ -40,7 +40,8 @@
     "react-dropzone": "^3.13.3",
     "react-router-dom": "^4.1.1",
     "redis": "^2.7.1",
-    "semantic-ui-react": "^0.71.0"
+    "semantic-ui-react": "^0.71.0",
+    "webpack": "^2.3.2"
   },
   "devDependencies": {
     "babel-loader": "^7.0.0",
