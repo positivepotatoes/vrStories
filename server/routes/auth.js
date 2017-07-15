@@ -9,10 +9,14 @@ const router = express.Router();
 //     res.render('index.ejs');
 //   });
 
-router.route('/authenticate')
+router.route('/verify')
+  .get((req, res) => {
+    res.send(req.isAuthenticated());
+  });
+
+router.route('/fetch')
   .get((req, res) => {
     var response = {
-      authenticated: req.isAuthenticated(),
       user: req.user
     };
     res.send(response);
