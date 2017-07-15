@@ -12,7 +12,32 @@ class Home extends React.Component {
     super(props);
     this.state = {
       user: {},
-      friends: ['alex', 'anna', 'david']
+      currentVideo: null,
+      friends: 
+        [
+          {
+            user: {
+              id: 1, 
+              first: 'David', 
+              last: 'Oh', 
+              display: 'David Oh' }, 
+            videos: ['www.link1.com', 'www.link2.com'] /* GETTING THIS LIST OF VIDEOS CAN BE ACHIEVED WITH BOOKSHELF'S WITHRELATED FUNCTION!!!*/
+          }, {
+            user: {
+              id: 2, 
+              first: 'Alex', 
+              last: 'S', 
+              display: 'Alex S.' }, 
+            videos: ['www.link1.com', 'www.link2.com']
+          }, {
+            user: {
+              id: 3, 
+              first: 'Anna', 
+              last: 'Corey', 
+              display: 'Anna Corey' }, 
+            videos: ['www.link1.com', 'www.link2.com']
+          }
+        ]
     };
     this.fetch = this.fetch.bind(this);
   }
@@ -28,15 +53,25 @@ class Home extends React.Component {
           user: response.data.user
         });
       });
+
+    // //first make api call to get list of friends
+    // axios.get(`/profiles/${this.state.user.id}/friends`)
+    //   .then(response => {
+    //     // we should be given a list of of friends withRelated videos!!!
+    //     this.setState({
+    //       friends: response.data
+    //     });
+    //   });
   }
 
   render() {
+    const { user, friends } = this.state;
     return (
       <div>
-        Welcome Home {this.state.user.first}!
+        Welcome Home {user.first}!
         <UploadButton/>
-        <Upload user={this.state.user}/>
-        <FriendList friends={this.state.friends}/>
+        <Upload user={user}/>
+        <FriendList friends={friends}/>
         <MediaFrame/>
       </div>
     );
