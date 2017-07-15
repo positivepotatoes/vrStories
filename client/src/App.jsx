@@ -12,37 +12,26 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentVideo: '',
       authenticated: false,
-      user: {},
-      friends: []
     };
-    this.authenticate = this.authenticate.bind(this);
+    this.verify = this.verify.bind(this);
   }
 
   componentDidMount() {
-    this.authenticate();
+    this.verify();
   }
 
-  authenticate() {
-    axios.get('/authenticate')
+  verify() {
+    axios.get('/verify')
       .then(response => {
         this.setState({
-          authenticated: response.data.authenticated,
-          user: response.data.user
+          authenticated: response.data
         });
       });
   }
 
- 
-
   render () {
     const { authenticated, user } = this.state;
-
-    let mediaFrame;
-    if (authenticated) {
-      mediaFrame = <MediaFrame/>;
-    }
 
     return (
       <div>
@@ -52,10 +41,9 @@ class App extends React.Component {
           </Menu.Item>
           {!authenticated
             ? <Menu.Item href='/login'>Login with Facebook</Menu.Item>
-            : <Home user={user}/>
+            : <Home/>
           }
         </Menu>
-        {mediaFrame}
       </div>
     );
   }
