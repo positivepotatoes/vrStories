@@ -3,7 +3,7 @@ import Upload from './Upload.jsx';
 import FriendList from './FriendList.jsx';
 import VRFrame from './VRFrame.jsx';
 import MediaFrame from './MediaFrame.jsx';
-import { Menu } from 'semantic-ui-react';
+import { Segment, Menu } from 'semantic-ui-react';
 
 class Home extends React.Component {
   constructor(props) {
@@ -13,6 +13,7 @@ class Home extends React.Component {
   render() {
     return (
       <div>
+<<<<<<< HEAD
         <Menu size='large' vertical>
           <Menu.Item>
             Welcome Home {this.props.user.display}!
@@ -23,6 +24,13 @@ class Home extends React.Component {
 
         <MediaFrame />
         {/* <VRFrame /> */}
+=======
+        <Menu.Item>
+          Welcome Home {this.props.user.display}!
+          <Upload />
+        </Menu.Item>  
+        <FriendList user={this.props.user}/>
+>>>>>>> changes right before making dropzone full screen of app
       </div>
     );
   }

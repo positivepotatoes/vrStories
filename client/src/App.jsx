@@ -6,7 +6,7 @@ import Home from './components/Home.jsx';
 import FriendList from './components/FriendList.jsx';
 import VRFrame from './components/VRFrame.jsx';
 import MediaFrame from './components/MediaFrame.jsx';
-import { Header, Icon, Button } from 'semantic-ui-react';
+import { Header, Icon, Button, Menu } from 'semantic-ui-react';
 
 class App extends React.Component {
   constructor(props) {
@@ -39,18 +39,24 @@ class App extends React.Component {
   render () {
     const { authenticated, user } = this.state;
 
+    let mediaFrame;
+    if (authenticated) {
+      mediaFrame = <MediaFrame/>;
+    }
+
     return (
       <div>
-        <Header as='h2' size='huge'>
-          <Header.Content>
-            VR Stories <Icon name='child' />
-          </Header.Content>
-        </Header>
+        <Menu size='large' vertical>
+          <Menu.Item header>
+            VR Stories <Icon name='child'/>
+          </Menu.Item>
+          {!authenticated
+            ? <Menu.Item href='/login'>Login with Facebook</Menu.Item>
+            : <Home user={user}/>
+          }
+        </Menu>
 
-        {!authenticated
-          ? <Button href='/login'>Login with Facebook</Button>
-          : <Home user={user}/>
-        }
+        {mediaFrame}
       </div>
     );
   }
