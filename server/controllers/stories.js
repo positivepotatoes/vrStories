@@ -7,3 +7,11 @@ module.exports.getAll = (req, res) => {
 module.exports.addStory = (req, res) => {
   console.log(`AYE COREY, MAKE A DB QUERY TO ADD A STORY LINK TO ID ${req.params.id}`);
 };
+
+// sends back aws_link of the latest video of the given Facebook profile_id
+module.exports.getLatestStory = (req, res) => {
+  models.Story.where({ profile_id: Number(req.params.id) }).fetchAll()
+    .then(stories => {
+      res.status(200).send(stories.last().attributes.aws_link);
+    });
+};
