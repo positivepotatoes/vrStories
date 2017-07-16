@@ -5,7 +5,8 @@ const FriendList = (props) => (
   <div>
     {
       props.friends.map((friend, i) => {
-        return <FriendItem key={i} friend_id={friend.user.id} friend={friend.user.first}/>;
+        friend.index = i;
+        return <FriendItem key={i} setFriendState={props.setFriendState} friend_id={friend.user.id} friendname={friend.user.first} friend={friend}/>;
       })
     }
   </div>
