@@ -1,7 +1,10 @@
 {
   "knex": {
-    "connection": {
-      "database": "thesis_devel"
+    "connection": "process.env.PG_URI",
+    "debug": false,
+    "pool": {
+      "min": 2,
+      "max": 10
     }
   },
 
