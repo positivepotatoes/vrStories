@@ -108,7 +108,7 @@ class Home extends React.Component {
       <div>
         Welcome Home {user.first}!
         <UploadButton />
-        <Upload user={user} />
+        {/*<Upload user={user} />*/}
         <FriendList friends={friends} setFriendState={this.setFriendState.bind(this)}/>
         <MediaFrame setMediaState={this.setMediaState.bind(this)} friends={friends} currentMedia={currentMedia} currentFriend={currentFriend} />
       </div>
