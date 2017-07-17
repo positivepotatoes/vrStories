@@ -75,8 +75,10 @@ class Home extends React.Component {
   }
 
   setMediaState(boolean) {
+    console.log(boolean);
     let newState = this.state.currentMedia;
-    if (boolean) { newState = 0; }
+    if (boolean) { newState = 0; } 
+    else { newState ++; }
     this.setState({
       currentMedia: newState
     });
@@ -90,7 +92,7 @@ class Home extends React.Component {
         <UploadButton />
         <Upload user={user} />
         <FriendList friends={friends} setFriendState={this.setFriendState.bind(this)}/>
-        <MediaFrame friends={friends} currentMedia={currentMedia} currentFriend={currentFriend} />
+        <MediaFrame setMediaState={this.setMediaState.bind(this)} friends={friends} currentMedia={currentMedia} currentFriend={currentFriend} />
       </div>
     );
   }
