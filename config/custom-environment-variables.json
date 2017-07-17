@@ -6,6 +6,14 @@
     }
   },
 
+  "redis": {
+    "url": "REDIS_URI"
+  },
+
+  "postgres": {
+    "url": "POSTGRES_URL"
+  },
+
   "passport": {
     "Google": {
       "clientID": "GOOGLE_CLIENT_ID",

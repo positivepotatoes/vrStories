@@ -12,38 +12,57 @@ class Home extends React.Component {
     super(props);
     this.state = {
       user: {},
-      currentVideo: null,
-      friends: 
-        [
-          {
-            user: {
-              id: 1, 
-              first: 'David', 
-              last: 'Oh', 
-              display: 'David Oh' }, 
-            videos: ['www.link1.com', 'www.link2.com'] /* GETTING THIS LIST OF VIDEOS CAN BE ACHIEVED WITH BOOKSHELF'S WITHRELATED FUNCTION!!!*/
-          }, {
-            user: {
-              id: 2, 
-              first: 'Alex', 
-              last: 'S', 
-              display: 'Alex S.' }, 
-            videos: ['www.link1.com', 'www.link2.com']
-          }, {
-            user: {
-              id: 3, 
-              first: 'Anna', 
-              last: 'Corey', 
-              display: 'Anna Corey' }, 
-            videos: ['www.link1.com', 'www.link2.com']
-          }
-        ]
+      currentMedia: 0,
+      currentFriend: {
+        user: {
+          id: 1,
+          first: 'David',
+          last: 'Oh',
+          display: 'David Oh'
+        },
+        videos: [{ type: 'video/mp4', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500308707912' }, { type: 'image/jpg', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500134536083'}, { type: 'video/mp4', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141395399' }] /* GETTING THIS LIST OF VIDEOS CAN BE ACHIEVED WITH BOOKSHELF'S WITHRELATED FUNCTION!!!*/
+      },
+      friends:
+      [
+        {
+          user: {
+            id: 1,
+            first: 'David',
+            last: 'Oh',
+            display: 'David Oh'
+          },
+          videos: [{ type: 'image/jpg', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500134536083' }, { type: 'video/mp4', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141395399' }] /* GETTING THIS LIST OF VIDEOS CAN BE ACHIEVED WITH BOOKSHELF'S WITHRELATED FUNCTION!!!*/
+        }, {
+          user: {
+            id: 2,
+            first: 'Alex',
+            last: 'S',
+            display: 'Alex S.'
+          },
+          videos: [{ type: 'image/jpg', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141637565' }, { type: 'image/jpg', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500142479736' }]
+        }, {
+          user: {
+            id: 3,
+            first: 'Anna',
+            last: 'Corey',
+            display: 'Anna Corey'
+          },
+          videos: ['www.link1.com', 'www.link2.com']
+        }
+      ]
     };
     this.fetch = this.fetch.bind(this);
   }
 
   componentDidMount() {
     this.fetch();
+  }
+
+  setFriendState(friend) {
+    this.setState({
+      currentMedia: 0,
+      currentFriend: friend
+    });
   }
 
   fetch() {
@@ -53,26 +72,45 @@ class Home extends React.Component {
           user: response.data.user
         });
       });
+  }
 
-    // //first make api call to get list of friends
-    // axios.get(`/profiles/${this.state.user.id}/friends`)
-    //   .then(response => {
-    //     // we should be given a list of of friends withRelated videos!!!
-    //     this.setState({
-    //       friends: response.data
-    //     });
-    //   });
+  setMediaState(boolean) {
+    console.log(boolean);
+    let newState = this.state.currentMedia;
+    if (boolean) { 
+      newState = 0;
+      let newFriend = undefined;
+      for (var i = 0; i < this.state.friends.length; i ++) {
+        if (this.state.friends[i].user.id === this.state.currentFriend.user.id) {
+          if (this.state.friends[i + 1]) {
+            newFriend = this.state.friends[i + 1];
+            break;
+          }
+        }
+      }
+      if (newFriend) {
+        this.setState({
+          currentFriend: newFriend
+        });
+      }
+      this.setState({
+        currentMedia: newState
+      }); 
+    } else { newState ++; }
+    this.setState({
+      currentMedia: newState
+    });
   }
 
   render() {
-    const { user, friends } = this.state;
+    const { setPictureState, currentFriend, currentMedia, user, friends } = this.state;
     return (
       <div>
         Welcome Home {user.first}!
-        <UploadButton/>
-        <Upload user={user}/>
-        <FriendList friends={friends}/>
-        <MediaFrame/>
+        <UploadButton />
+        <Upload user={user} />
+        <FriendList friends={friends} setFriendState={this.setFriendState.bind(this)}/>
+        <MediaFrame setMediaState={this.setMediaState.bind(this)} friends={friends} currentMedia={currentMedia} currentFriend={currentFriend} />
       </div>
     );
   }

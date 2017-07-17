@@ -1,12 +1,29 @@
 import React from 'react';
 
-const MediaFrame = (props) => {
+const MediaFrame = ({setMediaState, currentMedia, friends, currentFriend}) => {
+  let media;
+  let mediaTotal = currentFriend.videos.length;
+  let allPlayed = false;
+  currentMedia < mediaTotal - 1 ? allPlayed : allPlayed = true;
+  let whenChange = () => {
+    setMediaState(allPlayed);
+  };
+  if (currentFriend.videos[currentMedia].type.slice(0, 5) === 'video') {
+    media = (
+      <video width="800" autoPlay onEnded={whenChange} onClick={whenChange}>
+        <source src={currentFriend.videos[currentMedia].link} type={currentFriend.videos[currentMedia].type}></source>
+      </video>
+    );
+  } else {
+    media = (<img width="800" src={currentFriend.videos[currentMedia].link} onClick={whenChange}></img>);
+    let timeout = setTimeout(() => {
+      setMediaState(allPlayed);
+      clearTimeout(timeout);
+    }, 5000);
+  }
   return (
     <div>
-      <video width="800" autoPlay>
-        <source src="https://s3-us-west-1.amazonaws.com/vrstories/1500141395399" type="video/mp4"></source>
-      </video>
-      <img width="800" src="https://s3-us-west-1.amazonaws.com/vrstories/1500134536083"></img>   
+      {media}  
     </div>
   );
 };
