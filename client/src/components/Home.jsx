@@ -13,16 +13,7 @@ class Home extends React.Component {
     super(props);
     this.state = {
       user: {},
-      currentMedia: 0,
-      currentFriend: {
-        user: {
-          id: 1,
-          first: 'David',
-          last: 'Oh',
-          display: 'David Oh'
-        },
-        videos: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500308707912' }, { type: 'image/jpg', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500134536083'}, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141395399' }] /* GETTING THIS LIST OF VIDEOS CAN BE ACHIEVED WITH BOOKSHELF'S WITHRELATED FUNCTION!!!*/
-      },
+      currentFriend: {},
       friends:
       [
         {
@@ -32,7 +23,7 @@ class Home extends React.Component {
             last: 'Oh',
             display: 'David Oh'
           },
-          videos: [{ type: 'image/jpg', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500134536083' }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141395399' }] /* GETTING THIS LIST OF VIDEOS CAN BE ACHIEVED WITH BOOKSHELF'S WITHRELATED FUNCTION!!!*/
+          videos: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 1 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 1 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 1 }]
         }, {
           user: {
             id: 2,
@@ -40,29 +31,26 @@ class Home extends React.Component {
             last: 'S',
             display: 'Alex S.'
           },
-          videos: [{ type: 'image/jpg', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141637565' }, { type: 'image/jpg', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500142479736' }]
+          videos: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329915531', profile_id: 2 }]
         }
       ],
+
+      currentVideo: {},
+      videos: [],
+      videosIndex: 0,
+      autoplay: true,
+
       accept: '',
       files: [],
       dropzoneActive: false
     };
     this.fetch = this.fetch.bind(this);
+    this.onFriendClick = this.onFriendClick.bind(this);
+    this.playNextOrStop = this.playNextOrStop.bind(this);
   }
 
   componentDidMount() {
     this.fetch();
-  }
-
-  setFriendState(friend) {
-    this.setState({
-      currentMedia: 0,
-      currentFriend: friend
-    });
-  }
-
-  setWhosPlaying() {
-    console.log(this.state.currentFriend.user.first);
   }
 
   fetch() {
@@ -74,33 +62,33 @@ class Home extends React.Component {
       });
   }
 
-  setMediaState(boolean) {
-    console.log(boolean);
-    console.log(this.state.currentFriend.user.first);
-    let newState = this.state.currentMedia;
-    if (boolean) { 
-      newState = 0;
-      let newFriend = undefined;
-      for (var i = 0; i < this.state.friends.length; i ++) {
-        if (this.state.friends[i].user.id === this.state.currentFriend.user.id) {
-          if (this.state.friends[i + 1]) {
-            newFriend = this.state.friends[i + 1];
-            break;
-          }
-        }
-      }
-      if (newFriend) {
+  onFriendClick(friendData) {
+    console.log('onFriendClicked', friendData.user.first);
+
+    this.setState({ videos: friendData.videos }, () => {
+      this.setState({
+        currentVideo: this.state.videos[this.state.videosIndex],
+        videosIndex: 0
+      });
+    });
+  }
+
+  playNextOrStop() {
+    if (this.state.videosIndex < this.state.videos.length - 1) {
+      let nextIndex = this.state.videosIndex + 1;
+      console.log('in if of play next or stop');
+      this.setState({
+        currentVideo: this.state.videos[nextIndex],
+        videosIndex: nextIndex
+      });
+    } else {
+      if (this.state.autoplay) {
         this.setState({
-          currentFriend: newFriend
+          currentVideo: this.state.videos[nextIndex],
+          videosIndex: 0
         });
       }
-      this.setState({
-        currentMedia: newState
-      }); 
-    } else { newState ++; }
-    this.setState({
-      currentMedia: newState
-    });
+    }
   }
 
   // Functions below are used for react file dropzone
@@ -135,7 +123,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { setPictureState, currentFriend, currentMedia, user, friends, accept, files, dropzoneActive } = this.state;
+    const { setPictureState, currentFriend, user, friends, accept, files, dropzoneActive, currentVideo } = this.state;
 
     const overlayStyle = {
       position: 'absolute',
@@ -164,8 +152,8 @@ class Home extends React.Component {
           Welcome Home {user.first}!
           <UploadButton />
           {/*<Upload user={user} />*/}
-          <FriendList friends={friends} setFriendState={this.setFriendState.bind(this)}/>
-          <MediaFrame setMediaState={this.setMediaState.bind(this)} friends={friends} currentMedia={currentMedia} currentFriend={currentFriend} />
+          <FriendList friends={friends} onFriendClick={this.onFriendClick} currentVideo={currentVideo}/>
+          <MediaFrame currentVideo={currentVideo} playNextOrStop={this.playNextOrStop} />
         </div>
       </Dropzone>
     );

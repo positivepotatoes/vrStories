@@ -5,8 +5,7 @@ const FriendList = (props) => (
   <div>
     {
       props.friends.map((friend, i) => {
-        friend.index = i;
-        return <FriendItem key={i} setFriendState={props.setFriendState} friend_id={friend.user.id} friendname={friend.user.first} friend={friend}/>;
+        return <FriendItem key={i} friendData={friend} onFriendClick={props.onFriendClick} currentVideo={props.currentVideo}/>;
       })
     }
   </div>

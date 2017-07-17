@@ -2,13 +2,17 @@ import React from 'react';
 import { Menu } from 'semantic-ui-react';
 
 const FriendItem = (props) => {
-  let handleClick = e => {
-    e.preventDefault();
-    props.setFriendState(props.friend);
+  const handleClick = () => {
+    props.onFriendClick(props.friendData);
   };
 
+  let playing;
+  if (props.currentVideo.profile_id === props.friendData.user.id) {
+    playing = 'im freakin playing yo!';
+  }
+
   return (
-    <Menu.Item onClick={handleClick}>{props.friendname}</Menu.Item>
+    <Menu.Item onClick={handleClick}>{props.friendData.user.first}, {playing}</Menu.Item>
   );
 };
 
