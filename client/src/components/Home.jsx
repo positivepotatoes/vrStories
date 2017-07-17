@@ -12,7 +12,7 @@ class Home extends React.Component {
     super(props);
     this.state = {
       user: {},
-      currentMedia: 1,
+      currentMedia: 0,
       currentFriend: {
         user: {
           id: 1,
@@ -20,7 +20,7 @@ class Home extends React.Component {
           last: 'Oh',
           display: 'David Oh'
         },
-        videos: [{ type: 'image/jpg', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500134536083' }, { type: 'video/mp4', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141395399' }] /* GETTING THIS LIST OF VIDEOS CAN BE ACHIEVED WITH BOOKSHELF'S WITHRELATED FUNCTION!!!*/
+        videos: [{ type: 'video/mp4', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500308707912' }, { type: 'image/jpg', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500134536083'}, { type: 'video/mp4', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141395399' }] /* GETTING THIS LIST OF VIDEOS CAN BE ACHIEVED WITH BOOKSHELF'S WITHRELATED FUNCTION!!!*/
       },
       friends:
       [
@@ -77,8 +77,26 @@ class Home extends React.Component {
   setMediaState(boolean) {
     console.log(boolean);
     let newState = this.state.currentMedia;
-    if (boolean) { newState = 0; } 
-    else { newState ++; }
+    if (boolean) { 
+      newState = 0;
+      let newFriend = undefined;
+      for (var i = 0; i < this.state.friends.length; i ++) {
+        if (this.state.friends[i].user.id === this.state.currentFriend.user.id) {
+          if (this.state.friends[i + 1]) {
+            newFriend = this.state.friends[i + 1];
+            break;
+          }
+        }
+      }
+      if (newFriend) {
+        this.setState({
+          currentFriend: newFriend
+        });
+      }
+      this.setState({
+        currentMedia: newState
+      }); 
+    } else { newState ++; }
     this.setState({
       currentMedia: newState
     });
