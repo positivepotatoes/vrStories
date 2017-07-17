@@ -11,11 +11,11 @@ const MediaFrame = ({setMediaState, currentMedia, friends, currentFriend}) => {
   if (currentFriend.videos[currentMedia].type.slice(0, 5) === 'video') {
     media = (
       <video width="800" autoPlay onEnded={whenChange} onClick={whenChange}>
-        <source src={currentFriend.videos[currentMedia].link} type={currentFriend.videos[currentMedia].type}></source>
+        <source src={currentFriend.videos[currentMedia].aws_link} type={currentFriend.videos[currentMedia].type}></source>
       </video>
     );
   } else {
-    media = (<img width="800" src={currentFriend.videos[currentMedia].link} onClick={whenChange}></img>);
+    media = (<img width="800" src={currentFriend.videos[currentMedia].aws_link} onClick={whenChange}></img>);
     let timeout = setTimeout(() => {
       setMediaState(allPlayed);
       clearTimeout(timeout);

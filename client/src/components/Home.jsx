@@ -21,7 +21,7 @@ class Home extends React.Component {
           last: 'Oh',
           display: 'David Oh'
         },
-        videos: [{ type: 'video/mp4', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500308707912' }, { type: 'image/jpg', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500134536083'}, { type: 'video/mp4', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141395399' }] /* GETTING THIS LIST OF VIDEOS CAN BE ACHIEVED WITH BOOKSHELF'S WITHRELATED FUNCTION!!!*/
+        videos: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500308707912' }, { type: 'image/jpg', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500134536083'}, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141395399' }] /* GETTING THIS LIST OF VIDEOS CAN BE ACHIEVED WITH BOOKSHELF'S WITHRELATED FUNCTION!!!*/
       },
       friends:
       [
@@ -32,7 +32,7 @@ class Home extends React.Component {
             last: 'Oh',
             display: 'David Oh'
           },
-          videos: [{ type: 'image/jpg', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500134536083' }, { type: 'video/mp4', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141395399' }] /* GETTING THIS LIST OF VIDEOS CAN BE ACHIEVED WITH BOOKSHELF'S WITHRELATED FUNCTION!!!*/
+          videos: [{ type: 'image/jpg', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500134536083' }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141395399' }] /* GETTING THIS LIST OF VIDEOS CAN BE ACHIEVED WITH BOOKSHELF'S WITHRELATED FUNCTION!!!*/
         }, {
           user: {
             id: 2,
@@ -40,15 +40,7 @@ class Home extends React.Component {
             last: 'S',
             display: 'Alex S.'
           },
-          videos: [{ type: 'image/jpg', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141637565' }, { type: 'image/jpg', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500142479736' }]
-        }, {
-          user: {
-            id: 3,
-            first: 'Anna',
-            last: 'Corey',
-            display: 'Anna Corey'
-          },
-          videos: ['www.link1.com', 'www.link2.com']
+          videos: [{ type: 'image/jpg', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141637565' }, { type: 'image/jpg', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500142479736' }]
         }
       ],
       accept: '',
@@ -69,6 +61,10 @@ class Home extends React.Component {
     });
   }
 
+  setWhosPlaying() {
+    console.log(this.state.currentFriend.user.first);
+  }
+
   fetch() {
     axios.get('/fetch')
       .then(response => {
@@ -76,6 +72,35 @@ class Home extends React.Component {
           user: response.data.user
         });
       });
+  }
+
+  setMediaState(boolean) {
+    console.log(boolean);
+    console.log(this.state.currentFriend.user.first);
+    let newState = this.state.currentMedia;
+    if (boolean) { 
+      newState = 0;
+      let newFriend = undefined;
+      for (var i = 0; i < this.state.friends.length; i ++) {
+        if (this.state.friends[i].user.id === this.state.currentFriend.user.id) {
+          if (this.state.friends[i + 1]) {
+            newFriend = this.state.friends[i + 1];
+            break;
+          }
+        }
+      }
+      if (newFriend) {
+        this.setState({
+          currentFriend: newFriend
+        });
+      }
+      this.setState({
+        currentMedia: newState
+      }); 
+    } else { newState ++; }
+    this.setState({
+      currentMedia: newState
+    });
   }
 
   // Functions below are used for react file dropzone
@@ -106,34 +131,6 @@ class Home extends React.Component {
   applyMimeTypes(event) {
     this.setState({
       accept: event.target.value
-    });
-  }
-
-  setMediaState(boolean) {
-    console.log(boolean);
-    let newState = this.state.currentMedia;
-    if (boolean) { 
-      newState = 0;
-      let newFriend = undefined;
-      for (var i = 0; i < this.state.friends.length; i ++) {
-        if (this.state.friends[i].user.id === this.state.currentFriend.user.id) {
-          if (this.state.friends[i + 1]) {
-            newFriend = this.state.friends[i + 1];
-            break;
-          }
-        }
-      }
-      if (newFriend) {
-        this.setState({
-          currentFriend: newFriend
-        });
-      }
-      this.setState({
-        currentMedia: newState
-      }); 
-    } else { newState ++; }
-    this.setState({
-      currentMedia: newState
     });
   }
 
