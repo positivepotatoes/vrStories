@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Upload from './Upload.jsx';
+import Dropzone from 'react-dropzone';
 import UploadButton from './UploadButton.jsx';
 import FriendList from './FriendList.jsx';
 import VRFrame from './VRFrame.jsx';
@@ -49,7 +50,10 @@ class Home extends React.Component {
           },
           videos: ['www.link1.com', 'www.link2.com']
         }
-      ]
+      ],
+      accept: '',
+      files: [],
+      dropzoneActive: false
     };
     this.fetch = this.fetch.bind(this);
   }
@@ -72,6 +76,37 @@ class Home extends React.Component {
           user: response.data.user
         });
       });
+  }
+
+  // Functions below are used for react file dropzone
+  onDragEnter() {
+    this.setState({
+      dropzoneActive: true
+    });
+  }
+
+  onDragLeave() {
+    this.setState({
+      dropzoneActive: false
+    });
+  }
+
+  onDrop(files) {
+    console.log('acceptedFiles:', files);
+    let formData = new FormData();
+    formData.append('file', files[0]);
+    formData.append('userId', this.state.user.id);
+    axios.post('/api/upload', formData);
+    this.setState({
+      files,
+      dropzoneActive: false
+    });
+  }
+
+  applyMimeTypes(event) {
+    this.setState({
+      accept: event.target.value
+    });
   }
 
   setMediaState(boolean) {
@@ -103,15 +138,39 @@ class Home extends React.Component {
   }
 
   render() {
-    const { setPictureState, currentFriend, currentMedia, user, friends } = this.state;
+    const { setPictureState, currentFriend, currentMedia, user, friends, accept, files, dropzoneActive } = this.state;
+
+    const overlayStyle = {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      padding: '2.5em 0',
+      background: 'rgba(0,0,0,0.5)',
+      textAlign: 'center',
+      color: '#fff'
+    };
+
     return (
-      <div>
-        Welcome Home {user.first}!
-        <UploadButton />
-        {/*<Upload user={user} />*/}
-        <FriendList friends={friends} setFriendState={this.setFriendState.bind(this)}/>
-        <MediaFrame setMediaState={this.setMediaState.bind(this)} friends={friends} currentMedia={currentMedia} currentFriend={currentFriend} />
-      </div>
+      <Dropzone
+        disableClick
+        style={{}}
+        accept={accept}
+        onDrop={this.onDrop.bind(this)}
+        onDragEnter={this.onDragEnter.bind(this)}
+        onDragLeave={this.onDragLeave.bind(this)}
+      >
+        { dropzoneActive && <div style={overlayStyle}>Drop files...</div> }
+
+        <div>
+          Welcome Home {user.first}!
+          <UploadButton />
+          {/*<Upload user={user} />*/}
+          <FriendList friends={friends} setFriendState={this.setFriendState.bind(this)}/>
+          <MediaFrame setMediaState={this.setMediaState.bind(this)} friends={friends} currentMedia={currentMedia} currentFriend={currentFriend} />
+        </div>
+      </Dropzone>
     );
   }
 }
