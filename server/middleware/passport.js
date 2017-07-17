@@ -40,11 +40,24 @@ passport.use('facebook', new FacebookStrategy({
 
 const makeFriendList = (profile) => {
   console.log('insidemakefriendlist', profile._json.friends.data);
+  console.log('fb profile info', profile);
   const friendList = profile._json.friends.data;
+  models.Profile.where({ facebook_id: profile._json.id }).fetch()
+    .then((user) => {
+      console.log('user after fetch', user);
+    });
   // for each friend, check the sql server to see if the friend exists
   friendList.forEach((friend) => {
     console.log('friend--------', friend);
-    // 
+    // models.Friendship.forge({profile_id_1: profile.id, profile_id_2: })
+    // for each friend, get the profile id
+    models.Profile.where({ facebook_id: friend.id }).fetch()
+      .then((profile) => {
+        console.log('inside makefriendlist', profile);
+      // now we have profile id from our db
+      // insert friendship with lower id = profile id 1
+      // models.Friendship.forge({profile_id_1: , profile_id_2}).save()
+      });
     // this gives name and id, so need to check friendship table for user id = user where id = fbid
   });
   // if not exist, create the friendship
@@ -72,7 +85,8 @@ const getOrCreateOAuthProfile = (type, oauthProfile, done) => {
         first: oauthProfile.name.givenName,
         last: oauthProfile.name.familyName,
         display: oauthProfile.displayName || `${oauthProfile.name.givenName} ${oauthProfile.name.familyName}`,
-        email: oauthProfile.emails[0].value
+        email: oauthProfile.emails[0].value,
+        facebook_id: oauthProfile.id
       };
 
       if (profile) {

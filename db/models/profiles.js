@@ -5,8 +5,11 @@ const Profile = db.Model.extend({
   auths: function() {
     return this.hasMany('Auth');
   },
-  videos: function() {
-    return this.belongsToMany(Story, 'friendships');
+  stories: function() {
+    return this.hasMany('Story');
+  },
+  friends: function() {
+    return this.hasMany('Friendship', 'profile_id_2');
   }
 });
 
