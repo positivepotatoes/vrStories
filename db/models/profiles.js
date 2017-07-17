@@ -6,7 +6,7 @@ const Profile = db.Model.extend({
     return this.hasMany('Auth');
   },
   videos: function() {
-    return this.hasMany('BLAH');
+    return this.belongsToMany(Story, 'friendships');
   }
 });
 
