@@ -50,7 +50,7 @@ class Home extends React.Component {
   }
 
   fetch() {
-    axios.get('/fetch')
+    axios.get(`/api/profiles/${this.state.currentFriend.user.id}/friends`)
       .then(response => {
         // ADD KEYS AND ONLY KEEP RELEVANT INFORMATION
         this.setState({
