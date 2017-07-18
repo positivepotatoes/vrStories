@@ -32,13 +32,26 @@ class Home extends React.Component {
             display: 'Alex S.'
           },
           videos: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329915531', profile_id: 2 }]
-        }
+        }, {
+          user: {
+            id: 3,
+            first: 'Anna',
+            last: 'Anna',
+            display: 'Anna Anna'
+          },
+          videos: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 3 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 3 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 3 }]
+        },
       ],
 
-      currentVideo: {},
+      
       videos: [],
-      videosIndex: 0,
+      videoIndex: 0,
+      currentVideo: {},
+
+      lastClickedFriendIndex: 0,
+      friendIndex: 0,
       autoplay: true,
+      
 
       accept: '',
       files: [],
@@ -62,33 +75,51 @@ class Home extends React.Component {
       });
   }
 
-  onFriendClick(friendData) {
-    console.log('onFriendClicked', friendData.user.first);
+  onFriendClick(friendData, friendIndex) {
+    console.log('onFriendClicked, index: ', friendData.user.first, ', ', friendIndex);
 
-    this.setState({ videos: friendData.videos }, () => {
-      this.setState({
-        currentVideo: this.state.videos[this.state.videosIndex],
-        videosIndex: 0
-      });
+    this.setState({
+      friendIndex,
+      videoIndex: 0,
+      videos: friendData.videos,
+      lastClickedFriendIndex: friendIndex,
+      currentVideo: friendData.videos[0]
     });
   }
 
+  // playFriendVideos() {
+
+  // }
+
   playNextOrStop() {
-    if (this.state.videosIndex < this.state.videos.length - 1) {
-      let nextIndex = this.state.videosIndex + 1;
-      console.log('in if of play next or stop');
+    const { friends, videoIndex, friendIndex, videos, autoplay, currentVideo, lastClickedFriendIndex } = this.state;
+    console.log('last clicked', friendIndex, lastClickedFriendIndex);
+
+    if (videoIndex < videos.length - 1) {
+      var nextIndex = videoIndex + 1;
       this.setState({
-        currentVideo: this.state.videos[nextIndex],
-        videosIndex: nextIndex
+        currentVideo: videos[nextIndex],
+        videoIndex: nextIndex,
       });
-    } else {
-      if (this.state.autoplay) {
+
+    } else if (autoplay && friendIndex + 1 !== lastClickedFriendIndex) {
+      if (friendIndex < friends.length - 1) {
         this.setState({
-          currentVideo: this.state.videos[nextIndex],
-          videosIndex: 0
+          videos: friends[friendIndex + 1].videos,
+          videoIndex: 0,
+          currentVideo: friends[friendIndex + 1].videos[0],
+          friendIndex: friendIndex + 1
+        });
+      } else {
+        console.log('looks like you need to loop!');
+        this.setState({
+          videos: friends[0].videos,
+          videoIndex: 0,
+          currentVideo: friends[0].videos[0],
+          friendIndex: 0
         });
       }
-    }
+    } 
   }
 
   // Functions below are used for react file dropzone
@@ -123,7 +154,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { setPictureState, currentFriend, user, friends, accept, files, dropzoneActive, currentVideo } = this.state;
+    const { currentVideo, videoIndex, user, friends, accept, files, dropzoneActive } = this.state;
 
     const overlayStyle = {
       position: 'absolute',
@@ -152,7 +183,7 @@ class Home extends React.Component {
           Welcome Home {user.first}!
           <UploadButton />
           {/*<Upload user={user} />*/}
-          <FriendList friends={friends} onFriendClick={this.onFriendClick} currentVideo={currentVideo}/>
+          <FriendList friends={friends} onFriendClick={this.onFriendClick} currentVideo={currentVideo} videoIndex={videoIndex}/>
           <MediaFrame currentVideo={currentVideo} playNextOrStop={this.playNextOrStop} />
         </div>
       </Dropzone>
