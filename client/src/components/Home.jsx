@@ -42,12 +42,11 @@ class Home extends React.Component {
         },
       ],
 
-      
       videoIndex: 0,
       currentVideo: {},
       currentVideos: [],
 
-      autoplay: true,
+      autoplay: false,
       friendIndex: 0,
       lastClickedFriendIndex: 0,
       
@@ -59,10 +58,10 @@ class Home extends React.Component {
     this.fetch = this.fetch.bind(this);
     this.onFriendClick = this.onFriendClick.bind(this);
     this.playNextOrStop = this.playNextOrStop.bind(this);
-    // this.playAllVideosOfOneFriend = this.playAllVideosOfOneFriend.bind(this);
+    this.onMediaClick = this.onMediaClick.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.fetch();
   }
 
@@ -82,9 +81,13 @@ class Home extends React.Component {
       friendIndex,
       videoIndex: 0,
       currentVideos: friendData.videos,
+      currentVideo: friendData.videos[0],
       lastClickedFriendIndex: friendIndex,
-      currentVideo: friendData.videos[0]
     });
+  }
+
+  onMediaClick() {
+    this.playNextOrStop();
   }
 
   playNextOrStop() {
@@ -92,13 +95,16 @@ class Home extends React.Component {
     let nextVideoIndex = videoIndex + 1;
     let nextFriendIndex = friendIndex + 1;
 
-
     if (nextVideoIndex < currentVideos.length) {
       this.setState({
         currentVideo: currentVideos[nextVideoIndex],
         videoIndex: nextVideoIndex,
       });
     } else if (autoplay) {
+      if (nextFriendIndex === lastClickedFriendIndex) {
+        return;
+      }
+
       if (nextFriendIndex < friends.length) {
         this.setState({
           videoIndex: 0,
@@ -112,7 +118,7 @@ class Home extends React.Component {
         }
 
         this.setState({
-          videoIndex: -1,
+          videoIndex: 0,
           friendIndex: 0,
           currentVideos: friends[0].videos,
           currentVideo: friends[0].videos[0]
@@ -182,7 +188,7 @@ class Home extends React.Component {
           Welcome Home {user.first}!
           <UploadButton />
           <FriendList friends={friends} onFriendClick={this.onFriendClick} currentVideo={currentVideo} videoIndex={videoIndex}/>
-          <MediaFrame currentVideo={currentVideo} playNextOrStop={this.playNextOrStop} />
+          <MediaFrame currentVideo={currentVideo} playNextOrStop={this.playNextOrStop} onMediaClick={this.onMediaClick}/>
         </div>
       </Dropzone>
     );

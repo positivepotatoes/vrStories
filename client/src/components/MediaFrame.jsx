@@ -1,8 +1,8 @@
 import React from 'react';
 
 const MediaFrame = (props) => { 
-  let onVideoClick = () => {
-    console.log('clicked');
+  let onMediaClick = () => {
+    props.onMediaClick();
   };
 
   let onVideoEnd = () => {
@@ -10,7 +10,7 @@ const MediaFrame = (props) => {
   };
 
   return (
-    <video width="400" autoPlay onClick={onVideoClick} onEnded={onVideoEnd} src={props.currentVideo.aws_link} type={props.currentVideo.type}>
+    <video width="400" autoPlay onClick={onMediaClick} onEnded={onVideoEnd} src={props.currentVideo.aws_link} type={props.currentVideo.type}>
     </video>
   );
 };
