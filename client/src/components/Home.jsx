@@ -180,13 +180,22 @@ class Home extends React.Component {
         onDragEnter={this.onDragEnter.bind(this)}
         onDragLeave={this.onDragLeave.bind(this)}
       >
-        { dropzoneActive && <div style={overlayStyle}>Drop files...</div> }
+        { dropzoneActive && <div style={overlayStyle}>Drop file to upload to your story</div> }
 
         <div>
           <Menu.Item>Welcome Home {user.first}!</Menu.Item>
           {/*<UploadButton />*/}
-          <FriendList friends={friends} onFriendClick={this.onFriendClick} currentVideo={currentVideo} videoIndex={videoIndex}/>
-          <MediaFrame currentVideo={currentVideo} playNextOrStop={this.playNextOrStop} onMediaClick={this.onMediaClick}/>
+          <FriendList 
+            friends={friends} 
+            onFriendClick={this.onFriendClick} 
+            currentVideo={currentVideo} 
+            videoIndex={videoIndex}
+          />
+          <MediaFrame 
+            currentVideo={currentVideo} 
+            playNextOrStop={this.playNextOrStop} 
+            onMediaClick={this.onMediaClick}
+          />
         </div>
       </Dropzone>
     );
