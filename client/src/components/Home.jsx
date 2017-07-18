@@ -44,13 +44,13 @@ class Home extends React.Component {
       ],
 
       
-      videos: [],
       videoIndex: 0,
       currentVideo: {},
+      currentVideos: [],
 
-      lastClickedFriendIndex: 0,
-      friendIndex: 0,
       autoplay: true,
+      friendIndex: 0,
+      lastClickedFriendIndex: 0,
       
 
       accept: '',
@@ -60,6 +60,7 @@ class Home extends React.Component {
     this.fetch = this.fetch.bind(this);
     this.onFriendClick = this.onFriendClick.bind(this);
     this.playNextOrStop = this.playNextOrStop.bind(this);
+    // this.playAllVideosOfOneFriend = this.playAllVideosOfOneFriend.bind(this);
   }
 
   componentDidMount() {
@@ -81,42 +82,54 @@ class Home extends React.Component {
     this.setState({
       friendIndex,
       videoIndex: 0,
-      videos: friendData.videos,
+      currentVideos: friendData.videos,
       lastClickedFriendIndex: friendIndex,
       currentVideo: friendData.videos[0]
     });
   }
 
-  // playFriendVideos() {
-
+  // playAllVideosOfOneFriend() {
+  //   const { videoIndex, currentVideos,  } = this.state;
+    
+  //   if (videoIndex < currentVideos.length - 1) {
+  //     var nextIndex = videoIndex + 1;
+  //     this.setState({
+  //       currentVideo: currentVideos[nextIndex],
+  //       videoIndex: nextIndex,
+  //     });
+  //   }
   // }
 
   playNextOrStop() {
-    const { friends, videoIndex, friendIndex, videos, autoplay, currentVideo, lastClickedFriendIndex } = this.state;
-    console.log('last clicked', friendIndex, lastClickedFriendIndex);
+    const { friends, videoIndex, friendIndex, currentVideos, autoplay, currentVideo, lastClickedFriendIndex } = this.state;
+    let nextVideoIndex = videoIndex + 1;
+    let nextFriendIndex = friendIndex + 1;
 
-    if (videoIndex < videos.length - 1) {
-      var nextIndex = videoIndex + 1;
+
+    if (nextVideoIndex < currentVideos.length) {
       this.setState({
-        currentVideo: videos[nextIndex],
-        videoIndex: nextIndex,
+        currentVideo: currentVideos[nextVideoIndex],
+        videoIndex: nextVideoIndex,
       });
+    } else if (autoplay) {
+      if (nextFriendIndex === lastClickedFriendIndex) {
+        return;
+      }
 
-    } else if (autoplay && friendIndex + 1 !== lastClickedFriendIndex) {
-      if (friendIndex < friends.length - 1) {
+      if (nextFriendIndex < friends.length) {
         this.setState({
-          videos: friends[friendIndex + 1].videos,
           videoIndex: 0,
-          currentVideo: friends[friendIndex + 1].videos[0],
-          friendIndex: friendIndex + 1
+          friendIndex: nextFriendIndex,
+          currentVideos: friends[nextFriendIndex].videos,
+          currentVideo: friends[nextFriendIndex].videos[0]
         });
       } else {
         console.log('looks like you need to loop!');
         this.setState({
-          videos: friends[0].videos,
           videoIndex: 0,
-          currentVideo: friends[0].videos[0],
-          friendIndex: 0
+          friendIndex: 0,
+          currentVideos: friends[0].videos,
+          currentVideo: friends[0].videos[0]
         });
       }
     } 

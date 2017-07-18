@@ -10,7 +10,7 @@ const MediaFrame = (props) => {
   };
 
   return (
-    <video width="800" autoPlay onClick={onVideoClick} onEnded={onVideoEnd} src={props.currentVideo.aws_link} type={props.currentVideo.type}>
+    <video width="400" autoPlay onClick={onVideoClick} onEnded={onVideoEnd} src={props.currentVideo.aws_link} type={props.currentVideo.type}>
     </video>
   );
 };
