@@ -2,9 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import VRFrame from './VRFrame.jsx';
 import Dropzone from 'react-dropzone';
-import FriendList from './FriendList.jsx';
 import MediaFrame from './MediaFrame.jsx';
-import UploadButton from './UploadButton.jsx';
 import { Menu } from 'semantic-ui-react';
 
 class Home extends React.Component {
@@ -12,7 +10,7 @@ class Home extends React.Component {
     super(props);
     this.state = {
       user: {},
-      currentFriend: {},
+
       friends:
       [
         {
@@ -41,24 +39,13 @@ class Home extends React.Component {
           videos: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 3 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 3 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 3 }]
         },
       ],
-
-      videoIndex: 0,
-      currentVideo: {},
-      currentVideos: [],
-
-      autoplay: true,
-      friendIndex: 0,
-      lastClickedFriendIndex: 0,
       
-
+      // States below are used for react-dropzone
       accept: '',
       files: [],
       dropzoneActive: false
     };
     this.fetch = this.fetch.bind(this);
-    this.onFriendClick = this.onFriendClick.bind(this);
-    this.playNextOrStop = this.playNextOrStop.bind(this);
-    this.onMediaClick = this.onMediaClick.bind(this);
   }
 
   componentWillMount() {
@@ -74,58 +61,7 @@ class Home extends React.Component {
       });
   }
 
-  onFriendClick(friendData, friendIndex) {
-    this.setState({
-      friendIndex,
-      videoIndex: 0,
-      currentVideos: friendData.videos,
-      currentVideo: friendData.videos[0],
-      lastClickedFriendIndex: friendIndex,
-    });
-  }
-
-  onMediaClick() {
-    this.playNextOrStop();
-  }
-
-  playNextOrStop() {
-    const { friends, videoIndex, friendIndex, currentVideos, autoplay, currentVideo, lastClickedFriendIndex } = this.state;
-    let nextVideoIndex = videoIndex + 1;
-    let nextFriendIndex = friendIndex + 1;
-
-    if (nextVideoIndex < currentVideos.length) {
-      this.setState({
-        currentVideo: currentVideos[nextVideoIndex],
-        videoIndex: nextVideoIndex,
-      });
-    } else if (autoplay) {
-      if (nextFriendIndex === lastClickedFriendIndex) {
-        return;
-      }
-
-      if (nextFriendIndex < friends.length) {
-        this.setState({
-          videoIndex: 0,
-          friendIndex: nextFriendIndex,
-          currentVideos: friends[nextFriendIndex].videos,
-          currentVideo: friends[nextFriendIndex].videos[0]
-        });
-      } else {
-        if (lastClickedFriendIndex === 0) {
-          return;
-        }
-
-        this.setState({
-          videoIndex: 0,
-          friendIndex: 0,
-          currentVideos: friends[0].videos,
-          currentVideo: friends[0].videos[0]
-        });
-      }
-    } 
-  }
-
-  // Functions below are used for react file dropzone
+  // Functions below are used for react-dropzone
   onDragEnter() {
     this.setState({
       dropzoneActive: true
@@ -157,7 +93,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { currentVideo, videoIndex, user, friends, accept, files, dropzoneActive } = this.state;
+    const { user, friends, accept, files, dropzoneActive } = this.state;
 
     const overlayStyle = {
       position: 'absolute',
@@ -184,17 +120,10 @@ class Home extends React.Component {
 
         <div>
           <Menu.Item>Welcome Home {user.first}!</Menu.Item>
-          {/*<UploadButton />*/}
-          <FriendList 
-            friends={friends} 
-            onFriendClick={this.onFriendClick} 
-            currentVideo={currentVideo} 
-            videoIndex={videoIndex}
-          />
           <MediaFrame 
-            currentVideo={currentVideo} 
-            playNextOrStop={this.playNextOrStop} 
-            onMediaClick={this.onMediaClick}
+            user={user}
+            friends={friends}
+            autoplay={true}
           />
         </div>
       </Dropzone>
