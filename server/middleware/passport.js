@@ -29,10 +29,41 @@ passport.use('facebook', new FacebookStrategy({
   clientID: config.Facebook.clientID,
   clientSecret: config.Facebook.clientSecret,
   callbackURL: config.Facebook.callbackURL,
-  profileFields: ['id', 'emails', 'name']
+  profileFields: ['id', 'emails', 'name', 'friends']
 },
-(accessToken, refreshToken, profile, done) => getOrCreateOAuthProfile('facebook', profile, done))
-);
+(accessToken, refreshToken, profile, done) => {
+  getOrCreateOAuthProfile('facebook', profile, done)
+    .then(() => makeFriendList(profile));
+}));
+
+const makeFriendList = (profile) => {
+  const friendList = profile._json.friends.data;
+  var userId;
+  models.Profile.where({ facebook_id: profile._json.id }).fetch()
+    .then((user) => {
+      // profile id for current user
+      userId = user.id;
+    });
+  // for each friend, check the sql server to see if the friend exists
+  friendList.forEach((friend) => {
+    console.log(friend);
+    let friendId;
+    // for each friend, get the profile id
+    models.Profile.where({ facebook_id: friend.id }).fetch()
+      .then((profile) => {
+        friendId = profile.id;
+        // check if the friendship already exists
+        models.Friendship.where({ profile_id_1: userId, profile_id_2: friendId }).fetch()
+          .then((searchResult) => {
+            // if it doesn't, forge and save
+            if (searchResult === null) {
+              models.Friendship.forge({ profile_id_1: userId, profile_id_2: friendId }).save();
+            }
+          });
+      })
+      .catch((err) => console.log('some error happened in makefriendlist', err));
+  });
+};
 
 const getOrCreateOAuthProfile = (type, oauthProfile, done) => {
   return models.Auth.where({ type, oauth_id: oauthProfile.id }).fetch({
@@ -55,7 +86,8 @@ const getOrCreateOAuthProfile = (type, oauthProfile, done) => {
         first: oauthProfile.name.givenName,
         last: oauthProfile.name.familyName,
         display: oauthProfile.displayName || `${oauthProfile.name.givenName} ${oauthProfile.name.familyName}`,
-        email: oauthProfile.emails[0].value
+        email: oauthProfile.emails[0].value,
+        facebook_id: oauthProfile.id
       };
 
       if (profile) {
