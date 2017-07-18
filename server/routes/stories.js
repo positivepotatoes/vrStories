@@ -1,15 +1,15 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
-const ProfileController = require('../controllers').Stories;
+const StoryController = require('../controllers').Stories;
 
 router.route('/:id')
-  .get(ProfileController.getAll);
+  .get(StoryController.getAll);
 
 router.route('/:id/addstory')
-  .get(ProfileController.addStory);
+  .get(StoryController.addStory);
 
 router.route('/:id/getlatest')
-  .get(ProfileController.getLatestStory);
+  .get(StoryController.getLatestStory);
 
 module.exports = router;
