@@ -21,7 +21,6 @@ class MediaFrame extends React.Component {
     };
     this.play = this.play.bind(this);
     this.onFriendClick = this.onFriendClick.bind(this);
-    this.playFriendVideos = this.playFriendVideos.bind(this);
   }
 
   setVideoAndIndex(videos, index) {
@@ -66,10 +65,7 @@ class MediaFrame extends React.Component {
         this.setState({ 
           friendIndex: i,
           currentVideos: friends[i].videos,
-          currentVideo: {
-            index: 0,
-            video: friends[i].videos[0]
-          }
+          currentVideo: this.setVideoAndIndex(friends[i].videos, 0)
         });
       };
 
