@@ -1,30 +1,17 @@
 import React from 'react';
 
-const MediaFrame = ({setMediaState, currentMedia, friends, currentFriend}) => {
-  let media;
-  let mediaTotal = currentFriend.videos.length;
-  let allPlayed = false;
-  currentMedia < mediaTotal - 1 ? allPlayed : allPlayed = true;
-  let whenChange = () => {
-    setMediaState(allPlayed);
+const MediaFrame = (props) => { 
+  let onMediaClick = () => {
+    props.onMediaClick();
   };
-  if (currentFriend.videos[currentMedia].type.slice(0, 5) === 'video') {
-    media = (
-      <video width="800" autoPlay onEnded={whenChange} onClick={whenChange}>
-        <source src={currentFriend.videos[currentMedia].link} type={currentFriend.videos[currentMedia].type}></source>
-      </video>
-    );
-  } else {
-    media = (<img width="800" src={currentFriend.videos[currentMedia].link} onClick={whenChange}></img>);
-    let timeout = setTimeout(() => {
-      setMediaState(allPlayed);
-      clearTimeout(timeout);
-    }, 5000);
-  }
+
+  let onVideoEnd = () => {
+    props.playNextOrStop();
+  };
+
   return (
-    <div>
-      {media}  
-    </div>
+    <video width="400" autoPlay onClick={onMediaClick} onEnded={onVideoEnd} src={props.currentVideo.aws_link} type={props.currentVideo.type}>
+    </video>
   );
 };
 

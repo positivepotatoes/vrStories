@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import Upload from './Upload.jsx';
-import UploadButton from './UploadButton.jsx';
-import FriendList from './FriendList.jsx';
 import VRFrame from './VRFrame.jsx';
+import Dropzone from 'react-dropzone';
+import FriendList from './FriendList.jsx';
 import MediaFrame from './MediaFrame.jsx';
+import UploadButton from './UploadButton.jsx';
 import { Menu } from 'semantic-ui-react';
 
 class Home extends React.Component {
@@ -12,16 +12,7 @@ class Home extends React.Component {
     super(props);
     this.state = {
       user: {},
-      currentMedia: 0,
-      currentFriend: {
-        user: {
-          id: 1,
-          first: 'David',
-          last: 'Oh',
-          display: 'David Oh'
-        },
-        videos: [{ type: 'video/mp4', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500308707912' }, { type: 'image/jpg', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500134536083'}, { type: 'video/mp4', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141395399' }] /* GETTING THIS LIST OF VIDEOS CAN BE ACHIEVED WITH BOOKSHELF'S WITHRELATED FUNCTION!!!*/
-      },
+      currentFriend: {},
       friends:
       [
         {
@@ -31,7 +22,7 @@ class Home extends React.Component {
             last: 'Oh',
             display: 'David Oh'
           },
-          videos: [{ type: 'image/jpg', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500134536083' }, { type: 'video/mp4', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141395399' }] /* GETTING THIS LIST OF VIDEOS CAN BE ACHIEVED WITH BOOKSHELF'S WITHRELATED FUNCTION!!!*/
+          videos: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 1 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 1 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 1 }]
         }, {
           user: {
             id: 2,
@@ -39,30 +30,39 @@ class Home extends React.Component {
             last: 'S',
             display: 'Alex S.'
           },
-          videos: [{ type: 'image/jpg', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500141637565' }, { type: 'image/jpg', link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500142479736' }]
+          videos: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329915531', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, ]
         }, {
           user: {
             id: 3,
             first: 'Anna',
-            last: 'Corey',
-            display: 'Anna Corey'
+            last: 'Anna',
+            display: 'Anna Anna'
           },
-          videos: ['www.link1.com', 'www.link2.com']
-        }
-      ]
+          videos: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 3 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 3 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 3 }]
+        },
+      ],
+
+      videoIndex: 0,
+      currentVideo: {},
+      currentVideos: [],
+
+      autoplay: true,
+      friendIndex: 0,
+      lastClickedFriendIndex: 0,
+      
+
+      accept: '',
+      files: [],
+      dropzoneActive: false
     };
     this.fetch = this.fetch.bind(this);
+    this.onFriendClick = this.onFriendClick.bind(this);
+    this.playNextOrStop = this.playNextOrStop.bind(this);
+    this.onMediaClick = this.onMediaClick.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.fetch();
-  }
-
-  setFriendState(friend) {
-    this.setState({
-      currentMedia: 0,
-      currentFriend: friend
-    });
   }
 
   fetch() {
@@ -74,44 +74,130 @@ class Home extends React.Component {
       });
   }
 
-  setMediaState(boolean) {
-    console.log(boolean);
-    let newState = this.state.currentMedia;
-    if (boolean) { 
-      newState = 0;
-      let newFriend = undefined;
-      for (var i = 0; i < this.state.friends.length; i ++) {
-        if (this.state.friends[i].user.id === this.state.currentFriend.user.id) {
-          if (this.state.friends[i + 1]) {
-            newFriend = this.state.friends[i + 1];
-            break;
-          }
-        }
+  onFriendClick(friendData, friendIndex) {
+    this.setState({
+      friendIndex,
+      videoIndex: 0,
+      currentVideos: friendData.videos,
+      currentVideo: friendData.videos[0],
+      lastClickedFriendIndex: friendIndex,
+    });
+  }
+
+  onMediaClick() {
+    this.playNextOrStop();
+  }
+
+  playNextOrStop() {
+    const { friends, videoIndex, friendIndex, currentVideos, autoplay, currentVideo, lastClickedFriendIndex } = this.state;
+    let nextVideoIndex = videoIndex + 1;
+    let nextFriendIndex = friendIndex + 1;
+
+    if (nextVideoIndex < currentVideos.length) {
+      this.setState({
+        currentVideo: currentVideos[nextVideoIndex],
+        videoIndex: nextVideoIndex,
+      });
+    } else if (autoplay) {
+      if (nextFriendIndex === lastClickedFriendIndex) {
+        return;
       }
-      if (newFriend) {
+
+      if (nextFriendIndex < friends.length) {
         this.setState({
-          currentFriend: newFriend
+          videoIndex: 0,
+          friendIndex: nextFriendIndex,
+          currentVideos: friends[nextFriendIndex].videos,
+          currentVideo: friends[nextFriendIndex].videos[0]
+        });
+      } else {
+        if (lastClickedFriendIndex === 0) {
+          return;
+        }
+
+        this.setState({
+          videoIndex: 0,
+          friendIndex: 0,
+          currentVideos: friends[0].videos,
+          currentVideo: friends[0].videos[0]
         });
       }
-      this.setState({
-        currentMedia: newState
-      }); 
-    } else { newState ++; }
+    } 
+  }
+
+  // Functions below are used for react file dropzone
+  onDragEnter() {
     this.setState({
-      currentMedia: newState
+      dropzoneActive: true
+    });
+  }
+
+  onDragLeave() {
+    this.setState({
+      dropzoneActive: false
+    });
+  }
+
+  onDrop(files) {
+    console.log('acceptedFiles:', files);
+    let formData = new FormData();
+    formData.append('file', files[0]);
+    formData.append('userId', this.state.user.id);
+    axios.post('/api/upload', formData);
+    this.setState({
+      files,
+      dropzoneActive: false
+    });
+  }
+
+  applyMimeTypes(event) {
+    this.setState({
+      accept: event.target.value
     });
   }
 
   render() {
-    const { setPictureState, currentFriend, currentMedia, user, friends } = this.state;
+    const { currentVideo, videoIndex, user, friends, accept, files, dropzoneActive } = this.state;
+
+    const overlayStyle = {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      padding: '2.5em 0',
+      background: 'rgba(0,0,0,0.5)',
+      textAlign: 'center',
+      color: '#fff'
+    };
+
     return (
-      <div>
-        Welcome Home {user.first}!
-        <UploadButton />
-        <Upload user={user} />
-        <FriendList friends={friends} setFriendState={this.setFriendState.bind(this)}/>
-        <MediaFrame setMediaState={this.setMediaState.bind(this)} friends={friends} currentMedia={currentMedia} currentFriend={currentFriend} />
-      </div>
+      <Dropzone
+        disableClick
+        style={{}}
+        accept={accept}
+        onDrop={this.onDrop.bind(this)}
+        onDragEnter={this.onDragEnter.bind(this)}
+        onDragLeave={this.onDragLeave.bind(this)}
+      >
+        { dropzoneActive && <div style={overlayStyle}>Drop file to upload to your story</div> }
+
+        <div>
+          <Menu.Item>Welcome Home {user.first}!</Menu.Item>
+          {/*<UploadButton />*/}
+          <FriendList 
+            friends={friends} 
+            onFriendClick={this.onFriendClick} 
+            currentVideo={currentVideo} 
+            videoIndex={videoIndex}
+          />
+          <MediaFrame 
+            currentVideo={currentVideo} 
+            playNextOrStop={this.playNextOrStop} 
+            onMediaClick={this.onMediaClick}
+          />
+        </div>
+      </Dropzone>
     );
   }
 }
