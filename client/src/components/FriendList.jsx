@@ -10,7 +10,7 @@ const FriendList = (props) => (
           friendIndex={i} 
           friendData={friend}
           onFriendClick={props.onFriendClick} 
-          currentVideo={props.currentVideo} 
+          currentStory={props.currentStory} 
         />;
       })
     }
