@@ -41,23 +41,23 @@ class MediaFrame extends React.Component {
 
   playFriendVideos() {
     const { currentStories, currentStory } = this.state;
-    let nextVideoIndex = currentStory.index + 1;
+    let nextStoryIndex = currentStory.index + 1;
 
-    if (nextVideoIndex < currentStories.length) {
+    if (nextStoryIndex < currentStories.length) {
       this.setState({
-        currentStory: this.setVideoAndIndex(currentStories, nextVideoIndex)
+        currentStory: this.setVideoAndIndex(currentStories, nextStoryIndex)
       });
     }
   }
 
   play() {
     const { autoplay, friends, friendIndex, currentStories, currentStory, lastClickedFriendIndex } = this.state;
-    let nextVideoIndex = currentStory.index + 1;
+    let nextStoryIndex = currentStory.index + 1;
     let nextFriendIndex = friendIndex + 1;
 
     this.playFriendVideos();
 
-    if (autoplay && nextVideoIndex === currentStories.length) {
+    if (autoplay && nextStoryIndex === currentStories.length) {
       let nextstate = (i) => {
         if (lastClickedFriendIndex === i) {
           return;
