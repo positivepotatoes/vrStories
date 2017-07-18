@@ -91,7 +91,7 @@ class MediaFrame extends React.Component {
           autoPlay
           onClick={this.play}
           onEnded={this.play}
-          src={currentStory.story.aws_link}
+          src={currentStory.story.src}
         />
       </div>
     );

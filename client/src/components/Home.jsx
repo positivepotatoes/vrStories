@@ -18,7 +18,7 @@ class Home extends React.Component {
           last: 'Oh',
           display: 'David Oh'
         },
-        stories: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 1 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 1 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 1 }]
+        stories: [{ type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 1 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 1 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 1 }]
       }, {
         profile: {
           id: 2,
@@ -26,7 +26,7 @@ class Home extends React.Component {
           last: 'S',
           display: 'Alex S.'
         },
-        stories: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329915531', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, ]
+        stories: [{ type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329915531', profile_id: 2 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, ]
       }, {
         profile: {
           id: 3,
@@ -34,7 +34,7 @@ class Home extends React.Component {
           last: 'Anna',
           display: 'Anna Anna'
         },
-        stories: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 3 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 3 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 3 }]
+        stories: [{ type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 3 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 3 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 3 }]
       }],
       
       // States below are used for react-dropzone
