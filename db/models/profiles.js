@@ -9,7 +9,7 @@ const Profile = db.Model.extend({
     return this.hasMany('Story');
   },
   friends: function() {
-    return this.hasMany('Friendship', 'profile_id_2');
+    return this.belongsToMany('Profile', 'friendships', 'profile_id_1', 'profile_id_2' );
   }
 });
 

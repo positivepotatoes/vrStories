@@ -84,12 +84,13 @@ module.exports.getFriends = (req, res) => {
   // this is on the profile model
   // so do something inside the pofile schema to get all the friends related to a user
   models.Profile.where({ id: req.params.id })
-    .fetch({ withRelated: ['friends'] })
+    .fetchAll({ withRelated: ['friends'] })
     .then((friendList) => {
       if (!friendList) {
         throw friendList;
       }
-      res.status(200).send(friendList);
+      console.log('friendlist', friendList.toJSON()[0].friends);
+      res.status(200).send(friendList.friends);
     })
     .error(err => {
       res.status(500).send(err);
