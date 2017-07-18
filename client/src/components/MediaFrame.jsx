@@ -10,12 +10,12 @@ class MediaFrame extends React.Component {
       friends: props.friends,
       autoplay: props.autoplay,
       
-      currentVideo: {
-        video: {},
+      currentStory: {
+        story: {},
         index: 0
       },
 
-      currentVideos: [],
+      currentStories: [],
       friendIndex: 0,
       lastClickedFriendIndex: 0
     };
@@ -23,10 +23,10 @@ class MediaFrame extends React.Component {
     this.onFriendClick = this.onFriendClick.bind(this);
   }
 
-  setVideoAndIndex(videos, index) {
+  setVideoAndIndex(stories, index) {
     return {
       index: index,
-      video: videos[index]
+      story: stories[index]
     };
   }
 
@@ -34,38 +34,38 @@ class MediaFrame extends React.Component {
     this.setState({
       friendIndex,
       lastClickedFriendIndex: friendIndex,
-      currentVideos: friendData.videos,
-      currentVideo: this.setVideoAndIndex(friendData.videos, 0)
+      currentStories: friendData.stories,
+      currentStory: this.setVideoAndIndex(friendData.stories, 0)
     });
   }
 
   playFriendVideos() {
-    const { currentVideos, currentVideo } = this.state;
-    let nextVideoIndex = currentVideo.index + 1;
+    const { currentStories, currentStory } = this.state;
+    let nextVideoIndex = currentStory.index + 1;
 
-    if (nextVideoIndex < currentVideos.length) {
+    if (nextVideoIndex < currentStories.length) {
       this.setState({
-        currentVideo: this.setVideoAndIndex(currentVideos, nextVideoIndex)
+        currentStory: this.setVideoAndIndex(currentStories, nextVideoIndex)
       });
     }
   }
 
   play() {
-    const { autoplay, friends, friendIndex, currentVideos, currentVideo, lastClickedFriendIndex } = this.state;
-    let nextVideoIndex = currentVideo.index + 1;
+    const { autoplay, friends, friendIndex, currentStories, currentStory, lastClickedFriendIndex } = this.state;
+    let nextVideoIndex = currentStory.index + 1;
     let nextFriendIndex = friendIndex + 1;
 
     this.playFriendVideos();
 
-    if (autoplay && nextVideoIndex === currentVideos.length) {
+    if (autoplay && nextVideoIndex === currentStories.length) {
       let nextstate = (i) => {
         if (lastClickedFriendIndex === i) {
           return;
         }
         this.setState({ 
           friendIndex: i,
-          currentVideos: friends[i].videos,
-          currentVideo: this.setVideoAndIndex(friends[i].videos, 0)
+          currentStories: friends[i].stories,
+          currentStory: this.setVideoAndIndex(friends[i].stories, 0)
         });
       };
 
@@ -78,20 +78,20 @@ class MediaFrame extends React.Component {
   }
 
   render() {
-    const { currentVideo, friends } = this.state;
+    const { currentStory, friends } = this.state;
 
     return (
       <div>
-        <FriendList 
-          friends={friends} 
-          currentVideo={currentVideo}
-          onFriendClick={this.onFriendClick} 
+        <FriendList
+          friends={friends}
+          currentStory={currentStory}
+          onFriendClick={this.onFriendClick}
         />
         <video width="400"
-          autoPlay 
-          onClick={this.play} 
-          onEnded={this.play} 
-          src={currentVideo.video.aws_link}
+          autoPlay
+          onClick={this.play}
+          onEnded={this.play}
+          src={currentStory.story.aws_link}
         />
       </div>
     );
