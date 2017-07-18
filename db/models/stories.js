@@ -3,7 +3,7 @@ const User = require('./profiles');
 
 const Story = db.Model.extend({
   tableName: 'stories',
-  user: function() {
+  profile: function() {
     return this.belongsTo(Profile, 'profile_id');
   }
 });
