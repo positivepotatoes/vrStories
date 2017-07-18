@@ -89,8 +89,7 @@ module.exports.getFriends = (req, res) => {
       if (!friendList) {
         throw friendList;
       }
-      console.log('friendlist', friendList.toJSON()[0].friends);
-      res.status(200).send(friendList.friends);
+      res.status(200).send(friendList.toJSON()[0].friends);
     })
     .error(err => {
       res.status(500).send(err);
