@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu, Progress, Segment } from 'semantic-ui-react';
 
 const FriendItem = (props) => {
+
   const handleClick = () => {
     props.onFriendClick(props.friendData, props.friendIndex);
   };

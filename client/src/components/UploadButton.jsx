@@ -18,7 +18,6 @@ class UploadButton extends React.Component {
   render() {
     return (
       <div className="fileUpload btn btn-primary">
-        <span>Upload</span>
         <Input type="file"/>
       </div>
     );

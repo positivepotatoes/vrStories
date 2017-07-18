@@ -2,10 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import VRFrame from './VRFrame.jsx';
 import Dropzone from 'react-dropzone';
-import { Menu } from 'semantic-ui-react';
 import FriendList from './FriendList.jsx';
 import MediaFrame from './MediaFrame.jsx';
 import UploadButton from './UploadButton.jsx';
+import { Menu } from 'semantic-ui-react';
 
 class Home extends React.Component {
   constructor(props) {
@@ -46,7 +46,7 @@ class Home extends React.Component {
       currentVideo: {},
       currentVideos: [],
 
-      autoplay: false,
+      autoplay: true,
       friendIndex: 0,
       lastClickedFriendIndex: 0,
       
@@ -75,8 +75,6 @@ class Home extends React.Component {
   }
 
   onFriendClick(friendData, friendIndex) {
-    console.log('onFriendClicked, index: ', friendData.user.first, ', ', friendIndex);
-
     this.setState({
       friendIndex,
       videoIndex: 0,
@@ -185,8 +183,8 @@ class Home extends React.Component {
         { dropzoneActive && <div style={overlayStyle}>Drop files...</div> }
 
         <div>
-          Welcome Home {user.first}!
-          <UploadButton />
+          <Menu.Item>Welcome Home {user.first}!</Menu.Item>
+          {/*<UploadButton />*/}
           <FriendList friends={friends} onFriendClick={this.onFriendClick} currentVideo={currentVideo} videoIndex={videoIndex}/>
           <MediaFrame currentVideo={currentVideo} playNextOrStop={this.playNextOrStop} onMediaClick={this.onMediaClick}/>
         </div>
