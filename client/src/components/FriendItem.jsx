@@ -1,15 +1,20 @@
 import React from 'react';
-import { Menu } from 'semantic-ui-react';
-
-
+import { Menu, Progress, Segment } from 'semantic-ui-react';
 
 const FriendItem = (props) => {
-  let handleClick = e => {
-    e.preventDefault();
-    props.setFriendState(props.friend);
-  };
+
+  let progressIndicator;
+  if (props.currentVideo.video.profile_id === props.friendData.user.id) {
+    progressIndicator = <Progress percent={(props.currentVideo.index + 1) / (props.friendData.videos.length) * 100} attached='bottom'/>;
+  }
+
   return (
-    <Menu.Item onClick={handleClick}>{props.friendname}</Menu.Item>
+    <div>
+      <Menu.Item onClick={() => props.onFriendClick(props.friendData, props.friendIndex)}>
+        {props.friendData.user.first} 
+        {progressIndicator}
+      </Menu.Item>
+    </div>
   );
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Menu, Button } from 'semantic-ui-react';
+import { Menu, Button, Input} from 'semantic-ui-react';
 
 class UploadButton extends React.Component {
   constructor(props) {
@@ -17,9 +17,9 @@ class UploadButton extends React.Component {
 
   render() {
     return (
-      <Menu.Item>
-        <Button>uploadButton here</Button>
-      </Menu.Item>
+      <div className="fileUpload btn btn-primary">
+        <Input type="file"/>
+      </div>
     );
   }
 }
