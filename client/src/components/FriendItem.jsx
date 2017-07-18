@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Progress, Segment } from 'semantic-ui-react';
 
 const FriendItem = (props) => {
   const handleClick = () => {
@@ -8,11 +8,16 @@ const FriendItem = (props) => {
 
   let playing;
   if (props.currentVideo.profile_id === props.friendData.user.id) {
-    playing = `im freakin playing vid ${props.videoIndex + 1} out of ${props.friendData.videos.length} yo!`;
+    playing = <Progress percent={(props.videoIndex + 1) / (props.friendData.videos.length) * 100} attached='bottom'/>;
   }
 
   return (
-    <Menu.Item onClick={handleClick}>{props.friendData.user.first}, {playing}</Menu.Item>
+    <div>
+      <Menu.Item onClick={handleClick}>
+        {props.friendData.user.first} 
+        {playing}
+      </Menu.Item>
+    </div>
   );
 };
 

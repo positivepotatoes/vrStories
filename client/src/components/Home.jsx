@@ -1,12 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import Upload from './Upload.jsx';
-import Dropzone from 'react-dropzone';
-import UploadButton from './UploadButton.jsx';
-import FriendList from './FriendList.jsx';
 import VRFrame from './VRFrame.jsx';
-import MediaFrame from './MediaFrame.jsx';
+import Dropzone from 'react-dropzone';
 import { Menu } from 'semantic-ui-react';
+import FriendList from './FriendList.jsx';
+import MediaFrame from './MediaFrame.jsx';
+import UploadButton from './UploadButton.jsx';
 
 class Home extends React.Component {
   constructor(props) {
@@ -31,7 +30,7 @@ class Home extends React.Component {
             last: 'S',
             display: 'Alex S.'
           },
-          videos: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329915531', profile_id: 2 }]
+          videos: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329915531', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, ]
         }, {
           user: {
             id: 3,
@@ -88,18 +87,6 @@ class Home extends React.Component {
     });
   }
 
-  // playAllVideosOfOneFriend() {
-  //   const { videoIndex, currentVideos,  } = this.state;
-    
-  //   if (videoIndex < currentVideos.length - 1) {
-  //     var nextIndex = videoIndex + 1;
-  //     this.setState({
-  //       currentVideo: currentVideos[nextIndex],
-  //       videoIndex: nextIndex,
-  //     });
-  //   }
-  // }
-
   playNextOrStop() {
     const { friends, videoIndex, friendIndex, currentVideos, autoplay, currentVideo, lastClickedFriendIndex } = this.state;
     let nextVideoIndex = videoIndex + 1;
@@ -112,10 +99,6 @@ class Home extends React.Component {
         videoIndex: nextVideoIndex,
       });
     } else if (autoplay) {
-      if (nextFriendIndex === lastClickedFriendIndex) {
-        return;
-      }
-
       if (nextFriendIndex < friends.length) {
         this.setState({
           videoIndex: 0,
@@ -124,9 +107,12 @@ class Home extends React.Component {
           currentVideo: friends[nextFriendIndex].videos[0]
         });
       } else {
-        console.log('looks like you need to loop!');
+        if (lastClickedFriendIndex === 0) {
+          return;
+        }
+
         this.setState({
-          videoIndex: 0,
+          videoIndex: -1,
           friendIndex: 0,
           currentVideos: friends[0].videos,
           currentVideo: friends[0].videos[0]
@@ -195,7 +181,6 @@ class Home extends React.Component {
         <div>
           Welcome Home {user.first}!
           <UploadButton />
-          {/*<Upload user={user} />*/}
           <FriendList friends={friends} onFriendClick={this.onFriendClick} currentVideo={currentVideo} videoIndex={videoIndex}/>
           <MediaFrame currentVideo={currentVideo} playNextOrStop={this.playNextOrStop} />
         </div>
