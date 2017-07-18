@@ -41,22 +41,27 @@ const makeFriendList = (profile) => {
   var userId;
   models.Profile.where({ facebook_id: profile._json.id }).fetch()
     .then((user) => {
+      // profile id for current user
       userId = user.id;
     });
   // for each friend, check the sql server to see if the friend exists
   friendList.forEach((friend) => {
-    // for each friend, get the profile id
+    console.log(friend);
     let friendId;
+    // for each friend, get the profile id
     models.Profile.where({ facebook_id: friend.id }).fetch()
       .then((profile) => {
         friendId = profile.id;
-        if (!models.Friendship.where({ profile_id_1: userId, profile_id_2: friendId }).fetch()) {
-          models.Friendship.forge({ profile_id_1: userId, profile_id_2: friendId }).save();
-        }
+        // check if the friendship already exists
+        models.Friendship.where({ profile_id_1: userId, profile_id_2: friendId }).fetch()
+          .then((searchResult) => {
+            // if it doesn't, forge and save
+            if (searchResult === null) {
+              models.Friendship.forge({ profile_id_1: userId, profile_id_2: friendId }).save();
+            }
+          });
       })
       .catch((err) => console.log('some error happened in makefriendlist', err));
-    // now we have profile id from our db
-    // insert friendship with lower id = profile id 1
   });
 };
 
