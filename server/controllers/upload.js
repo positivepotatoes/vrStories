@@ -11,7 +11,6 @@ let s3 = new AWS.S3();
 
 module.exports.save = (req, res) => {
   var key = Date.now().toString();
-
   var userId = req.body.userId;
   var awsLink = 'https://s3-us-west-1.amazonaws.com/vrstories/' + key;
 
