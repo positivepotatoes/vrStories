@@ -25,17 +25,23 @@ class MediaFrame extends React.Component {
   }
   
   componentWillMount() {
+    this.setId(this.props.user);
     this.setId(this.props.friends);
     if (this.state.autoPlayStart) {
       this.onFriendClick(this.state.friends[0], 0);
     }
   }
 
-  setId(users) {
-    users.forEach((user, i) => {
-      user.profile.id = i;
-      user.stories.forEach(story => story.id = i);
-    });
+  setId(data) {
+    if (Array.isArray(data)) {
+      data.forEach((user, i) => {
+        user.profile.id = i + 1;
+        user.stories.forEach(story => story.id = i + 1);
+      });
+    } else {
+      data.profile.id = 0;
+      data.stories.forEach(story => story.id = 0);
+    }
   }
 
   setIndexAndStory(stories, index) {
