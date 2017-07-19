@@ -4,9 +4,9 @@ import { Menu, Progress, Segment } from 'semantic-ui-react';
 const FriendItem = (props) => {
 
   let progressIndicator;
-  if (props.currentStory.story.profile_id === props.friendData.profile.id) {
-    progressIndicator = <Progress percent={(props.currentStory.index + 1) / (props.friendData.stories.length) * 100} attached='bottom'/>;
-  }
+  // if (props.currentStory.story.profile_id === props.friendData.profile.id) {
+  //   progressIndicator = <Progress percent={(props.currentStory.index + 1) / (props.friendData.stories.length) * 100} attached='bottom'/>;
+  // }
 
   return (
     <div>

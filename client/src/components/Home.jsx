@@ -11,31 +11,32 @@ class Home extends React.Component {
     this.state = {
       user: {},
       friends:
-      [{
-        profile: {
-          id: 1,
-          first: 'David',
-          last: 'Oh',
-          display: 'David Oh'
-        },
-        stories: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 1 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 1 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 1 }]
-      }, {
-        profile: {
-          id: 2,
-          first: 'Alex',
-          last: 'S',
-          display: 'Alex S.'
-        },
-        stories: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329915531', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, ]
-      }, {
-        profile: {
-          id: 3,
-          first: 'Anna',
-          last: 'Anna',
-          display: 'Anna Anna'
-        },
-        stories: [{ type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 3 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 3 }, { type: 'video/mp4', aws_link: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 3 }]
-      }],
+      // [{
+      //   profile: {
+      //     id: 1,
+      //     first: 'David',
+      //     last: 'Oh',
+      //     display: 'David Oh'
+      //   },
+      //   stories: [{ type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 1 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 1 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 1 }]
+      // }, {
+      //   profile: {
+      //     id: 2,
+      //     first: 'Alex',
+      //     last: 'S',
+      //     display: 'Alex S.'
+      //   },
+      //   stories: [{ type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329915531', profile_id: 2 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, ]
+      // }, {
+      //   profile: {
+      //     id: 3,
+      //     first: 'Anna',
+      //     last: 'Anna',
+      //     display: 'Anna Anna'
+      //   },
+      //   stories: [{ type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 3 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 3 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 3 }]
+      // }],
+      null,
       
       // States below are used for react-dropzone
       accept: '',
@@ -50,14 +51,24 @@ class Home extends React.Component {
   }
 
   fetch() {
-    axios.get(`/api/profiles/${this.state.currentFriend.user.id}/friends`)
+    axios.get('/fetch')
       .then(response => {
-        // ADD KEYS AND ONLY KEEP RELEVANT INFORMATION
-        this.setState({
-          user: response.data.user
+        this.setState({ user: response.data.user }, () => {
+          axios.get(`/api/profiles/${this.state.user.id}/friends`)
+            .then(response => {
+              let letNewUser = {};
+              letNewUser.profile = response.data.user;
+              letNewUser.profile.id = this.state.user.id;
+              
+              this.setState({
+                user: letNewUser,
+                friends: response.data.friends
+              });
+            });
         });
       });
   }
+
 
   // Functions below are used for react-dropzone
   onDragEnter() {
@@ -76,7 +87,7 @@ class Home extends React.Component {
     console.log('acceptedFiles:', files);
     let formData = new FormData();
     formData.append('file', files[0]);
-    formData.append('userId', this.state.user.id);
+    formData.append('userId', this.state.user.profile.id);
     axios.post('/api/upload', formData);
     this.setState({
       files,
@@ -105,6 +116,15 @@ class Home extends React.Component {
       color: '#fff'
     };
 
+    let mediaFrame;
+    if (this.state.friends) {
+      mediaFrame = <MediaFrame 
+        user={user}
+        friends={friends}
+        autoplay={true}
+      />;
+    }
+
     return (
       <Dropzone
         disableClick
@@ -118,11 +138,7 @@ class Home extends React.Component {
 
         <div>
           <Menu.Item>Welcome Home {user.first}!</Menu.Item>
-          <MediaFrame 
-            user={user}
-            friends={friends}
-            autoplay={true}
-          />
+          {mediaFrame}
         </div>
       </Dropzone>
     );

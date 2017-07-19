@@ -22,6 +22,17 @@ class MediaFrame extends React.Component {
     this.play = this.play.bind(this);
     this.onFriendClick = this.onFriendClick.bind(this);
   }
+  
+  componentWillMount() {
+    this.setId(this.props.friends);
+  }
+
+  setId(users) {
+    users.forEach((user, i) => {
+      user.profile.id = i;
+      user.stories.forEach(story => story.id = i);
+    });
+  }
 
   setVideoAndIndex(stories, index) {
     return {
@@ -51,7 +62,7 @@ class MediaFrame extends React.Component {
   }
 
   play() {
-    const { autoplay, friends, friendIndex, currentStories, currentStory, lastClickedFriendIndex } = this.state;
+    const { friends, autoplay, friendIndex, currentStories, currentStory, lastClickedFriendIndex } = this.state;
     let nextStoryIndex = currentStory.index + 1;
     let nextFriendIndex = friendIndex + 1;
 
@@ -78,7 +89,7 @@ class MediaFrame extends React.Component {
   }
 
   render() {
-    const { currentStory, friends } = this.state;
+    const { friends, currentStory } = this.state;
 
     return (
       <div>
@@ -91,7 +102,7 @@ class MediaFrame extends React.Component {
           autoPlay
           onClick={this.play}
           onEnded={this.play}
-          src={currentStory.story.aws_link}
+          src={currentStory.story.src}
         />
       </div>
     );
