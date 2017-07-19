@@ -56,11 +56,6 @@ class Home extends React.Component {
         this.setState({ user: response.data.user }, () => {
           axios.get(`/api/profiles/${this.state.user.id}/friends`)
             .then(response => {
-              // let letNewUser = {};
-              // letNewUser.profile = response.data.user;
-              // letNewUser.profile.id = this.state.user.id;
-              // console.log(response.data.user)
-              // console.log(letNewUser)
               this.setState({
                 user: response.data.user,
                 friends: response.data.friends
