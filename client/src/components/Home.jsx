@@ -139,6 +139,7 @@ class Home extends React.Component {
         <div>
           <Menu.Item>Welcome Home {user.first}!</Menu.Item>
           {mediaFrame}
+          {/*<iframe src="http://localhost:5000/"></iframe>*/}
         </div>
       </Dropzone>
     );
