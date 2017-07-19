@@ -121,7 +121,9 @@ class Home extends React.Component {
       mediaFrame = <MediaFrame 
         user={user}
         friends={friends}
-        autoplay={true}
+        autoPlayNext={true}
+        autoPlayStart={false}
+
       />;
     }
 
