@@ -7,6 +7,7 @@ import VRCursor from './VRCursor.jsx';
 import VRProfiles from './VRProfiles.jsx';
 import mockData from './mockData.js';
 
+
 class VRStories extends React.Component {
   constructor(props) {
     super(props);
@@ -148,14 +149,24 @@ class VRStories extends React.Component {
   render () {
     return (
       <Scene>
-        <VRProfiles toggle={this.onFriendClick.bind(this)} friends={this.state.friends}/>
-          {/*<a-assets>
-            <video id="video" crossOrigin="anonymous" src="https://s3-us-west-1.amazonaws.com/vrstories/360+degree+Video-+Pugs+Chompin+down.mp4"
-              autoPlay loop></video>
-            <img id="story" src="https://s3-us-west-1.amazonaws.com/vrstories/360-panorama-matador-seo.jpg" crossOrigin="anonymous" ></img>
-          </a-assets>
-          {this.state.background}*/}
-        <Entity primitive='a-videosphere' autoPlay loop='false' id='story' src={this.state.currentStory.story.src}/>
+        <VRProfiles
+          currentStory={this.state.currentStory}
+          friends={this.state.friends}
+          onFriendClick={this.onFriendClick}
+        />
+        {/*<a-assets>
+          <video id="video" crossOrigin="anonymous" src="https://s3-us-west-1.amazonaws.com/vrstories/360+degree+Video-+Pugs+Chompin+down.mp4"
+            autoPlay loop></video>
+          <img id="story" src="https://s3-us-west-1.amazonaws.com/vrstories/360-panorama-matador-seo.jpg" crossOrigin="anonymous" ></img>
+        </a-assets>
+        {this.state.background}*/}
+        <Entity 
+          autoPlay
+          id='story'
+          loop='false'
+          primitive='a-videosphere'
+          src={this.state.currentStory.story.src}
+          events={{click: (() => console.log('you clicked the videosphere'))}}/>
         <VRCursor />
       </Scene>
     );

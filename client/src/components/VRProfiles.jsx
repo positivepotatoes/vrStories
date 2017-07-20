@@ -15,7 +15,14 @@ const VRProfiles = props => {
         props.friends.map((friend, i) => {
           x += 2;
           return (
-            <Profile toggle={props.toggle} x={x} i={i} friend={friend}/> 
+            <Profile
+              i={i}
+              x={x}
+              key={i}
+              friend={friend}
+              currentStory={props.currentStory}
+              onFriendClick={props.onFriendClick}
+            /> 
           );
         })
       }
