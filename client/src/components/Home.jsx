@@ -86,9 +86,8 @@ class Home extends React.Component {
       color: '#fff'
     };
 
-    let mediaFrame;
-    let vRIndex;
-    
+    let mediaFrame, vRIndex;
+
     if (this.state.friends) {
       mediaFrame = <MediaFrame 
         user={user}
