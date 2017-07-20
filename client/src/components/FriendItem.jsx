@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Progress, Segment } from 'semantic-ui-react';
+import { Button, Progress, Menu } from 'semantic-ui-react';
 
 const FriendItem = (props) => {
 
@@ -9,12 +9,11 @@ const FriendItem = (props) => {
   }
 
   return (
-    <div>
-      <Menu.Item onClick={() => props.onFriendClick(props.friendData, props.friendIndex)}>
-        {props.friendData.profile.first} 
-        {progressIndicator}
-      </Menu.Item>
-    </div>
+    <Menu.Item onClick={() => props.onFriendClick(props.friendData, props.friendIndex)}>
+      {props.friendData.profile.first} 
+      {progressIndicator}
+    </Menu.Item>
+    
   );
 };
 

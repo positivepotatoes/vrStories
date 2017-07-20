@@ -1,5 +1,6 @@
 import React from 'react';
 import FriendList from './FriendList.jsx';
+import { Button, Grid } from 'semantic-ui-react';
 
 class MediaFrame extends React.Component {
   constructor(props) {
@@ -12,13 +13,15 @@ class MediaFrame extends React.Component {
       autoPlayNext: props.autoPlayNext,
       
       currentStory: {
-        story: {},
+        story: {
+          src: ''
+        },
         index: 0
       },
 
       currentStories: [],
-      friendIndex: 0,
-      lastClickedFriendIndex: 0
+      friendIndex: null,
+      lastClickedFriendIndex: null
     };
     this.playNext = this.playNext.bind(this);
     this.onFriendClick = this.onFriendClick.bind(this);
@@ -52,6 +55,11 @@ class MediaFrame extends React.Component {
   }
 
   onFriendClick(friendData, friendIndex) {
+    if (friendIndex === this.state.friendIndex) {
+      this.playNextFriendStory();
+      return;
+    }
+
     this.setState({
       friendIndex,
       lastClickedFriendIndex: friendIndex,
@@ -102,19 +110,25 @@ class MediaFrame extends React.Component {
     const { friends, currentStory } = this.state;
 
     return (
-      <div>
-        <FriendList
-          friends={friends}
-          currentStory={currentStory}
-          onFriendClick={this.onFriendClick}
-        />
-        <video width="400"
-          autoPlay
-          onClick={this.playNext}
-          onEnded={this.playNext}
-          src={currentStory.story.src}
-        />
-      </div>
+      <Grid divided='vertically'>
+        <Grid.Row>
+          <Grid.Column width={2}>
+            <FriendList
+              friends={friends}
+              currentStory={currentStory}
+              onFriendClick={this.onFriendClick}
+            />
+          </Grid.Column>
+          <Grid.Column width={3}>
+            <video width="900"
+              autoPlay
+              onClick={this.playNext}
+              onEnded={this.playNext}
+              src={currentStory.story.src}
+            />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 

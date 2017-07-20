@@ -1,8 +1,9 @@
 import React from 'react';
 import FriendItem from './FriendItem.jsx';
+import { Button, Menu } from 'semantic-ui-react';
 
 const FriendList = (props) => (
-  <div>
+  <Menu fluid vertical>
     {
       props.friends.map((friend, i) => {
         return <FriendItem 
@@ -14,7 +15,7 @@ const FriendList = (props) => (
         />;
       })
     }
-  </div>
+  </Menu>
 );
 
 export default FriendList;
