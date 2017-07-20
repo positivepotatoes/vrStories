@@ -1,6 +1,7 @@
 import React from 'react';
 import FriendList from './FriendList.jsx';
 import VRFrame from './VRFrame.jsx';
+import VRIndex from './VRIndex.jsx';
 import { Button, Grid } from 'semantic-ui-react';
 
 class MediaFrame extends React.Component {
@@ -127,7 +128,8 @@ class MediaFrame extends React.Component {
               onEnded={this.playNext}
               src={currentStory.story.src}
             />*/}
-            <VRFrame currentStory={currentStory} onClick={this.playNext} className='abc'/>
+            {/*<VRFrame currentStory={currentStory} onClick={this.playNext} className='abc'/>*/}
+            <VRIndex/>
           </Grid.Column>
         </Grid.Row>
       </Grid>
