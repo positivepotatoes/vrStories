@@ -16,8 +16,9 @@ const VRProfile = props => {
 
   return (
     <Entity>
-      <Entity id='circle'
-        geometry={{primitive: 'circle', radius: picRadius}}
+      <Entity id='cylinder'
+        geometry={{primitive: 'cylinder', radius: picRadius, height: 0.15}}
+        rotation= "0 90 90"
         material={{src: props.friend.profile.img_url}}
         animation__rotate={{property: 'rotation', dur: 2000, loop: true, to: '360 360 360'}}
         animation__scale={{property: 'scale', dir: 'alternate', dur: 100, loop: true, to: '1.1 1.1 1.1'}}
