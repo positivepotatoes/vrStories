@@ -20,7 +20,8 @@ class VRStories extends React.Component {
 
       currentStory: {
         story: {
-          src: ''
+          src: '',
+          type: 'video/mp4'
         },
         index: 0
       },
@@ -133,13 +134,20 @@ class VRStories extends React.Component {
           friends={this.state.friends}
           onFriendClick={this.onFriendClick}
         />
-        <Entity 
+
+        {/*<Entity 
           autoPlay
           id='story'
           loop='false'
           primitive='a-videosphere'
           src={this.state.currentStory.story.src}
-          events={{click: (() => console.log('you clicked the videosphere'))}}/>
+          events={{click: (() => console.log('you clicked the videosphere'))}}/>*/}
+        <Entity
+          primitive='a-sky'
+          src={this.state.currentStory.story.src}
+          
+        />
+        {console.log(this.state.currentStory.index)}
         <VRCursor />
       </Scene>
     );
