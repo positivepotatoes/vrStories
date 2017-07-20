@@ -13,7 +13,7 @@ const VRProfiles = props => {
     <Entity>
       {
         props.friends.map((friend, i) => {
-          x += 2;
+          x += 2.3;
           return (
             <Profile
               i={i}
@@ -22,7 +22,7 @@ const VRProfiles = props => {
               friend={friend}
               currentStory={props.currentStory}
               onFriendClick={props.onFriendClick}
-            /> 
+            />
           );
         })
       }
