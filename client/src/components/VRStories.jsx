@@ -127,6 +127,14 @@ class VRStories extends React.Component {
   }
 
   render () {
+
+
+    if (this.state.currentStory.story.type.slice(0, 5) === 'image') {
+      this.playNextFriendStory();
+    }
+
+
+
     return (
       <Scene>
         <VRProfiles
@@ -140,7 +148,7 @@ class VRStories extends React.Component {
         </a-assets>
 
         <a-videosphere src={'#media'} rotation="0 -90 0"></a-videosphere>
-
+        
         <VRCursor />
       </Scene>
     );
