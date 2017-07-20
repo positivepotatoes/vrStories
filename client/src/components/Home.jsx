@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import VRFrame from './VRFrame.jsx';
+import VRIndex from './VRIndex.jsx';
 import Dropzone from 'react-dropzone';
 import MediaFrame from './MediaFrame.jsx';
 import { Header } from 'semantic-ui-react';
@@ -86,13 +87,23 @@ class Home extends React.Component {
     };
 
     let mediaFrame;
+    let vRIndex;
+    
     if (this.state.friends) {
       mediaFrame = <MediaFrame 
         user={user}
         friends={friends}
         autoPlayNext={true}
         autoPlayStart={false}
+      />;
+    }
 
+    if (this.state.friends) {
+      vRIndex = <VRIndex 
+        user={user}
+        friends={friends}
+        autoPlayNext={true}
+        autoPlayStart={false}
       />;
     }
 
@@ -106,11 +117,8 @@ class Home extends React.Component {
         onDragLeave={this.onDragLeave.bind(this)}
       >
         { dropzoneActive && <div style={overlayStyle}>Drop file to upload to your story</div> }
-
-        
-        
-        {mediaFrame}
-        
+        {/* CHANGE vRIndex TO mediaFrame IF YOU WANT TO USE REGULAR/NON VR PLAYER*/}
+        {vRIndex}        
       </Dropzone>
     );
   }

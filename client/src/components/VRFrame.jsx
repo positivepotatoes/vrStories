@@ -11,7 +11,7 @@ class VRFrame extends React.Component {
   render () {
     return (
       <Scene>
-        <Entity primitive='a-videosphere' autoPlay loop='false' id='story' src={this.props.currentStory.story.src}/>
+        <Entity primitive='a-videosphere' autoPlay loop='false' id='story' src='https://s3-us-west-1.amazonaws.com/vrstories/Cute+Cats+VR+360+Experience.mp4'/>
         <Entity geometry={{primitive: 'box'}} material={{color: 'red'}} position={{x: 0, y: -2, z: -5}}/>
       </Scene>
     );
