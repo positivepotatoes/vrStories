@@ -29,11 +29,9 @@ class VRStories extends React.Component {
       friendIndex: null,
       lastClickedFriendIndex: null,
 
-      // USE THESE PROPS INSTEAD IF YOU WANT TO USE MOCK DATA WHICH ALSO HAS PICTURE URL
+      // USE FOR MOCK DATA
       // friends: mockData.friends,
       // user: mockData.user,
-      toggle: true,
-      background: <a-videosphere src="#video" rotation="0 -90 0"></a-videosphere>
     };
     this.playNext = this.playNext.bind(this);
     this.onFriendClick = this.onFriendClick.bind(this);
@@ -127,25 +125,6 @@ class VRStories extends React.Component {
     } 
   }
 
-  toggle () {
-    console.log(this.state.friends);
-    console.log('toggle!');
-    if (!this.state.toggle) {
-      this.setState({
-        background: (<a-videosphere src="#story"></a-videosphere>)
-      });
-    } else {
-      this.setState({
-        background: (<a-sky src="#video" rotation="0 -90 0"></a-sky>)
-      });
-    }
-    this.setState({
-      toggle: !this.state.toggle
-    });
-  }
-
-
-
   render () {
     return (
       <Scene>
@@ -154,12 +133,6 @@ class VRStories extends React.Component {
           friends={this.state.friends}
           onFriendClick={this.onFriendClick}
         />
-        {/*<a-assets>
-          <video id="video" crossOrigin="anonymous" src="https://s3-us-west-1.amazonaws.com/vrstories/360+degree+Video-+Pugs+Chompin+down.mp4"
-            autoPlay loop></video>
-          <img id="story" src="https://s3-us-west-1.amazonaws.com/vrstories/360-panorama-matador-seo.jpg" crossOrigin="anonymous" ></img>
-        </a-assets>
-        {this.state.background}*/}
         <Entity 
           autoPlay
           id='story'

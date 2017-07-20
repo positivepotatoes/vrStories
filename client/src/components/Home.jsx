@@ -101,7 +101,7 @@ class Home extends React.Component {
         user={user}
         friends={friends}
         autoPlayNext={true}
-        autoPlayStart={false}
+        autoPlayStart={true}
       />;
     }
 
