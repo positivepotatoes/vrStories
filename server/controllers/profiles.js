@@ -98,7 +98,8 @@ module.exports.getFriends = (req, res) => {
         profile: {
           first: friendList.first,
           last: friendList.last,
-          display: friendList.display
+          display: friendList.display,
+          img_url: friendList.img_url
         },
         stories: userStories
       };
@@ -108,7 +109,7 @@ module.exports.getFriends = (req, res) => {
         profile.stories.forEach((story) => {
           stories.push({ 'type': story.metadata, 'src': story.aws_link });
         });
-        friends.push({ 'profile': { 'first': profile.first, 'last': profile.last, 'display': profile.display }, 'stories': stories });
+        friends.push({ 'profile': { 'first': profile.first, 'last': profile.last, 'display': profile.display, 'img_url': profile.img_url }, 'stories': stories });
       });
       let send = { 'user': user, 'friends': friends };
       res.status(200).send(send);
