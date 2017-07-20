@@ -12,10 +12,10 @@ const VRProfiles = props => {
   return (
     <Entity>
       {
-        props.friends.map(friend => {
+        props.friends.map((friend, i) => {
           x += 2;
           return (
-            <Profile toggle={props.toggle} x={x} friend={friend}/> 
+            <Profile toggle={props.toggle} x={x} i={i} friend={friend}/> 
           );
         })
       }

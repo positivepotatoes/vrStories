@@ -1,15 +1,13 @@
 import 'aframe';
 import 'aframe-mouse-cursor-component';
-import {Entity, Scene, Options} from 'aframe-react';
+import { Entity, Scene, Options } from 'aframe-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import VRCursor from './VRCursor.jsx';
 import VRProfiles from './VRProfiles.jsx';
 import mockData from './mockData.js';
-// ASK TEAM IF WE CAN DELETE THIS DEPENDENCY BELOW
-// import 'aframe-particle-system-component';
 
-class VRIndex extends React.Component {
+class VRStories extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,6 +16,17 @@ class VRIndex extends React.Component {
       friends: props.friends,
       autoPlayStart: props.autoPlayStart,
       autoPlayNext: props.autoPlayNext,
+
+      currentStory: {
+        story: {
+          src: ''
+        },
+        index: 0
+      },
+
+      currentStories: [],
+      friendIndex: null,
+      lastClickedFriendIndex: null,
 
       // USE THESE PROPS INSTEAD IF YOU WANT TO USE MOCK DATA WHICH ALSO HAS PICTURE URL
       // friends: mockData.friends,
@@ -37,7 +46,8 @@ class VRIndex extends React.Component {
     }
   }
 
-  // SINCE USER OF THIS MODULE WILL ONLY PROVIDE LIST OF DATA
+  // SINCE USER OF THIS MODULE WILL ONLY PROVIDE LIST OF FRIENDS AND NOT ANY KEYS
+  // WE BUILT THIS HELPER FUNCTION TO IDENTIFY EVERY VIDEO TO EACH FRIEND
   setId(data) {
     if (Array.isArray(data)) {
       data.forEach((user, i) => {
@@ -50,6 +60,7 @@ class VRIndex extends React.Component {
     }
   }
 
+  // THIS IS A HELPER FUNCTION TO SET STATE FOR THE CURRENT INDEX OF STORY (OUT OF ALL STORY BY ONE FRIEND)
   setIndexAndStory(stories, index) {
     return {
       index: index,
@@ -57,6 +68,10 @@ class VRIndex extends React.Component {
     };
   }
 
+  // THIS FUNCTION WILL UPDATE THE STATE OF THE MOST RECENTLY CLICKED FRIEND
+  //
+  // THIS IS ALSO NECESSARY TO KNOW WHICH FRIEND WAS LAST CLICKED TO KNOW WHEN TO END STORIES LOOP
+  // AND TO MAKE THIS FRIEND THE CURRENT STORIES SHOWING
   onFriendClick(friendData, friendIndex) {
     if (friendIndex === this.state.friendIndex) {
       this.playNextFriendStory();
@@ -71,6 +86,7 @@ class VRIndex extends React.Component {
     });
   }
 
+  // THIS FUNCTION WILL UPDATE currentStory TO BE THE NEXT STORY
   playNextFriendStory() {
     const { currentStories, currentStory } = this.state;
     let nextStoryIndex = currentStory.index + 1;
@@ -82,6 +98,7 @@ class VRIndex extends React.Component {
     }
   }
 
+  // THIS FUNCTION WILL PLAY THE NEXT STORY OF currentStories AND IF AUTOPLAY IS ON, THE NEXT FRIEND'S STORIES WILL BE PLAYED
   playNext() {
     const { friends, autoPlayNext, friendIndex, currentStories, currentStory, lastClickedFriendIndex } = this.state;
     let nextStoryIndex = currentStory.index + 1;
@@ -131,17 +148,18 @@ class VRIndex extends React.Component {
   render () {
     return (
       <Scene>
-        <VRProfiles toggle={this.toggle.bind(this)} friends={this.state.friends}/>
-        <a-assets>
-          <video id="video" crossOrigin="anonymous" src="https://s3-us-west-1.amazonaws.com/vrstories/360+degree+Video-+Pugs+Chompin+down.mp4"
-            autoPlay loop></video>
-          <img id="story" src="https://s3-us-west-1.amazonaws.com/vrstories/360-panorama-matador-seo.jpg" crossOrigin="anonymous" ></img>
-        </a-assets>
-        {this.state.background}
+        <VRProfiles toggle={this.onFriendClick.bind(this)} friends={this.state.friends}/>
+          {/*<a-assets>
+            <video id="video" crossOrigin="anonymous" src="https://s3-us-west-1.amazonaws.com/vrstories/360+degree+Video-+Pugs+Chompin+down.mp4"
+              autoPlay loop></video>
+            <img id="story" src="https://s3-us-west-1.amazonaws.com/vrstories/360-panorama-matador-seo.jpg" crossOrigin="anonymous" ></img>
+          </a-assets>
+          {this.state.background}*/}
+        <Entity primitive='a-videosphere' autoPlay loop='false' id='story' src={this.state.currentStory.story.src}/>
         <VRCursor />
       </Scene>
     );
   }
 }
 
-export default VRIndex;
+export default VRStories;
