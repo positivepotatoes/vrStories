@@ -3,41 +3,14 @@ import axios from 'axios';
 import VRFrame from './VRFrame.jsx';
 import Dropzone from 'react-dropzone';
 import MediaFrame from './MediaFrame.jsx';
-import { Menu } from 'semantic-ui-react';
+import { Header } from 'semantic-ui-react';
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       user: {},
-      friends:
-      // [{
-      //   profile: {
-      //     id: 1,
-      //     first: 'David',
-      //     last: 'Oh',
-      //     display: 'David Oh'
-      //   },
-      //   stories: [{ type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 1 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 1 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 1 }]
-      // }, {
-      //   profile: {
-      //     id: 2,
-      //     first: 'Alex',
-      //     last: 'S',
-      //     display: 'Alex S.'
-      //   },
-      //   stories: [{ type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329915531', profile_id: 2 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329906346', profile_id: 2 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329911740', profile_id: 2 }, ]
-      // }, {
-      //   profile: {
-      //     id: 3,
-      //     first: 'Anna',
-      //     last: 'Anna',
-      //     display: 'Anna Anna'
-      //   },
-      //   stories: [{ type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329882921', profile_id: 3 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329895280', profile_id: 3 }, { type: 'video/mp4', src: 'https://s3-us-west-1.amazonaws.com/vrstories/1500329900922', profile_id: 3 }]
-      // }],
-      null,
-      
+      friends: null,
       // States below are used for react-dropzone
       accept: '',
       files: [],
@@ -134,11 +107,10 @@ class Home extends React.Component {
       >
         { dropzoneActive && <div style={overlayStyle}>Drop file to upload to your story</div> }
 
-        <div>
-          <Menu.Item>Welcome Home {user.first}!</Menu.Item>
-          {mediaFrame}
-          {/*<iframe src="http://localhost:5000/"></iframe>*/}
-        </div>
+        
+        
+        {mediaFrame}
+        
       </Dropzone>
     );
   }
