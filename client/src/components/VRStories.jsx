@@ -22,7 +22,6 @@ class VRStories extends React.Component {
       currentStory: {
         id: null,
         index: null,
-        playing: false,
         type: 'video/mp4',
         src: 'https://s3-us-west-1.amazonaws.com/vrstories/360+degree+Video-+Pugs+Chompin+down.mp4',
       },
@@ -38,10 +37,25 @@ class VRStories extends React.Component {
   }
 
   componentWillMount() {
+    // NEED TO SET UP OPTION TO DO HAVE DEFAULT VIDEO
+    let defaultStory = {
+      profile: {
+        id: -2
+      },
+      stories: [{
+        id: -2,
+        index: -2,
+        type: 'video/mp4',
+        src: 'https://s3-us-west-1.amazonaws.com/vrstories/360+degree+Video-+Pugs+Chompin+down.mp4',
+      }]
+    };
+
     this.setId(this.state.user);
     this.setId(this.state.friends);
     if (this.state.autoPlayStart) {
-      this.onFriendClick(this.state.friends[0], 0);
+      this.onFriendClick(this.state.friends[0]);
+    } else {
+      this.onFriendClick(defaultStory);
     }
   }
 
@@ -54,7 +68,6 @@ class VRStories extends React.Component {
         user.stories.forEach((story, j) => {
           story.id = i;
           story.index = j;
-          story.playing = false;
         });
       });
     } else {
@@ -62,15 +75,14 @@ class VRStories extends React.Component {
       data.stories.forEach((story, j) => {
         story.id = -1;
         story.index = j;
-        story.playing = false;
       });
     }
   }
 
-
   playStory() {
     let that = this;
     if (this.state.currentStory.type.slice(0, 5) === 'image') {
+      let that = this;
       setTimeout(function() {
         that.playNext();
       }, 7000);
