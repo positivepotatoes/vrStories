@@ -37,7 +37,7 @@ class VRStories extends React.Component {
   }
 
   componentWillMount() {
-    // NEED TO SET UP OPTION TO DO HAVE DEFAULT VIDEO
+    // NEED TO SET UP OPTION TO DO HAVE DEFAULT BACKGROUND
     let defaultStory = {
       profile: {
         id: -2
@@ -82,11 +82,11 @@ class VRStories extends React.Component {
   playStory() {
     let that = this;
     if (this.state.currentStory.type.slice(0, 5) === 'image') {
-      console.log('below is buggy timer');
-      // let that = this;
-      // setTimeout(function() {
-      //   that.playNext();
-      // }, 7000);
+      let that = this;
+      setTimeout(function() {
+        console.log('set timeout being called');
+        that.playNext();
+      }, 7000);
     } else {
       let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
       let stories = Array.prototype.slice.call(document.getElementsByTagName('video'));
@@ -165,7 +165,7 @@ class VRStories extends React.Component {
           onFriendClick={this.onFriendClick}
         />
 
-        <VRAssets user={user} friends={friends}/>
+        <VRAssets user={user} friends={friends} playNext={this.playNext}/>
         <VRPrimitive currentStory={currentStory}/>
         
         <VRCursor />
