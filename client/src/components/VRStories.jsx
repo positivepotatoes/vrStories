@@ -11,8 +11,8 @@ class VRStories extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: props.user,
-      friends: props.friends,
+      // user: props.user,
+      // friends: props.friends,
       autoPlayStart: props.autoPlayStart,
       autoPlayNext: props.autoPlayNext,
 
@@ -26,16 +26,16 @@ class VRStories extends React.Component {
       currentStories: [],
       lastClickedFriendIndex: null,
       // USE FOR MOCK DATA
-      // friends: mockData.friends,
-      // user: mockData.user,
+      friends: mockData.friends,
+      user: mockData.user,
     };
     this.playNext = this.playNext.bind(this);
     this.onFriendClick = this.onFriendClick.bind(this);
   }
 
   componentWillMount() {
-    this.setId(this.props.user);
-    this.setId(this.props.friends);
+    this.setId(this.state.user);
+    this.setId(this.state.friends);
     if (this.state.autoPlayStart) {
       this.onFriendClick(this.state.friends[0], 0);
     }
@@ -132,7 +132,6 @@ class VRStories extends React.Component {
         <a-assets>
           <video autoPlay={true} id="media" src={this.state.currentStory.src} crossOrigin="anonymous" onEnded={() => this.playNext()}/>
         </a-assets>
-
         <a-videosphere src={'#media'} rotation="0 -90 0"></a-videosphere>
         
         <VRCursor />
