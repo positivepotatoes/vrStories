@@ -7,39 +7,35 @@ import VRCursor from './VRCursor.jsx';
 import VRProfiles from './VRProfiles.jsx';
 import mockData from './mockData.js';
 
-
 class VRStories extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // THE PROPS BELOW ARE ACTUALLY GETTING DATA FROM AUTH/LOGIN/SESSION!!!
-      user: props.user,
-      friends: props.friends,
+      // user: props.user,
+      // friends: props.friends,
       autoPlayStart: props.autoPlayStart,
       autoPlayNext: props.autoPlayNext,
 
       currentStory: {
-        story: {
-          src: ''
-        },
-        index: 0
+        id: null,
+        index: null,
+        type: 'video/mp4',
+        src: 'https://s3-us-west-1.amazonaws.com/vrstories/360+degree+Video-+Pugs+Chompin+down.mp4'
       },
 
       currentStories: [],
-      friendIndex: null,
       lastClickedFriendIndex: null,
-
       // USE FOR MOCK DATA
-      // friends: mockData.friends,
-      // user: mockData.user,
+      friends: mockData.friends,
+      user: mockData.user,
     };
     this.playNext = this.playNext.bind(this);
     this.onFriendClick = this.onFriendClick.bind(this);
   }
 
   componentWillMount() {
-    this.setId(this.props.user);
-    this.setId(this.props.friends);
+    this.setId(this.state.user);
+    this.setId(this.state.friends);
     if (this.state.autoPlayStart) {
       this.onFriendClick(this.state.friends[0], 0);
     }
@@ -50,38 +46,36 @@ class VRStories extends React.Component {
   setId(data) {
     if (Array.isArray(data)) {
       data.forEach((user, i) => {
-        user.profile.id = i + 1;
-        user.stories.forEach(story => story.id = i + 1);
+        user.profile.id = i;
+        user.stories.forEach((story, j) => {
+          story.id = i;
+          story.index = j;
+          story.playing = false;
+        });
       });
     } else {
-      data.profile.id = 0;
-      data.stories.forEach(story => story.id = 0);
+      data.profile.id = -1;
+      data.stories.forEach((story, j) => {
+        story.id = -1;
+        story.index = j;
+      });
     }
-  }
-
-  // THIS IS A HELPER FUNCTION TO SET STATE FOR THE CURRENT INDEX OF STORY (OUT OF ALL STORY BY ONE FRIEND)
-  setIndexAndStory(stories, index) {
-    return {
-      index: index,
-      story: stories[index]
-    };
   }
 
   // THIS FUNCTION WILL UPDATE THE STATE OF THE MOST RECENTLY CLICKED FRIEND
   //
   // THIS IS ALSO NECESSARY TO KNOW WHICH FRIEND WAS LAST CLICKED TO KNOW WHEN TO END STORIES LOOP
   // AND TO MAKE THIS FRIEND THE CURRENT STORIES SHOWING
-  onFriendClick(friendData, friendIndex) {
-    if (friendIndex === this.state.friendIndex) {
+  onFriendClick(friendData) {
+    if (friendData.profile.id === this.state.currentStory.id) {
       this.playNextFriendStory();
       return;
     }
 
     this.setState({
-      friendIndex,
-      lastClickedFriendIndex: friendIndex,
+      lastClickedFriendIndex: friendData.profile.id,
       currentStories: friendData.stories,
-      currentStory: this.setIndexAndStory(friendData.stories, 0)
+      currentStory: friendData.stories[0]
     });
   }
 
@@ -89,19 +83,19 @@ class VRStories extends React.Component {
   playNextFriendStory() {
     const { currentStories, currentStory } = this.state;
     let nextStoryIndex = currentStory.index + 1;
-
+    
     if (nextStoryIndex < currentStories.length) {
       this.setState({
-        currentStory: this.setIndexAndStory(currentStories, nextStoryIndex)
+        currentStory: currentStories[nextStoryIndex]
       });
     }
   }
 
   // THIS FUNCTION WILL PLAY THE NEXT STORY OF currentStories AND IF AUTOPLAY IS ON, THE NEXT FRIEND'S STORIES WILL BE PLAYED
   playNext() {
-    const { friends, autoPlayNext, friendIndex, currentStories, currentStory, lastClickedFriendIndex } = this.state;
+    const { friends, autoPlayNext, currentStories, currentStory, lastClickedFriendIndex } = this.state;
     let nextStoryIndex = currentStory.index + 1;
-    let nextFriendIndex = friendIndex + 1;
+    let nextFriendIndex = currentStory.id + 1;
 
     this.playNextFriendStory();
 
@@ -110,10 +104,10 @@ class VRStories extends React.Component {
         if (lastClickedFriendIndex === i) {
           return;
         }
-        this.setState({
-          friendIndex: i,
+
+        this.setState({ 
           currentStories: friends[i].stories,
-          currentStory: this.setIndexAndStory(friends[i].stories, 0)
+          currentStory: friends[i].stories[0]
         });
       };
 
@@ -124,6 +118,7 @@ class VRStories extends React.Component {
       }
     }
   }
+  
 
   render () {
     return (
@@ -133,13 +128,12 @@ class VRStories extends React.Component {
           friends={this.state.friends}
           onFriendClick={this.onFriendClick}
         />
-        <Entity
-          autoPlay
-          id='story'
-          loop='false'
-          primitive='a-videosphere'
-          src={this.state.currentStory.story.src}
-          events={{click: (() => console.log('you clicked the videosphere'))}}/>
+
+        <a-assets>
+          <video autoPlay={true} id="media" src={this.state.currentStory.src} crossOrigin="anonymous" onEnded={() => this.playNext()}/>
+        </a-assets>
+        <a-videosphere src={'#media'} rotation="0 -90 0"></a-videosphere>
+        
         <VRCursor />
       </Scene>
     );
