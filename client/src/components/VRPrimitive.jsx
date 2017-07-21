@@ -8,7 +8,6 @@ const VRPrimitive = (props) => {
   let primitive = <a-videosphere src={src} rotation="0 -90 0"/>;
   
   if (props.currentStory.type.slice(0, 5) === 'image') {
-    console.log('go photos!');
     primitive = <a-sky src={src} rotation="0 -90 0"/>;
   }
 

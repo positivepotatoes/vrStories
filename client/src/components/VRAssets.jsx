@@ -21,7 +21,7 @@ const VRAssets = (props) => {
             );
           } else {
             return (
-              <video id={id} key={id} src={story.src} crossOrigin="anonymous" onEnded={() => this.playNext()}/>
+              <video id={id} key={id} src={story.src} crossOrigin="anonymous" onEnded={() => props.playNext()}/>
             );
           }
         })

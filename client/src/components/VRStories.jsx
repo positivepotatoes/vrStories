@@ -68,10 +68,18 @@ class VRStories extends React.Component {
 
 
   playStory() {
-    let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
-    let stories = Array.prototype.slice.call(document.getElementsByTagName('video'));
-    stories.forEach(story => story.pause());
-    story.play();
+    let that = this;
+    if (this.state.currentStory.type.slice(0, 5) === 'image') {
+      setTimeout(function() {
+        that.playNext();
+      }, 7000);
+      return;
+    } else {
+      let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
+      let stories = Array.prototype.slice.call(document.getElementsByTagName('video'));
+      stories.forEach(story => story.pause());
+      story.play();
+    }
   }
 
   // THIS FUNCTION WILL UPDATE THE STATE OF THE MOST RECENTLY CLICKED FRIEND
@@ -134,16 +142,17 @@ class VRStories extends React.Component {
   
 
   render () {
+    const { currentStory, friends, user } = this.state;
     return (
       <Scene>
         <VRProfiles
-          currentStory={this.state.currentStory}
-          friends={this.state.friends}
+          friends={friends}
+          currentStory={currentStory}
           onFriendClick={this.onFriendClick}
         />
 
-        <VRAssets user={this.state.user} friends={this.state.friends}/>
-        <VRPrimitive currentStory={this.state.currentStory}/>
+        <VRAssets user={user} friends={friends}/>
+        <VRPrimitive currentStory={currentStory}/>
         
         <VRCursor />
       </Scene>
