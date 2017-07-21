@@ -8,11 +8,30 @@
     }
   },
 
+  "AWS": {
+    "s3" : { 
+      "accessKeyId" : "S3_ACCESS_KEY_ID",
+      "secretAccessKey": "S3_SECRET_ACCESS_KEY"
+    }
+  },
+
+  "redis": {
+    "url": "REDIS_URI",
+    "host": "REDIS_HOST",
+    "user": "REDIS_USER",
+    "password": "REDIS_PASSWORD",
+    "port": "REDIS_PORT"
+  },
+
+  "postgres": {
+    "url": "POSTGRES_URL"
+  },
+
   "passport": {
     "Facebook": {
-      "clientID": "FILL_ME_IN",
-      "clientSecret": "FILL_ME_IN",
-      "callbackURL": "http://FILL_ME_IN/auth/facebook/callback"
+      "clientID": "FACEBOOK_CLIENT_ID",
+      "clientSecret": "FACEBOOK_CLIENT_SECRET",
+      "callbackURL": "FACEBOOK_CALLBACK_URL"
     }
   }
 }
