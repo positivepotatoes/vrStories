@@ -82,10 +82,11 @@ class VRStories extends React.Component {
   playStory() {
     let that = this;
     if (this.state.currentStory.type.slice(0, 5) === 'image') {
-      let that = this;
-      setTimeout(function() {
-        that.playNext();
-      }, 7000);
+      console.log('below is buggy timer');
+      // let that = this;
+      // setTimeout(function() {
+      //   that.playNext();
+      // }, 7000);
     } else {
       let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
       let stories = Array.prototype.slice.call(document.getElementsByTagName('video'));
