@@ -11,6 +11,8 @@ class Home extends React.Component {
     this.state = {
       user: {},
       friends: null,
+      // for view count:
+      dbProfileId: null,
       // States below are used for react-dropzone
       accept: '',
       files: [],
@@ -31,7 +33,8 @@ class Home extends React.Component {
             .then(response => {
               this.setState({
                 user: response.data.user,
-                friends: response.data.friends
+                friends: response.data.friends,
+                dbProfileId: response.data.profile_id
               });
             });
         });
@@ -88,7 +91,7 @@ class Home extends React.Component {
     let mediaFrame, vRStories;
 
     if (this.state.friends) {
-      mediaFrame = <MediaFrame 
+      mediaFrame = <MediaFrame
         user={user}
         friends={friends}
         autoPlayNext={true}
@@ -97,7 +100,7 @@ class Home extends React.Component {
     }
 
     if (this.state.friends) {
-      vRStories = <VRStories 
+      vRStories = <VRStories
         user={user}
         friends={friends}
         autoPlayNext={true}
@@ -118,7 +121,7 @@ class Home extends React.Component {
       >
         { dropzoneActive && <div style={overlayStyle}>Drop file to upload to your story</div> }
         {/* CHANGE vRIndex TO mediaFrame IF YOU WANT TO USE REGULAR/NON VR PLAYER*/}
-        {vRStories}        
+        {vRStories}
       </Dropzone>
     );
   }
