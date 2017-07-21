@@ -13,15 +13,22 @@ class VRProfiles extends React.Component {
       sliceIndex: 5,
       friends: this.props.friends,
       friendsToShow: this.props.friends.slice(0, 5)
-    }
+    };
     this.onMoreFriendsClick = this.onMoreFriendsClick.bind(this);
   }
 
   onMoreFriendsClick() {
-    this.setState({
-      friendsToShow: this.state.friends.slice(this.state.sliceIndex, this.state.sliceIndex + 5),
-      sliceIndex: this.state.sliceIndex + 5
-    })
+    if (this.state.sliceIndex > this.state.friends.length) {
+      this.setState({
+        friendsToShow: this.props.friends.slice(0, 5),
+        sliceIndex: 5
+      });
+    } else {
+      this.setState({
+        friendsToShow: this.state.friends.slice(this.state.sliceIndex, this.state.sliceIndex + 5),
+        sliceIndex: this.state.sliceIndex + 5
+      });
+    }
   }
 
   render() {
@@ -36,7 +43,7 @@ class VRProfiles extends React.Component {
           events={{click: (() => this.onMoreFriendsClick())}}></Entity>
 
         <Entity
-          text={{value: 'show\nmore\nfriends',  align: 'center', color: 'white', width: 10}}
+          text={{value: 'show\nmore\nfriends', align: 'center', color: 'white', width: 10}}
           position={{x: -6, y: 0, z: -3}}></Entity>
 
         {
@@ -58,30 +65,5 @@ class VRProfiles extends React.Component {
     );
   }
 }
-
-//
-// const VRProfiles = props => {
-//   console.log('props in VRProfiles:', props);
-//   let x = -6;
-//   return (
-//     <Entity>
-//       {
-//         props.friends.map((friend, i) => {
-//           x += 2.3;
-//           return (
-//             <Profile
-//               i={i}
-//               x={x}
-//               key={i}
-//               friend={friend}
-//               currentStory={props.currentStory}
-//               onFriendClick={props.onFriendClick}
-//             />
-//           );
-//         })
-//       }
-//     </Entity>
-//   );
-// };
 
 export default VRProfiles;
