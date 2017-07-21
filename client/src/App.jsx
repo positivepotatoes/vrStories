@@ -11,7 +11,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      authenticated: false,
+      authenticated: false
     };
     this.verify = this.verify.bind(this);
   }
@@ -35,7 +35,7 @@ class App extends React.Component {
     return (
       <div>
         <Header as='h1'>VR Stories <Icon name='child'/></Header>
-      
+
         {!authenticated
           ? <a href='/login'>Login with Facebook</a>
           : <Home/>
