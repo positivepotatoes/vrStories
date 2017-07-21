@@ -110,7 +110,7 @@ class VRStories extends React.Component {
         if (lastClickedFriendIndex === i) {
           return;
         }
-        this.setState({ 
+        this.setState({
           friendIndex: i,
           currentStories: friends[i].stories,
           currentStory: this.setIndexAndStory(friends[i].stories, 0)
@@ -122,7 +122,7 @@ class VRStories extends React.Component {
       } else {
         nextstate(0);
       }
-    } 
+    }
   }
 
   render () {
@@ -133,7 +133,7 @@ class VRStories extends React.Component {
           friends={this.state.friends}
           onFriendClick={this.onFriendClick}
         />
-        <Entity 
+        <Entity
           autoPlay
           id='story'
           loop='false'
