@@ -5,29 +5,31 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import VRCursor from './VRCursor.jsx';
 import VRProfiles from './VRProfiles.jsx';
+import VRAssets from './VRAssets.jsx';
 import mockData from './mockData.js';
 
 class VRStories extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // user: props.user,
-      // friends: props.friends,
+      user: props.user,
+      friends: props.friends,
       autoPlayStart: props.autoPlayStart,
       autoPlayNext: props.autoPlayNext,
 
       currentStory: {
         id: null,
         index: null,
+        playing: false,
         type: 'video/mp4',
-        src: 'https://s3-us-west-1.amazonaws.com/vrstories/360+degree+Video-+Pugs+Chompin+down.mp4'
+        src: 'https://s3-us-west-1.amazonaws.com/vrstories/360+degree+Video-+Pugs+Chompin+down.mp4',
       },
 
       currentStories: [],
       lastClickedFriendIndex: null,
       // USE FOR MOCK DATA
-      friends: mockData.friends,
-      user: mockData.user,
+      // friends: mockData.friends,
+      // user: mockData.user,
     };
     this.playNext = this.playNext.bind(this);
     this.onFriendClick = this.onFriendClick.bind(this);
@@ -58,8 +60,19 @@ class VRStories extends React.Component {
       data.stories.forEach((story, j) => {
         story.id = -1;
         story.index = j;
+        story.playing = false;
       });
     }
+  }
+
+  togglePlay(story) {
+    this.setState({
+      key: story.key,
+      index: story.index,
+      src: story.src,
+      playing: true,
+      type: story.type
+    });
   }
 
   // THIS FUNCTION WILL UPDATE THE STATE OF THE MOST RECENTLY CLICKED FRIEND
@@ -72,11 +85,13 @@ class VRStories extends React.Component {
       return;
     }
 
+
     this.setState({
       lastClickedFriendIndex: friendData.profile.id,
       currentStories: friendData.stories,
       currentStory: friendData.stories[0]
     });
+    this.togglePlay(friendData.stories[0]);
   }
 
   // THIS FUNCTION WILL UPDATE currentStory TO BE THE NEXT STORY
@@ -121,6 +136,16 @@ class VRStories extends React.Component {
   
 
   render () {
+
+    let src = '#' + this.state.currentStory.id + ',' + this.state.currentStory.index;
+    let primitive = <a-videosphere src={src} rotation="0 -90 0"/>;
+    // let asset = <video autoPlay={true} id="media" src={this.state.currentStory.src} crossOrigin="anonymous" onEnded={() => this.playNext()}/>;
+    
+    if (this.state.currentStory.type.slice(0, 5) === 'image') {
+      console.log('go photos!');
+      primitive = <a-sky src={src} rotation="0 -90 0"/>;
+    }
+
     return (
       <Scene>
         <VRProfiles
@@ -129,10 +154,15 @@ class VRStories extends React.Component {
           onFriendClick={this.onFriendClick}
         />
 
+        <VRAssets user={this.state.user} friends={this.state.friends} />
+
+        {/*
         <a-assets>
-          <video autoPlay={true} id="media" src={this.state.currentStory.src} crossOrigin="anonymous" onEnded={() => this.playNext()}/>
+          {asset}
         </a-assets>
-        <a-videosphere src={'#media'} rotation="0 -90 0"></a-videosphere>
+        */}
+
+        {primitive}
         
         <VRCursor />
       </Scene>
