@@ -9,11 +9,11 @@ class VRAssets extends React.Component {
   }
 
   render() {
+    console.log('assets getting rendered');
     let allStories = [];
     this.props.friends.forEach(friend => {
       friend.stories.forEach(story => {
         allStories.push(story);
-        console.log(story);
       });
     });
 
@@ -27,7 +27,7 @@ class VRAssets extends React.Component {
               );
             } else {
               return (
-                <video id={story.id + ',' + story.index} src={story.src} crossOrigin="anonymous" autoPlay={story.playing} onEnded={() => this.playNext()}/>
+                <video id={story.id + ',' + story.index} src={story.src} crossOrigin="anonymous" onEnded={() => this.playNext()}/>
               );
             }
           })

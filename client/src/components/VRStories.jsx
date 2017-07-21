@@ -66,13 +66,24 @@ class VRStories extends React.Component {
   }
 
   togglePlay(story) {
+    console.log('story before getting toggled', story);
     this.setState({
-      key: story.key,
-      index: story.index,
-      src: story.src,
-      playing: true,
-      type: story.type
+      currentStory: {
+        id: story.id,
+        playing: true,
+        src: story.src,
+        type: story.type,
+        index: story.index
+      }
     });
+    console.log('currentStory after toggling', this.state.currentStory);
+  }
+
+  playStory() {
+    let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
+    let stories = Array.prototype.slice.call(document.getElementsByTagName('video'));
+    stories.forEach(story => story.pause());
+    story.play();
   }
 
   // THIS FUNCTION WILL UPDATE THE STATE OF THE MOST RECENTLY CLICKED FRIEND
@@ -90,8 +101,10 @@ class VRStories extends React.Component {
       lastClickedFriendIndex: friendData.profile.id,
       currentStories: friendData.stories,
       currentStory: friendData.stories[0]
+    }, () => {
+      this.playStory();
     });
-    this.togglePlay(friendData.stories[0]);
+
   }
 
   // THIS FUNCTION WILL UPDATE currentStory TO BE THE NEXT STORY
@@ -102,6 +115,8 @@ class VRStories extends React.Component {
     if (nextStoryIndex < currentStories.length) {
       this.setState({
         currentStory: currentStories[nextStoryIndex]
+      }, () => {
+        this.playStory();
       });
     }
   }
@@ -136,7 +151,6 @@ class VRStories extends React.Component {
   
 
   render () {
-
     let src = '#' + this.state.currentStory.id + ',' + this.state.currentStory.index;
     let primitive = <a-videosphere src={src} rotation="0 -90 0"/>;
     // let asset = <video autoPlay={true} id="media" src={this.state.currentStory.src} crossOrigin="anonymous" onEnded={() => this.playNext()}/>;
