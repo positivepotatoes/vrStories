@@ -104,12 +104,8 @@ class VRStories extends React.Component {
         if (lastClickedFriendIndex === i) {
           return;
         }
-<<<<<<< HEAD
-        this.setState({
-          friendIndex: i,
-=======
+
         this.setState({ 
->>>>>>> fixed double audio bug
           currentStories: friends[i].stories,
           currentStory: friends[i].stories[0]
         });
