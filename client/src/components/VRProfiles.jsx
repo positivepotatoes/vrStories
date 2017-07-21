@@ -33,11 +33,8 @@ class VRProfiles extends React.Component {
 
   render() {
     let n = this.state.friendsToShow.length;
-    console.log('n',n);
     let start = (n) * Math.PI/12;
-    console.log('start', start);
     let theta = (Math.PI - start)/2;
-    console.log('theta', theta);
     let x, z, yRotation;
     let radius = 10;
     let y = -4;
@@ -61,12 +58,10 @@ class VRProfiles extends React.Component {
           this.state.friendsToShow.map((friend, i) => {
             theta += (Math.PI/12);
             x = -Math.cos(theta)*radius;
-            console.log('x', x);
             z = -Math.sin(theta)*radius;
-            console.log('z', z);
             let xRotation = -Math.atan(Math.abs(y)/radius)*180/Math.PI;
             yRotation = ((Math.PI/2) - theta)*180/Math.PI;
-            console.log('yRotation', yRotation);
+            console.log('LINE 69 OF VRPROFILES, this means all the calculations ran through successfully');
             return (
               <Profile
                 i={i}
