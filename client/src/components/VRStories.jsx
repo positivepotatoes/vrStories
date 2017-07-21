@@ -67,14 +67,19 @@ class VRStories extends React.Component {
 
   playStory() {
     let that = this;
+    const pauseVideo = () => {
+      let stories = Array.prototype.slice.call(document.getElementsByTagName('video'));
+      stories.forEach(story => story.pause());
+    };
+
     if (this.state.currentStory.type.slice(0, 5) === 'image') {
+      pauseVideo();
       setTimeout(function() {
         that.playNext();
       }, this.state.defaultDuration);
     } else {
       let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
-      let stories = Array.prototype.slice.call(document.getElementsByTagName('video'));
-      stories.forEach(story => story.pause());
+      pauseVideo();
       story.play();
     }
   }
