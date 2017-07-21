@@ -15,8 +15,8 @@ module.exports.session = session({
   store: new RedisStore({
     client: redisClient,
     url: config.redis.url,
-    host: 'localhost',
-    port: 6379
+    host: config.redis.host,
+    port: config.redis.port
   }),
   secret: 'more laughter, more love, more life',
   resave: false,

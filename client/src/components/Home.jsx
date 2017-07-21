@@ -4,6 +4,7 @@ import Dropzone from 'react-dropzone';
 import VRStories from './VRStories.jsx';
 import MediaFrame from './MediaFrame.jsx';
 import { Header } from 'semantic-ui-react';
+import VRCursor from './VRCursor.jsx';
 
 class Home extends React.Component {
   constructor(props) {
@@ -104,6 +105,7 @@ class Home extends React.Component {
         autoPlayStart={false}
         splashScreen={'http://blog.topazlabs.com/wp-content/uploads/2013/07/Screen-Shot-2013-12-11-at-10.45.10-AM.png'}
         defaultDuration={5000}
+        VRCursor={<VRCursor/>}
       />;
     }
 

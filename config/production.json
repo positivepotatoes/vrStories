@@ -1,4 +1,13 @@
 {
+  "knex": {
+    "connection":"process.env.PG_URI",
+    "debug": false,
+    "pool": {
+      "min": 2,
+      "max": 10
+    }
+  },
+
   "AWS": {
     "s3" : { 
       "accessKeyId" : "S3_ACCESS_KEY_ID",
@@ -19,22 +28,10 @@
   },
 
   "passport": {
-    "Google": {
-      "clientID": "GOOGLE_CLIENT_ID",
-      "clientSecret": "GOOGLE_CLIENT_SECRET",
-      "callbackURL": "GOOGLE_CALLBACK_URL"
-    },
-
     "Facebook": {
       "clientID": "FACEBOOK_CLIENT_ID",
       "clientSecret": "FACEBOOK_CLIENT_SECRET",
       "callbackURL": "FACEBOOK_CALLBACK_URL"
-    },
-
-    "Twitter": {
-      "consumerKey": "TWITTER_CLIENT_ID",
-      "consumerSecret": "TWITTER_CLIENT_SECRET",
-      "callbackURL": "TWITTER_CALLBACK_URL"
     }
   }
 }
