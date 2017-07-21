@@ -156,12 +156,9 @@ class VRStories extends React.Component {
           currentStory={currentStory}
           onFriendClick={this.onFriendClick}
         />
-        
-
         <VRAssets user={user} friends={friends} playNext={this.playNext} splashScreen={splashScreen}/>
         <VRPrimitive currentStory={currentStory}/>
-        
-        <VRCursor />
+        {this.props.VRCursor}
       </Scene>
     );
   }
