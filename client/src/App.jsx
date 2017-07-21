@@ -4,7 +4,6 @@ import axios from 'axios';
 import Login from './components/Login.jsx';
 import Home from './components/Home.jsx';
 import FriendList from './components/FriendList.jsx';
-import VRFrame from './components/VRFrame.jsx';
 import MediaFrame from './components/MediaFrame.jsx';
 import { Header, Icon, Button } from 'semantic-ui-react';
 

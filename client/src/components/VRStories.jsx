@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import VRCursor from './VRCursor.jsx';
 import VRProfiles from './VRProfiles.jsx';
 import VRAssets from './VRAssets.jsx';
+import VRPrimitive from './VRPrimitive.jsx';
 import mockData from './mockData.js';
 
 class VRStories extends React.Component {
@@ -65,19 +66,6 @@ class VRStories extends React.Component {
     }
   }
 
-  togglePlay(story) {
-    console.log('story before getting toggled', story);
-    this.setState({
-      currentStory: {
-        id: story.id,
-        playing: true,
-        src: story.src,
-        type: story.type,
-        index: story.index
-      }
-    });
-    console.log('currentStory after toggling', this.state.currentStory);
-  }
 
   playStory() {
     let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
@@ -96,14 +84,11 @@ class VRStories extends React.Component {
       return;
     }
 
-
     this.setState({
       lastClickedFriendIndex: friendData.profile.id,
       currentStories: friendData.stories,
       currentStory: friendData.stories[0]
-    }, () => {
-      this.playStory();
-    });
+    }, () => this.playStory());
 
   }
 
@@ -115,9 +100,7 @@ class VRStories extends React.Component {
     if (nextStoryIndex < currentStories.length) {
       this.setState({
         currentStory: currentStories[nextStoryIndex]
-      }, () => {
-        this.playStory();
-      });
+      }, () => this.playStory());
     }
   }
 
@@ -138,7 +121,7 @@ class VRStories extends React.Component {
         this.setState({ 
           currentStories: friends[i].stories,
           currentStory: friends[i].stories[0]
-        });
+        }, () => this.playStory());
       };
 
       if (nextFriendIndex < friends.length) {
@@ -151,15 +134,6 @@ class VRStories extends React.Component {
   
 
   render () {
-    let src = '#' + this.state.currentStory.id + ',' + this.state.currentStory.index;
-    let primitive = <a-videosphere src={src} rotation="0 -90 0"/>;
-    // let asset = <video autoPlay={true} id="media" src={this.state.currentStory.src} crossOrigin="anonymous" onEnded={() => this.playNext()}/>;
-    
-    if (this.state.currentStory.type.slice(0, 5) === 'image') {
-      console.log('go photos!');
-      primitive = <a-sky src={src} rotation="0 -90 0"/>;
-    }
-
     return (
       <Scene>
         <VRProfiles
@@ -168,15 +142,8 @@ class VRStories extends React.Component {
           onFriendClick={this.onFriendClick}
         />
 
-        <VRAssets user={this.state.user} friends={this.state.friends} />
-
-        {/*
-        <a-assets>
-          {asset}
-        </a-assets>
-        */}
-
-        {primitive}
+        <VRAssets user={this.state.user} friends={this.state.friends}/>
+        <VRPrimitive currentStory={this.state.currentStory}/>
         
         <VRCursor />
       </Scene>
