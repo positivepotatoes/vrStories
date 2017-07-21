@@ -13,8 +13,8 @@ class VRStories extends React.Component {
     super(props);
     this.state = {
       // THE PROPS BELOW ARE ACTUALLY GETTING DATA FROM AUTH/LOGIN/SESSION!!!
-      user: props.user,
-      friends: props.friends,
+      // user: props.user,
+      // friends: props.friends,
       autoPlayStart: props.autoPlayStart,
       autoPlayNext: props.autoPlayNext,
 
@@ -30,8 +30,8 @@ class VRStories extends React.Component {
       lastClickedFriendIndex: null,
 
       // USE FOR MOCK DATA
-      // friends: mockData.friends,
-      // user: mockData.user,
+      friends: mockData.friends,
+      user: mockData.user,
     };
     this.playNext = this.playNext.bind(this);
     this.onFriendClick = this.onFriendClick.bind(this);
@@ -110,7 +110,7 @@ class VRStories extends React.Component {
         if (lastClickedFriendIndex === i) {
           return;
         }
-        this.setState({ 
+        this.setState({
           friendIndex: i,
           currentStories: friends[i].stories,
           currentStory: this.setIndexAndStory(friends[i].stories, 0)
@@ -122,7 +122,7 @@ class VRStories extends React.Component {
       } else {
         nextstate(0);
       }
-    } 
+    }
   }
 
   render () {
@@ -133,7 +133,7 @@ class VRStories extends React.Component {
           friends={this.state.friends}
           onFriendClick={this.onFriendClick}
         />
-        <Entity 
+        <Entity
           autoPlay
           id='story'
           loop='false'
