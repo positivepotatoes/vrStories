@@ -15,8 +15,9 @@ class VRStories extends React.Component {
     this.state = {
       user: props.user,
       friends: props.friends,
-      autoPlayStart: props.autoPlayStart,
       autoPlayNext: props.autoPlayNext,
+      autoPlayStart: props.autoPlayStart,
+      defaultDuration: props.defaultDuration || 7000,
 
       currentStory: {
         id: null,
@@ -73,7 +74,6 @@ class VRStories extends React.Component {
       setTimeout(function() {
         that.playNext();
       }, 7000);
-      return;
     } else {
       let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
       let stories = Array.prototype.slice.call(document.getElementsByTagName('video'));
@@ -113,6 +113,7 @@ class VRStories extends React.Component {
   }
 
   // THIS FUNCTION WILL PLAY THE NEXT STORY OF currentStories AND IF AUTOPLAY IS ON, THE NEXT FRIEND'S STORIES WILL BE PLAYED
+  // THIS GETS CALLED WHEN VIDEO ENDS PLAYING
   playNext() {
     const { friends, autoPlayNext, currentStories, currentStory, lastClickedFriendIndex } = this.state;
     let nextStoryIndex = currentStory.index + 1;
