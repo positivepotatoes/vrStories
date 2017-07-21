@@ -16,14 +16,15 @@ class VRStories extends React.Component {
       user: props.user,
       friends: props.friends,
       autoPlayNext: props.autoPlayNext,
+      splashScreen: props.splashScreen, /* NEED TO MAKE A DEFAULT GREY SCREEN IF NONE IS PROVIDED*/
       autoPlayStart: props.autoPlayStart,
       defaultDuration: props.defaultDuration || 7000,
 
       currentStory: {
-        id: null,
-        index: null,
-        type: 'video/mp4',
-        src: 'https://s3-us-west-1.amazonaws.com/vrstories/360+degree+Video-+Pugs+Chompin+down.mp4',
+        id: -2,
+        index: -2,
+        type: 'image',
+        src: null,
       },
 
       currentStories: [],
@@ -37,25 +38,10 @@ class VRStories extends React.Component {
   }
 
   componentWillMount() {
-    // NEED TO SET UP OPTION TO DO HAVE DEFAULT BACKGROUND
-    let defaultStory = {
-      profile: {
-        id: -2
-      },
-      stories: [{
-        id: -2,
-        index: -2,
-        type: 'video/mp4',
-        src: 'https://s3-us-west-1.amazonaws.com/vrstories/360+degree+Video-+Pugs+Chompin+down.mp4',
-      }]
-    };
-
     this.setId(this.state.user);
     this.setId(this.state.friends);
     if (this.state.autoPlayStart) {
       this.onFriendClick(this.state.friends[0]);
-    } else {
-      this.onFriendClick(defaultStory);
     }
   }
 
@@ -82,11 +68,9 @@ class VRStories extends React.Component {
   playStory() {
     let that = this;
     if (this.state.currentStory.type.slice(0, 5) === 'image') {
-      let that = this;
       setTimeout(function() {
-        console.log('set timeout being called');
         that.playNext();
-      }, 7000);
+      }, this.state.defaultDuration);
     } else {
       let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
       let stories = Array.prototype.slice.call(document.getElementsByTagName('video'));
@@ -156,7 +140,10 @@ class VRStories extends React.Component {
   
 
   render () {
-    const { currentStory, friends, user } = this.state;
+    const { currentStory, friends, user, splashScreen } = this.state;
+
+   
+
     return (
       <Scene>
         <VRProfiles
@@ -164,8 +151,9 @@ class VRStories extends React.Component {
           currentStory={currentStory}
           onFriendClick={this.onFriendClick}
         />
+        
 
-        <VRAssets user={user} friends={friends} playNext={this.playNext}/>
+        <VRAssets user={user} friends={friends} playNext={this.playNext} splashScreen={splashScreen}/>
         <VRPrimitive currentStory={currentStory}/>
         
         <VRCursor />
