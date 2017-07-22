@@ -2,7 +2,8 @@
   "name": "course.thesis",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon server/index.js",
+    "dev-start": "nodemon server/index.js",
+    "start": "node server/index.js",
     "build": "webpack --watch",
     "heroku-postbuild": "webpack -p --config ./webpack.config.babel.js --progress"
   },
