@@ -86,6 +86,8 @@ class Home extends React.Component {
       color: '#fff'
     };
 
+
+
     let mediaFrame, vRStories;
 
     if (this.state.friends) {
@@ -103,7 +105,7 @@ class Home extends React.Component {
         friends={friends}
         autoPlayNext={true}
         autoPlayStart={false}
-        splashScreen={'https://s3-us-west-1.amazonaws.com/vrstories/splash.jpg'}
+        splashScreen={'./splash.jpg'}
         defaultDuration={5000}
         VRCursor={<VRCursor/>}
       />;
@@ -118,7 +120,7 @@ class Home extends React.Component {
         onDragEnter={this.onDragEnter.bind(this)}
         onDragLeave={this.onDragLeave.bind(this)}
       >
-        { dropzoneActive && <div style={overlayStyle}>Drop file to upload to your story</div> }
+        { dropzoneActive && <div className="overlay">Drop file to upload to your story</div> }
         {/* CHANGE vRIndex TO mediaFrame IF YOU WANT TO USE REGULAR/NON VR PLAYER*/}
         {vRStories}        
       </Dropzone>

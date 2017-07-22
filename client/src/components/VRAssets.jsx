@@ -12,7 +12,7 @@ const VRAssets = (props) => {
 
   return (
     <a-assets>
-      <img id={'-2,-2'} src={props.splashScreen} crossOrigin="anonymous"/>
+      <img id={'-2,-2'} src={props.splashScreen.src} crossOrigin="anonymous"/>
       {
         allStories.map(story => {
           let id = story.id + ',' + story.index;
