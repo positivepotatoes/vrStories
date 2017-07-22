@@ -20,6 +20,10 @@
       "directory": "db/seeds"
     }
   },
+  
+  "redis": {
+    "connection": "process.env.REDIS_URL"
+  },
 
   "passport": {
     "Google": {},

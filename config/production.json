@@ -1,18 +1,35 @@
 {
   "knex": {
-    "connection":"process.env.PG_URI",
-    "debug": false,
-    "pool": {
-      "min": 2,
-      "max": 10
+    "connection": "process.env.PG_URI",
+    "migrations": {
+      "tableName": "knex_migrations",
+      "directory": "db/migrations"
+    },
+    "seeds": {
+      "directory": "db/seeds"
     }
+  },
+
+  "redis": {
+    "connection": "process.env.REDIS_URL"
+  },
+
+  "AWS": {
+    "s3" : { 
+      "accessKeyId" : "process.env.S3_ACCESS_KEY_ID",
+      "secretAccessKey": "process.env.S3_SECRET_ACCESS_KEY"
+    }
+  },
+
+  "postgres": {
+    "url": "process.env.POSTGRES_URL"
   },
 
   "passport": {
     "Facebook": {
-      "clientID": "FILL_ME_IN",
-      "clientSecret": "FILL_ME_IN",
-      "callbackURL": "http://FILL_ME_IN/auth/facebook/callback"
+      "clientID": "process.env.FACEBOOK_CLIENT_ID",
+      "clientSecret": "process.env.FACEBOOK_CLIENT_SECRET",
+      "callbackURL": "process.env.FACEBOOK_CALLBACK_URL"
     }
   }
 }

@@ -2,9 +2,10 @@
   "name": "course.thesis",
   "version": "1.0.0",
   "scripts": {
-    "postinstall": "webpack -p",
-    "start": "nodemon server/index.js",
-    "build": "webpack --watch"
+    "dev-start": "nodemon server/index.js",
+    "start": "node server/index.js",
+    "build": "webpack --watch",
+    "heroku-postbuild": "webpack -p --config ./webpack.config.babel.js --progress"
   },
   "author": "Hack Reactor",
   "license": "MIT",
@@ -50,6 +51,7 @@
     "react-router-dom": "^4.1.1",
     "redis": "^2.7.1",
     "semantic-ui-react": "^0.71.0",
+    "url": "^0.11.0",
     "webpack": "^2.3.2"
   },
   "devDependencies": {
