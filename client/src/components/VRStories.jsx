@@ -39,30 +39,23 @@ class VRStories extends React.Component {
   }
 
   componentWillMount() {
-    this.setId(this.state.user);
     this.setId(this.state.friends);
+    this.setId([this.state.user], true);
     this.setAutoPlayOrSplash();
     this.clickInSkyListener();
   }
 
   // SINCE USER OF THIS MODULE WILL ONLY PROVIDE LIST OF FRIENDS AND NOT ANY KEYS
   // WE BUILT THIS HELPER FUNCTION TO IDENTIFY EVERY VIDEO TO EACH FRIEND
-  setId(data) {
-    if (Array.isArray(data)) {
-      data.forEach((user, i) => {
-        user.profile.id = i;
-        user.stories.forEach((story, j) => {
-          story.id = i;
-          story.index = j;
-        });
-      });
-    } else {
-      data.profile.id = -1;
-      data.stories.forEach((story, j) => {
-        story.id = -1;
+  setId(data, isUser = false) {
+    data.forEach((user, i) => {
+      if (isUser) { i = -1; }
+      user.profile.id = i;
+      user.stories.forEach((story, j) => {
+        story.id = i;
         story.index = j;
       });
-    }
+    });
   }
 
   setAutoPlayOrSplash() {
@@ -90,7 +83,7 @@ class VRStories extends React.Component {
   }
 
   // THIS NEEDS TO BE INVOKED EVERYTIME THE STATE OF THE CURRENT STORY IS CHANGED
-  playStory() {
+  invokePlay() {
     let that = this;
     const pauseVideo = () => {
       let stories = Array.prototype.slice.call(document.getElementsByTagName('video'));
@@ -118,7 +111,7 @@ class VRStories extends React.Component {
       if ((this.state.currentStory.index + 1) === this.state.currentStories.length) {
         this.setState({
           currentStory: this.state.splashScreen
-        }, () => this.playStory());
+        }, () => this.invokePlay());
         return;
       } else {
         this.playNextStoryOfFriend();
@@ -130,7 +123,7 @@ class VRStories extends React.Component {
       lastClickedFriendIndex: friendData.profile.id,
       currentStories: friendData.stories,
       currentStory: friendData.stories[0]
-    }, () => this.playStory());
+    }, () => this.invokePlay());
 
   }
 
@@ -142,7 +135,7 @@ class VRStories extends React.Component {
     if (nextStoryIndex < currentStories.length) {
       this.setState({
         currentStory: currentStories[nextStoryIndex]
-      }, () => this.playStory());
+      }, () => this.invokePlay());
     }
   }
 
@@ -164,7 +157,7 @@ class VRStories extends React.Component {
         this.setState({ 
           currentStories: friends[i].stories,
           currentStory: friends[i].stories[0]
-        }, () => this.playStory());
+        }, () => this.invokePlay());
       };
 
       
