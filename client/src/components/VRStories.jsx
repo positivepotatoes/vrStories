@@ -16,7 +16,6 @@ class VRStories extends React.Component {
       user: props.user,
       friends: props.friends,
       autoPlayNext: props.autoPlayNext,
-      
       autoPlayStart: props.autoPlayStart,
       defaultDuration: props.defaultDuration || 7000,
       splashScreen: {
@@ -27,7 +26,6 @@ class VRStories extends React.Component {
       },
 
       currentStory: {},
-
       currentStories: [],
       lastClickedFriendIndex: null,
       // USE FOR MOCK DATA
@@ -95,8 +93,15 @@ class VRStories extends React.Component {
   // AND TO MAKE THIS FRIEND THE CURRENT STORIES SHOWING
   onFriendClick(friendData) {
     if (friendData.profile.id === this.state.currentStory.id) {
-      this.playNextFriendStory();
-      return;
+      if ((this.state.currentStory.index + 1) === this.state.currentStories.length) {
+        this.setState({
+          currentStory: this.state.splashScreen
+        });
+        return;
+      } else {
+        this.playNextFriendStory();
+        return;
+      }
     }
 
     this.setState({
