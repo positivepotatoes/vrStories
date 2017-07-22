@@ -1,11 +1,17 @@
 {
   "knex": {
-    "connection":"process.env.PG_URI",
-    "debug": false,
-    "pool": {
-      "min": 2,
-      "max": 10
+    "connection": "process.env.PG_URI",
+    "migrations": {
+      "tableName": "knex_migrations",
+      "directory": "db/migrations"
+    },
+    "seeds": {
+      "directory": "db/seeds"
     }
+  },
+
+  "redis": {
+    "connection": "process.env.REDIS_URL"
   },
 
   "AWS": {
