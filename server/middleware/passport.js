@@ -32,6 +32,7 @@ passport.use('facebook', new FacebookStrategy({
   profileFields: ['id', 'emails', 'name', 'friends', 'picture.type(large)']
 },
 (accessToken, refreshToken, profile, done) => {
+  console.log(process.env.FACEBOOK_CLIENT_ID);
   getOrCreateOAuthProfile('facebook', profile, done)
     .then(() => makeFriendList(profile));
 }));
