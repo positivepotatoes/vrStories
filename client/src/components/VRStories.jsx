@@ -107,24 +107,23 @@ class VRStories extends React.Component {
   // THIS IS ALSO NECESSARY TO KNOW WHICH FRIEND WAS LAST CLICKED TO KNOW WHEN TO END STORIES LOOP
   // AND TO MAKE THIS FRIEND THE CURRENT STORIES SHOWING
   onFriendClick(friendData) {
-    if (friendData.profile.id === this.state.currentStory.id) {
-      if ((this.state.currentStory.index + 1) === this.state.currentStories.length) {
+    const { currentStory, currentStories, splashScreen } = this.state;
+
+    if (friendData.profile.id === currentStory.id) {
+      if ((currentStory.index + 1) === currentStories.length) {
         this.setState({
-          currentStory: this.state.splashScreen
+          currentStory: splashScreen
         }, () => this.invokePlay());
-        return;
       } else {
         this.playNextStoryOfFriend();
-        return;
       }
+    } else {
+      this.setState({
+        lastClickedFriendIndex: friendData.profile.id,
+        currentStories: friendData.stories,
+        currentStory: friendData.stories[0]
+      }, () => this.invokePlay());
     }
-
-    this.setState({
-      lastClickedFriendIndex: friendData.profile.id,
-      currentStories: friendData.stories,
-      currentStory: friendData.stories[0]
-    }, () => this.invokePlay());
-
   }
 
   // THIS FUNCTION WILL UPDATE currentStory TO BE THE NEXT STORY
@@ -166,7 +165,6 @@ class VRStories extends React.Component {
       } else {
         nextstate(0);
       }
-      
     }
   }
   
