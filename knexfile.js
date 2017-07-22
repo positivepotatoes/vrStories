@@ -1,13 +1,18 @@
 const config = require('config');
 
 let knex = {
-  "connection": process.env.PG_URI,
-  "migrations": {
-    "tableName": "knex_migrations",
-    "directory": "db/migrations"
+  'client': 'postgresql',
+  'connection': process.env.PG_URI,
+  'pool': {
+    'min': 1,
+    'max': 2
   },
-  "seeds": {
-    "directory": "db/seeds"
+  'migrations': {
+    'tableName': 'knex_migrations',
+    'directory': 'db/migrations'
+  },
+  'seeds': {
+    'directory': 'db/seeds'
   }
 };
 
