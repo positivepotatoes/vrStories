@@ -15,14 +15,6 @@
     }
   },
 
-  "redis": {
-    "url": "process.env.REDIS_URI",
-    "host": "process.env.REDIS_HOST",
-    "user": "process.env.REDIS_USER",
-    "password": "process.env.REDIS_PASSWORD",
-    "port": "process.env.REDIS_PORT"
-  },
-
   "postgres": {
     "url": "process.env.POSTGRES_URL"
   },
