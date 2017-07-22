@@ -103,7 +103,7 @@ class Home extends React.Component {
         friends={friends}
         autoPlayNext={true}
         autoPlayStart={false}
-        splashScreen={'http://blog.topazlabs.com/wp-content/uploads/2013/07/Screen-Shot-2013-12-11-at-10.45.10-AM.png'}
+        splashScreen={'https://s3-us-west-1.amazonaws.com/vrstories/splash.jpg'}
         defaultDuration={5000}
         VRCursor={<VRCursor/>}
       />;
