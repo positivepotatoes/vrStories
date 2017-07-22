@@ -3,7 +3,7 @@ import 'aframe-mouse-cursor-component';
 import { Entity, Scene, Options } from 'aframe-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import VRCursor from './VRCursor.jsx';
+
 import VRProfiles from './VRProfiles.jsx';
 import VRAssets from './VRAssets.jsx';
 import VRPrimitive from './VRPrimitive.jsx';
@@ -48,12 +48,7 @@ class VRStories extends React.Component {
         currentStory: this.state.splashScreen
       });
     }
-    document.body.addEventListener('click', () => {
-      if (!this.state.inEntity) {
-        this.playNext();
-      }
-    }); 
-
+    this.clickInSkyListener();
   }
 
   // SINCE USER OF THIS MODULE WILL ONLY PROVIDE LIST OF FRIENDS AND NOT ANY KEYS
@@ -79,6 +74,14 @@ class VRStories extends React.Component {
   toggleInEntity() {
     this.setState({
       inEntity: !this.state.inEntity
+    });
+  }
+
+  clickInSkyListener() {
+    document.body.addEventListener('click', () => {
+      if (!this.state.inEntity && (this.state.currentStory.id !== -2)) {
+        this.playNext();
+      }
     });
   }
 
