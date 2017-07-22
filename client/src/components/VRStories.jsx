@@ -26,12 +26,7 @@ class VRStories extends React.Component {
       },
 
       inEntity: false,
-      currentStory: {
-        id: 3,
-        index: 3,
-        type: 'image',
-        src: props.splashScreen,
-      },
+      currentStory: {},
       currentStories: [],
       photosInTimeout: null,
       lastClickedFriendIndex: null,
