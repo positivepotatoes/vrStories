@@ -11,18 +11,7 @@ module.exports.verify = (req, res, next) => {
   next();
 };
 
-if (process.env.REDIS_URL) {
-  let redisClient = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST);
-  redisClient.auth(process.env.REDIS_PASSWORD);
-  module.exports.session = session({
-    store: new RedisStore({
-      client: redisClient
-    }),
-    secret: 'more laughter, more love, more life',
-    resave: false,
-    saveUninitialized: false
-  });
-} else {
+if (!process.env.REDIS_URL) {
   module.exports.session = session({
     store: new RedisStore({
       client: redis.createClient(),
@@ -34,4 +23,18 @@ if (process.env.REDIS_URL) {
     resave: false,
     saveUninitialized: false
   });
+} else {
+  let redisClient = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST);
+  redisClient.auth(process.env.REDIS_PASSWORD);
+  module.exports.session = session({
+    store: new RedisStore({
+      client: redisClient
+    }),
+    secret: 'more laughter, more love, more life',
+    resave: false,
+    saveUninitialized: false
+  });
 }
+
+
+  
