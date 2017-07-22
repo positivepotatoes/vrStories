@@ -51,12 +51,6 @@ class VRStories extends React.Component {
     this.clickInSkyListener();
   }
 
-  toggleInEntity() {
-    this.setState({
-      inEntity: !this.state.inEntity
-    });
-  }
-
   // SINCE USER OF THIS MODULE WILL ONLY PROVIDE LIST OF FRIENDS AND NOT ANY KEYS
   // WE BUILT THIS HELPER FUNCTION TO IDENTIFY EVERY VIDEO TO EACH FRIEND
   setId(data, isUser = false) {
@@ -76,6 +70,12 @@ class VRStories extends React.Component {
     clearTimeout(this.state.photosInTimeout);
   }
 
+  toggleInEntity() {
+    this.setState({
+      inEntity: !this.state.inEntity
+    });
+  }
+
   setSplashScreen() {
     this.pauseStories();
     this.setState({
@@ -83,10 +83,18 @@ class VRStories extends React.Component {
     });
   }
 
+  setAutoPlayOrSplash() {
+    if (this.state.autoPlayStart) {
+      this.onFriendClick(this.state.friends[0]);
+    } else {
+      this.setSplashScreen();
+    }
+  }
+
   // THIS NEEDS TO BE INVOKED EVERYTIME THE STATE OF THE CURRENT STORY IS CHANGED
   invokePlay() {
-    let that = this;
     let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
+    let that = this;
     this.pauseStories();
 
     if (this.state.currentStory.type.slice(0, 5) === 'image') {
@@ -96,18 +104,6 @@ class VRStories extends React.Component {
       }, this.state.defaultDuration);
     } else {
       story.play();
-    }
-  }
-
-  // THIS FUNCTION WILL UPDATE currentStory TO BE THE NEXT STORY
-  playNextStoryOfFriend() {
-    const { currentStories, currentStory } = this.state;
-    let nextStoryIndex = currentStory.index + 1;
-    
-    if (nextStoryIndex < currentStories.length) {
-      this.setState({
-        currentStory: currentStories[nextStoryIndex]
-      }, () => this.invokePlay());
     }
   }
 
@@ -140,6 +136,26 @@ class VRStories extends React.Component {
     }
   }
   
+  clickInSkyListener() {
+    document.body.addEventListener('click', () => {
+      if (!this.state.inEntity && (this.state.currentStory.id !== -2)) {
+        this.playNext();
+      }
+    });
+  }
+
+  // THIS FUNCTION WILL UPDATE currentStory TO BE THE NEXT STORY
+  playNextStoryOfFriend() {
+    const { currentStories, currentStory } = this.state;
+    let nextStoryIndex = currentStory.index + 1;
+    
+    if (nextStoryIndex < currentStories.length) {
+      this.setState({
+        currentStory: currentStories[nextStoryIndex]
+      }, () => this.invokePlay());
+    }
+  }
+
   // THIS FUNCTION WILL UPDATE THE STATE OF THE MOST RECENTLY CLICKED FRIEND
   //
   // THIS IS ALSO NECESSARY TO KNOW WHICH FRIEND WAS LAST CLICKED TO KNOW WHEN TO END STORIES LOOP
@@ -161,15 +177,7 @@ class VRStories extends React.Component {
       }, () => this.invokePlay());
     }
   }
-
-  setAutoPlayOrSplash() {
-    if (this.state.autoPlayStart) {
-      this.onFriendClick(this.state.friends[0]);
-    } else {
-      this.setSplashScreen();
-    }
-  }
-
+  
 
   render () {
     const { currentStory, friends, user, splashScreen } = this.state;
