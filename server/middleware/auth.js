@@ -12,9 +12,11 @@ module.exports.verify = (req, res, next) => {
 };
 
 if (process.env.REDIS_URL) {
+  let redisClient = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST);
+  redisClient.auth(process.env.REDIS_PASSWORD);
   module.exports.session = session({
     store: new RedisStore({
-      client: redis.createClient(process.env.REDIS_URL),
+      client: redisClient
     }),
     secret: 'more laughter, more love, more life',
     resave: false,
@@ -22,7 +24,6 @@ if (process.env.REDIS_URL) {
   });
 } else {
   module.exports.session = session({
-    
     store: new RedisStore({
       client: redis.createClient(),
       url: config.redis.url,
