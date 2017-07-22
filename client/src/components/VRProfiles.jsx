@@ -48,7 +48,7 @@ class VRProfiles extends React.Component {
           material={{color: 'white', opacity: 0.5}}
           position={{x: -Math.cos(theta)*radius, y: y, z: -Math.sin(theta)*radius}}
           rotation={{x: -Math.atan(Math.abs(y)/radius)*180/Math.PI, y: ((Math.PI/2) - theta)*180/Math.PI}}
-          events={{click: (() => this.onMoreFriendsClick()), mouseenter: (() => props.toggleInEntity()), mouseleave: (() => props.toggleInEntity()) }}></Entity>
+          events={{click: (() => this.onMoreFriendsClick()), mouseenter: (() => this.props.toggleInEntity()), mouseleave: (() => this.props.toggleInEntity()) }}></Entity>
 
         <Entity
           text={{value: 'show\nmore\nfriends', align: 'center', color: 'white', width: 10}}

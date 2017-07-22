@@ -50,7 +50,7 @@ class VRStories extends React.Component {
     }
     document.body.addEventListener('click', () => {
       if (!this.state.inEntity) {
-        console.log('clicked outside');
+        this.playNext();
       }
     }); 
 
@@ -80,7 +80,6 @@ class VRStories extends React.Component {
     this.setState({
       inEntity: !this.state.inEntity
     });
-    console.log('toggle', this.state.inEntity);
   }
 
   playStory() {
@@ -111,7 +110,7 @@ class VRStories extends React.Component {
       if ((this.state.currentStory.index + 1) === this.state.currentStories.length) {
         this.setState({
           currentStory: this.state.splashScreen
-        });
+        }, () => this.playStory());
         return;
       } else {
         this.playNextFriendStory();
