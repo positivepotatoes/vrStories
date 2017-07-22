@@ -26,8 +26,14 @@ class VRStories extends React.Component {
       },
 
       inEntity: false,
-      currentStory: {},
+      currentStory: {
+        id: 3,
+        index: 3,
+        type: 'image',
+        src: props.splashScreen,
+      },
       currentStories: [],
+      photosInTimeout: null,
       lastClickedFriendIndex: null,
       // USE FOR MOCK DATA
       // friends: mockData.friends,
@@ -45,6 +51,12 @@ class VRStories extends React.Component {
     this.clickInSkyListener();
   }
 
+  toggleInEntity() {
+    this.setState({
+      inEntity: !this.state.inEntity
+    });
+  }
+
   // SINCE USER OF THIS MODULE WILL ONLY PROVIDE LIST OF FRIENDS AND NOT ANY KEYS
   // WE BUILT THIS HELPER FUNCTION TO IDENTIFY EVERY VIDEO TO EACH FRIEND
   setId(data, isUser = false) {
@@ -58,71 +70,32 @@ class VRStories extends React.Component {
     });
   }
 
-  setAutoPlayOrSplash() {
-    if (this.state.autoPlayStart) {
-      this.onFriendClick(this.state.friends[0]);
-    } else {
-      this.setState({
-        currentStory: this.state.splashScreen
-      });
-    }
+  pauseStories() {
+    let stories = Array.prototype.slice.call(document.getElementsByTagName('video'));
+    stories.forEach(story => story.pause());
+    clearTimeout(this.state.photosInTimeout);
   }
 
-  toggleInEntity() {
+  setSplashScreen() {
+    this.pauseStories();
     this.setState({
-      inEntity: !this.state.inEntity
-    });
-  }
-
-  clickInSkyListener() {
-    document.body.addEventListener('click', () => {
-      if (!this.state.inEntity && (this.state.currentStory.id !== -2)) {
-        this.playNext();
-      }
+      currentStory: this.state.splashScreen
     });
   }
 
   // THIS NEEDS TO BE INVOKED EVERYTIME THE STATE OF THE CURRENT STORY IS CHANGED
   invokePlay() {
-    let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
     let that = this;
-    const pauseStory = () => {
-      let stories = Array.prototype.slice.call(document.getElementsByTagName('video'));
-      stories.forEach(story => story.pause());
-    };
+    let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
+    this.pauseStories();
 
     if (this.state.currentStory.type.slice(0, 5) === 'image') {
-      pauseStory();
-      setTimeout(function() {
+      this.state.photosInTimeout = setTimeout(function() {
+        console.log('INVOKING SET TIMEOUT CALLBACK, THIS SHOULD ONLY SHOW WHEN YOU LET PHOTOS TIMEOUT. IF YOU SEE THIS RANDOMLY APPEARING, LET ME KNOW');
         that.playNext();
       }, this.state.defaultDuration);
     } else {
-      pauseStory();
       story.play();
-    }
-  }
-
-  // THIS FUNCTION WILL UPDATE THE STATE OF THE MOST RECENTLY CLICKED FRIEND
-  //
-  // THIS IS ALSO NECESSARY TO KNOW WHICH FRIEND WAS LAST CLICKED TO KNOW WHEN TO END STORIES LOOP
-  // AND TO MAKE THIS FRIEND THE CURRENT STORIES SHOWING
-  onFriendClick(friendData) {
-    const { currentStory, currentStories, splashScreen } = this.state;
-
-    if (friendData.profile.id === currentStory.id) {
-      if ((currentStory.index + 1) === currentStories.length) {
-        this.setState({
-          currentStory: splashScreen
-        }, () => this.invokePlay());
-      } else {
-        this.playNextStoryOfFriend();
-      }
-    } else {
-      this.setState({
-        lastClickedFriendIndex: friendData.profile.id,
-        currentStories: friendData.stories,
-        currentStory: friendData.stories[0]
-      }, () => this.invokePlay());
     }
   }
 
@@ -141,7 +114,7 @@ class VRStories extends React.Component {
   // THIS FUNCTION WILL PLAY THE NEXT STORY OF currentStories AND IF AUTOPLAY IS ON, THE NEXT FRIEND'S STORIES WILL BE PLAYED
   // THIS GETS CALLED WHEN VIDEO ENDS PLAYING
   playNext() {
-    const { friends, autoPlayNext, currentStories, currentStory, lastClickedFriendIndex } = this.state;
+    const { friends, autoPlayNext, currentStories, currentStory, lastClickedFriendIndex, splashScreen } = this.state;
     let nextStoryIndex = currentStory.index + 1;
     let nextFriendIndex = currentStory.id + 1;
 
@@ -150,16 +123,15 @@ class VRStories extends React.Component {
     if (autoPlayNext && nextStoryIndex === currentStories.length) {
       let nextstate = (i) => {
         if (lastClickedFriendIndex === i) {
-          return;
+          this.setSplashScreen();
+        } else {
+          this.setState({ 
+            currentStories: friends[i].stories,
+            currentStory: friends[i].stories[0]
+          }, () => this.invokePlay());
         }
-
-        this.setState({ 
-          currentStories: friends[i].stories,
-          currentStory: friends[i].stories[0]
-        }, () => this.invokePlay());
       };
 
-      
       if (nextFriendIndex < friends.length) {
         nextstate(nextFriendIndex);
       } else {
@@ -168,12 +140,44 @@ class VRStories extends React.Component {
     }
   }
   
+  // THIS FUNCTION WILL UPDATE THE STATE OF THE MOST RECENTLY CLICKED FRIEND
+  //
+  // THIS IS ALSO NECESSARY TO KNOW WHICH FRIEND WAS LAST CLICKED TO KNOW WHEN TO END STORIES LOOP
+  // AND TO MAKE THIS FRIEND THE CURRENT STORIES SHOWING
+  onFriendClick(friendData) {
+    const { currentStory, currentStories, splashScreen } = this.state;
+
+    if (friendData.profile.id === currentStory.id) {
+      if ((currentStory.index + 1) === currentStories.length) {
+        this.setSplashScreen();
+      } else {
+        this.playNext();
+      }
+    } else {
+      this.setState({
+        lastClickedFriendIndex: friendData.profile.id,
+        currentStories: friendData.stories,
+        currentStory: friendData.stories[0]
+      }, () => this.invokePlay());
+    }
+  }
+
+  setAutoPlayOrSplash() {
+    if (this.state.autoPlayStart) {
+      this.onFriendClick(this.state.friends[0]);
+    } else {
+      this.setSplashScreen();
+    }
+  }
+
 
   render () {
     const { currentStory, friends, user, splashScreen } = this.state;
 
     return (
-      <Scene>
+      <Scene
+        vr-mode-ui="enabled: true"
+      >
         <VRProfiles
           friends={friends}
           currentStory={currentStory}
