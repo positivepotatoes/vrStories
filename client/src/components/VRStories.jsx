@@ -121,7 +121,7 @@ class VRStories extends React.Component {
         }, () => this.playStory());
         return;
       } else {
-        this.playNextFriendStory();
+        this.playNextStoryOfFriend();
         return;
       }
     }
@@ -135,7 +135,7 @@ class VRStories extends React.Component {
   }
 
   // THIS FUNCTION WILL UPDATE currentStory TO BE THE NEXT STORY
-  playNextFriendStory() {
+  playNextStoryOfFriend() {
     const { currentStories, currentStory } = this.state;
     let nextStoryIndex = currentStory.index + 1;
     
@@ -153,7 +153,7 @@ class VRStories extends React.Component {
     let nextStoryIndex = currentStory.index + 1;
     let nextFriendIndex = currentStory.id + 1;
 
-    this.playNextFriendStory();
+    this.playNextStoryOfFriend();
 
     if (autoPlayNext && nextStoryIndex === currentStories.length) {
       let nextstate = (i) => {
@@ -167,11 +167,13 @@ class VRStories extends React.Component {
         }, () => this.playStory());
       };
 
+      
       if (nextFriendIndex < friends.length) {
         nextstate(nextFriendIndex);
       } else {
         nextstate(0);
       }
+      
     }
   }
   
