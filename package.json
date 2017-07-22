@@ -2,9 +2,9 @@
   "name": "course.thesis",
   "version": "1.0.0",
   "scripts": {
-    "postinstall": "webpack -p",
     "start": "nodemon server/index.js",
-    "build": "webpack --watch"
+    "build": "webpack --watch",
+    "heroku-postbuild": "webpack -p --config ./webpack.config.babel.js --progress"
   },
   "author": "Hack Reactor",
   "license": "MIT",
