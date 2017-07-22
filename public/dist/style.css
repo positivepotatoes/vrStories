@@ -10,3 +10,16 @@
 /*.abc {
   position: absolute; width: 100% !important; height: 100% !important;
 }*/
+
+.overlay {
+      z-index: 1000;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(0,0,0,0.7);
+      color: #ffffff;
+      font-size: 20px;
+      padding: 5em;
+    }
