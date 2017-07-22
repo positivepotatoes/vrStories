@@ -16,16 +16,17 @@ class VRStories extends React.Component {
       user: props.user,
       friends: props.friends,
       autoPlayNext: props.autoPlayNext,
-      splashScreen: props.splashScreen, /* NEED TO MAKE A DEFAULT GREY SCREEN IF NONE IS PROVIDED*/
+      
       autoPlayStart: props.autoPlayStart,
       defaultDuration: props.defaultDuration || 7000,
-
-      currentStory: {
+      splashScreen: {
         id: -2,
         index: -2,
         type: 'image',
-        src: null,
+        src: props.splashScreen,
       },
+
+      currentStory: {},
 
       currentStories: [],
       lastClickedFriendIndex: null,
@@ -42,6 +43,10 @@ class VRStories extends React.Component {
     this.setId(this.state.friends);
     if (this.state.autoPlayStart) {
       this.onFriendClick(this.state.friends[0]);
+    } else {
+      this.setState({
+        currentStory: this.state.splashScreen
+      });
     }
   }
 
