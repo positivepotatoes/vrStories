@@ -3,7 +3,7 @@ import axios from 'axios';
 import Dropzone from 'react-dropzone';
 import VRStories from './VRStories.jsx';
 import MediaFrame from './MediaFrame.jsx';
-import { Header } from 'semantic-ui-react';
+import { Header, Container } from 'semantic-ui-react';
 import VRCursor from './VRCursor.jsx';
 
 class Home extends React.Component {
@@ -76,17 +76,30 @@ class Home extends React.Component {
 
     const overlayStyle = {
       position: 'absolute',
+      zIndex: 1000,
       top: 0,
       right: 0,
       bottom: 0,
       left: 0,
-      padding: '2.5em 0',
+      padding: '30em 0',
       background: 'rgba(0,0,0,0.5)',
       textAlign: 'center',
-      color: '#fff'
+      verticalAlign: 'middle',
+      color: '#fff',
+      transform: 'scale(1.1)'
     };
 
+    let blur = {};
+    if (dropzoneActive) {
+      blur = {
+        WebkitFilter: 'blur(3px)',
+        MozFilter: 'blur(3px)',
+        OFilter: 'blur(3px)',
+        msFilter: 'blur(3px)',
+        filter: 'blur(3px)',
 
+      };
+    }
 
     let mediaFrame, vRStories;
 
@@ -105,7 +118,7 @@ class Home extends React.Component {
         friends={friends}
         autoPlayNext={true}
         autoPlayStart={false}
-        splashScreen={'./splash.jpg'}
+        splashScreen={'/splash.jpg'}
         defaultDuration={5000}
         VRCursor={<VRCursor/>}
       />;
@@ -113,16 +126,20 @@ class Home extends React.Component {
 
     return (
       <Dropzone
-        disableClick
         style={{}}
+        disableClick
         accept={accept}
         onDrop={this.onDrop.bind(this)}
         onDragEnter={this.onDragEnter.bind(this)}
         onDragLeave={this.onDragLeave.bind(this)}
       >
-        { dropzoneActive && <div className="overlay">Drop file to upload to your story</div> }
-        {/* CHANGE vRIndex TO mediaFrame IF YOU WANT TO USE REGULAR/NON VR PLAYER*/}
-        {vRStories}        
+        { dropzoneActive && <div style={overlayStyle}>Drop to share your story</div> }
+        <div style={blur} className='app'>
+          <Container>
+            <Header size='large' textAlign='center'>VR Stories</Header>
+          </Container>
+          { vRStories }
+        </div>
       </Dropzone>
     );
   }
