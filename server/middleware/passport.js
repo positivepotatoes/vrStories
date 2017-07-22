@@ -32,6 +32,7 @@ passport.use('facebook', new FacebookStrategy({
   profileFields: ['id', 'emails', 'name', 'friends', 'picture.type(large)']
 },
 (accessToken, refreshToken, profile, done) => {
+  console.log('REDIRECTED BACK FROM FB CALLBACK');
   console.log(process.env.FACEBOOK_CLIENT_ID);
   getOrCreateOAuthProfile('facebook', profile, done)
     .then(() => makeFriendList(profile));
@@ -67,6 +68,7 @@ const makeFriendList = (profile) => {
 };
 
 const getOrCreateOAuthProfile = (type, oauthProfile, done) => {
+  console.log('getORCREATEOAUTHPROF');
   return models.Auth.where({ type, oauth_id: oauthProfile.id }).fetch({
     withRelated: ['profile']
   })
