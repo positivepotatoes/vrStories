@@ -1,8 +1,6 @@
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const url = require('url');
-let redisSession;
-let redisClient;
 
 module.exports.verify = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -11,6 +9,8 @@ module.exports.verify = (req, res, next) => {
   res.redirect('/login');
 };
 
+let redisSession;
+let redisClient;
 
 if (process.env.REDIS_URL) {
   const params = url.parse(process.env.REDIS_URL);
@@ -38,5 +38,12 @@ if (process.env.REDIS_URL) {
     saveUninitialized: false
   });
 }
+
+redisClient.on('ready', function() {
+  console.log('Redis ready');
+}).on('error', function(err) {
+  // You should assume here that the connection is lost, or compromised.
+  console.log('Redis error', err);
+});
 
 module.exports.session = redisSession;
