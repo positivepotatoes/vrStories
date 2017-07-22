@@ -1,3 +1,19 @@
 const config = require('config');
 
-module.exports = config['knex'];
+let knex = {
+  'client': 'postgresql',
+  'connection': process.env.PG_URI,
+  'pool': {
+    'min': 1,
+    'max': 2
+  },
+  'migrations': {
+    'tableName': 'knex_migrations',
+    'directory': 'db/migrations'
+  },
+  'seeds': {
+    'directory': 'db/seeds'
+  }
+};
+
+knex.connection ? module.exports = knex :  module.exports = config['knex'];
