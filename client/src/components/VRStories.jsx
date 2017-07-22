@@ -41,13 +41,7 @@ class VRStories extends React.Component {
   componentWillMount() {
     this.setId(this.state.user);
     this.setId(this.state.friends);
-    if (this.state.autoPlayStart) {
-      this.onFriendClick(this.state.friends[0]);
-    } else {
-      this.setState({
-        currentStory: this.state.splashScreen
-      });
-    }
+    this.setAutoPlayOrSplash();
     this.clickInSkyListener();
   }
 
@@ -71,6 +65,16 @@ class VRStories extends React.Component {
     }
   }
 
+  setAutoPlayOrSplash() {
+    if (this.state.autoPlayStart) {
+      this.onFriendClick(this.state.friends[0]);
+    } else {
+      this.setState({
+        currentStory: this.state.splashScreen
+      });
+    }
+  }
+
   toggleInEntity() {
     this.setState({
       inEntity: !this.state.inEntity
@@ -85,6 +89,7 @@ class VRStories extends React.Component {
     });
   }
 
+  // THIS NEEDS TO BE INVOKED EVERYTIME THE STATE OF THE CURRENT STORY IS CHANGED
   playStory() {
     let that = this;
     const pauseVideo = () => {
