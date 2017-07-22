@@ -5,7 +5,7 @@ import Login from './components/Login.jsx';
 import Home from './components/Home.jsx';
 import FriendList from './components/FriendList.jsx';
 import MediaFrame from './components/MediaFrame.jsx';
-import { Header, Icon, Button } from 'semantic-ui-react';
+import { Header, Container } from 'semantic-ui-react';
 
 class App extends React.Component {
   constructor(props) {
@@ -34,10 +34,13 @@ class App extends React.Component {
 
     return (
       <div>
-        <Header as='h1'>VR Stories <Icon name='child'/></Header>
-      
         {!authenticated
-          ? <a href='/login'>Login with Facebook</a>
+          ? <div>
+            <Container textAlign='center'>
+              <Header size='large' >VR Stories</Header>
+              <a href='/login'>Login with Facebook</a>
+            </Container>
+          </div>
           : <Home/>
         }
       </div>
