@@ -40,14 +40,15 @@ class VRProfiles extends React.Component {
     let y = -4;
 
     return (
-      <Entity>
 
+      <Entity>
+      
         <Entity
           geometry={{primitive: 'box', width: 2, height: 2, depth: 0.15}}
           material={{color: 'white', opacity: 0.5}}
           position={{x: -Math.cos(theta)*radius, y: y, z: -Math.sin(theta)*radius}}
           rotation={{x: -Math.atan(Math.abs(y)/radius)*180/Math.PI, y: ((Math.PI/2) - theta)*180/Math.PI}}
-          events={{click: (() => this.onMoreFriendsClick())}}></Entity>
+          events={{click: (() => this.onMoreFriendsClick()), mouseenter: (() => props.toggleInEntity()), mouseleave: (() => props.toggleInEntity()) }}></Entity>
 
         <Entity
           text={{value: 'show\nmore\nfriends', align: 'center', color: 'white', width: 10}}
@@ -68,11 +69,12 @@ class VRProfiles extends React.Component {
                 x={x}
                 y={y}
                 z={z}
+                key={i}
                 xRotation={xRotation}
                 yRotation={yRotation}
                 radius={radius}
-                key={i}
                 friend={friend}
+                toggleInEntity={this.props.toggleInEntity}
                 currentStory={this.props.currentStory}
                 onFriendClick={this.props.onFriendClick}
               />

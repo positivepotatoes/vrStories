@@ -25,6 +25,7 @@ class VRStories extends React.Component {
         src: props.splashScreen,
       },
 
+      inEntity: false,
       currentStory: {},
       currentStories: [],
       lastClickedFriendIndex: null,
@@ -34,6 +35,7 @@ class VRStories extends React.Component {
     };
     this.playNext = this.playNext.bind(this);
     this.onFriendClick = this.onFriendClick.bind(this);
+    this.toggleInEntity = this.toggleInEntity.bind(this);
   }
 
   componentWillMount() {
@@ -46,6 +48,12 @@ class VRStories extends React.Component {
         currentStory: this.state.splashScreen
       });
     }
+    document.body.addEventListener('click', () => {
+      if (!this.state.inEntity) {
+        console.log('clicked outside');
+      }
+    }); 
+
   }
 
   // SINCE USER OF THIS MODULE WILL ONLY PROVIDE LIST OF FRIENDS AND NOT ANY KEYS
@@ -66,6 +74,13 @@ class VRStories extends React.Component {
         story.index = j;
       });
     }
+  }
+
+  toggleInEntity() {
+    this.setState({
+      inEntity: !this.state.inEntity
+    });
+    console.log('toggle', this.state.inEntity);
   }
 
   playStory() {
@@ -157,14 +172,13 @@ class VRStories extends React.Component {
   render () {
     const { currentStory, friends, user, splashScreen } = this.state;
 
-   
-
     return (
       <Scene>
         <VRProfiles
           friends={friends}
           currentStory={currentStory}
           onFriendClick={this.onFriendClick}
+          toggleInEntity={this.toggleInEntity}
         />
         <VRAssets user={user} friends={friends} playNext={this.playNext} splashScreen={splashScreen}/>
         <VRPrimitive currentStory={currentStory}/>
