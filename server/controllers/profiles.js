@@ -96,6 +96,7 @@ module.exports.getFriends = (req, res) => {
       });
       let user = {
         profile: {
+          uploadId: friendList.id,
           first: friendList.first,
           last: friendList.last,
           display: friendList.display,
