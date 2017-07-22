@@ -28,7 +28,7 @@ passport.deserializeUser((id, done) => {
 passport.use('facebook', new FacebookStrategy({
   clientID: process.env.FACEBOOK_CLIENT_ID || config.Facebook.clientID,
   clientSecret: process.env.FACEBOOK_CLIENT_SECRET || config.Facebook.clientSecret,
-  callbackURL: process.env.FACEBOOK_CLIENT_SECRET || config.Facebook.callbackURL,
+  callbackURL: process.env.FACEBOOK_CALLBACK_URL || config.Facebook.callbackURL,
   profileFields: ['id', 'emails', 'name', 'friends', 'picture.type(large)']
 },
 (accessToken, refreshToken, profile, done) => {
