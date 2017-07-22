@@ -24,7 +24,6 @@ router.route('/fetch')
 
 router.route('/login')
   .get((req, res) => {
-    console.log("12313123132123");
     res.redirect('/auth/facebook');
   });
 
