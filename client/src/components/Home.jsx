@@ -57,7 +57,7 @@ class Home extends React.Component {
     console.log('acceptedFiles:', files);
     let formData = new FormData();
     formData.append('file', files[0]);
-    formData.append('userId', this.state.user.profile.id);
+    formData.append('userId', this.state.user.profile.uploadId);
     axios.post('/api/upload', formData);
     this.setState({
       files,

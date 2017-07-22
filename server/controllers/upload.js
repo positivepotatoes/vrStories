@@ -13,7 +13,6 @@ module.exports.save = (req, res) => {
   var key = Date.now().toString();
   var userId = req.body.userId;
   var awsLink = 'https://s3-us-west-1.amazonaws.com/vrstories/' + key;
-
   // send aws link & userId to db
   models.Story.forge({ profile_id: userId, aws_link: awsLink, metadata: req.files[0].mimetype })
     .save();
