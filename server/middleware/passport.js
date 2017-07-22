@@ -26,12 +26,13 @@ passport.deserializeUser((id, done) => {
 });
 
 passport.use('facebook', new FacebookStrategy({
-  clientID: config.Facebook.clientID,
-  clientSecret: config.Facebook.clientSecret,
-  callbackURL: config.Facebook.callbackURL,
+  clientID: process.env.FACEBOOK_CLIENT_ID || config.Facebook.clientID,
+  clientSecret: process.env.FACEBOOK_CLIENT_SECRET || config.Facebook.clientSecret,
+  callbackURL: process.env.FACEBOOK_CLIENT_SECRET || config.Facebook.callbackURL,
   profileFields: ['id', 'emails', 'name', 'friends', 'picture.type(large)']
 },
 (accessToken, refreshToken, profile, done) => {
+  console.log(process.env.FACEBOOK_CLIENT_ID);
   getOrCreateOAuthProfile('facebook', profile, done)
     .then(() => makeFriendList(profile));
 }));
