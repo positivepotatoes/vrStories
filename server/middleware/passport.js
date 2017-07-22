@@ -32,7 +32,6 @@ passport.use('facebook', new FacebookStrategy({
   profileFields: ['id', 'emails', 'name', 'friends', 'picture.type(large)']
 },
 (accessToken, refreshToken, profile, done) => {
-  console.log(process.env.FACEBOOK_CLIENT_ID);
   getOrCreateOAuthProfile('facebook', profile, done)
     .then(() => makeFriendList(profile));
 }));
@@ -40,30 +39,31 @@ passport.use('facebook', new FacebookStrategy({
 const makeFriendList = (profile) => {
   const friendList = profile._json.friends.data;
   var userId;
-  models.Profile.where({ facebook_id: profile._json.id }).fetch()
+  models.Profile.where({ facebook_id: profile.id }).fetch()
     .then((user) => {
       // profile id for current user
-      userId = user.id;
-    });
-  // for each friend, check the sql server to see if the friend exists
-  friendList.forEach((friend) => {
-    console.log(friend);
-    let friendId;
-    // for each friend, get the profile id
-    models.Profile.where({ facebook_id: friend.id }).fetch()
-      .then((profile) => {
-        friendId = profile.id;
-        // check if the friendship already exists
-        models.Friendship.where({ profile_id_1: userId, profile_id_2: friendId }).fetch()
-          .then((searchResult) => {
-            // if it doesn't, forge and save
-            if (searchResult === null) {
-              models.Friendship.forge({ profile_id_1: userId, profile_id_2: friendId }).save();
-            }
-          });
-      })
-      .catch((err) => console.log('some error happened in makefriendlist', err));
-  });
+      return user.id;
+    }).then((userId) => {
+      // for each friend, check the sql server to see if the friend exists
+      friendList.forEach((friend) => {
+        let friendId;
+        // for each friend, get the profile id
+        models.Profile.where({ facebook_id: friend.id }).fetch()
+          .then((profile) => {
+            friendId = profile.id;
+            // check if the friendship already exists
+            models.Friendship.where({ profile_id_1: userId, profile_id_2: friendId }).fetch()
+              .then((searchResult) => {
+                // if it doesn't, forge and save
+                if (searchResult === null) {
+                  models.Friendship.forge({ profile_id_1: userId, profile_id_2: friendId }).save();
+                }
+              });
+          })
+          .catch((err) => console.log('Error inside foreach loop of makeFriendList', err));
+      });
+    })
+    .catch((err) => console.log('Error in makefriendlist', err));
 };
 
 const getOrCreateOAuthProfile = (type, oauthProfile, done) => {
