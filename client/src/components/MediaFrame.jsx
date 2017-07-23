@@ -113,6 +113,7 @@ class MediaFrame extends React.Component {
       <Grid divided='vertically'>
         <Grid.Row>
           <Grid.Column width={2}>
+            <Button onClick={this.props.toggleInVRMode}>Enter VR Stories</Button>
             <FriendList
               friends={friends}
               currentStory={currentStory}

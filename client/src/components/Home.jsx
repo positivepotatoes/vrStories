@@ -4,9 +4,8 @@ import 'aframe';
 import 'aframe-mouse-cursor-component';
 import { Entity, Scene, Options } from 'aframe-react';
 import Dropzone from 'react-dropzone';
-import VRStories from './VRStories.jsx';
 import MediaFrame from './MediaFrame.jsx';
-import { Header, Container } from 'semantic-ui-react';
+import VRStories from './VRStories.jsx';
 import VRCursor from './VRCursor.jsx';
 // import VRAssets from './VRAssets.jsx';
 
@@ -17,6 +16,7 @@ class Home extends React.Component {
       user: {},
       friends: null,
       assets: [],
+      inVRMode: true,
       // States below are used for react-dropzone
       accept: '',
       files: [],
@@ -46,6 +46,12 @@ class Home extends React.Component {
 
   assetsCallback(assets) {
     this.setState({ assets });
+  }
+
+  toggleInVRMode() {
+    this.setState({
+      inVRMode: !this.state.inVRMode
+    });
   }
 
   // Functions below are used for react-dropzone
@@ -108,27 +114,39 @@ class Home extends React.Component {
       };
     }
 
-    let mediaFrame, vRStories;
-
+    let scene;
     if (this.state.friends) {
-      mediaFrame = <MediaFrame 
-        user={user}
-        friends={friends}
-        autoPlayNext={true}
-        autoPlayStart={false}
-      />;
-    }
+      if (this.state.inVRMode) {
+        scene = 
+          <Scene vr-mode-ui="enabled: true">
+            <a-assets>
+              {this.state.assets}
+            </a-assets>
 
-    if (this.state.friends) {
-      vRStories = <VRStories 
-        user={user}
-        friends={friends}
-        autoPlayNext={true}
-        autoPlayStart={false}
-        splashScreen={'/splash.jpg'}
-        defaultDuration={5000}
-        assetsCallback={this.assetsCallback.bind(this)}
-      />;
+            <VRStories 
+              user={user}
+              friends={friends}
+              autoPlayNext={true}
+              autoPlayStart={false}
+              splashScreen={'/splash.jpg'}
+              defaultDuration={5000}
+              assetsCallback={this.assetsCallback.bind(this)}
+              exitCallback={this.toggleInVRMode.bind(this)}
+            />
+            <VRCursor/>
+          </Scene>;
+      } else {
+        scene = 
+          <div>
+            <MediaFrame 
+              user={user}
+              friends={friends}
+              autoPlayNext={true}
+              autoPlayStart={false}
+              toggleInVRMode={this.toggleInVRMode.bind(this)}
+            />
+          </div>;
+      }
     }
 
     return (
@@ -142,18 +160,7 @@ class Home extends React.Component {
       >
         { dropzoneActive && <div style={overlayStyle}>Drop to share your story</div> }
         <div style={blur} className='app'>
-          <Container>
-            <Header size='large' textAlign='center'>VR Stories</Header>
-          </Container>
-
-          <Scene vr-mode-ui="enabled: true">
-            <a-assets>
-              {this.state.assets}
-            </a-assets>
-
-            { vRStories }
-            <VRCursor/>
-          </Scene>
+          {scene}
         </div>
       </Dropzone>
     );
