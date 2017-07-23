@@ -1,10 +1,14 @@
 import React from 'react';
 import axios from 'axios';
+import 'aframe';
+import 'aframe-mouse-cursor-component';
+import { Entity, Scene, Options } from 'aframe-react';
 import Dropzone from 'react-dropzone';
 import VRStories from './VRStories.jsx';
 import MediaFrame from './MediaFrame.jsx';
 import { Header, Container } from 'semantic-ui-react';
 import VRCursor from './VRCursor.jsx';
+// import VRAssets from './VRAssets.jsx';
 
 class Home extends React.Component {
   constructor(props) {
@@ -12,6 +16,7 @@ class Home extends React.Component {
     this.state = {
       user: {},
       friends: null,
+      assets: [],
       // States below are used for react-dropzone
       accept: '',
       files: [],
@@ -71,6 +76,13 @@ class Home extends React.Component {
     });
   }
 
+  assetsCallback(assets) {
+    console.log('getting assets back', assets);
+    this.setState({
+      assets: assets
+    });
+  }
+
   render() {
     const { user, friends, accept, files, dropzoneActive } = this.state;
 
@@ -101,7 +113,7 @@ class Home extends React.Component {
       };
     }
 
-    let mediaFrame, vRStories;
+    let mediaFrame, vRStories, assets;
 
     if (this.state.friends) {
       mediaFrame = <MediaFrame 
@@ -120,8 +132,9 @@ class Home extends React.Component {
         autoPlayStart={false}
         splashScreen={'/splash.jpg'}
         defaultDuration={5000}
-        VRCursor={<VRCursor/>}
+        assetsCallback={this.assetsCallback.bind(this)}
       />;
+      assets = this.state.assets.map(asset => asset);
     }
 
     return (
@@ -138,7 +151,21 @@ class Home extends React.Component {
           <Container>
             <Header size='large' textAlign='center'>VR Stories</Header>
           </Container>
-          { vRStories }
+
+          <Scene
+            vr-mode-ui="enabled: true"
+          >
+            <a-assets>
+              {assets}
+            </a-assets>
+            
+
+            { vRStories }
+            <VRCursor/>
+          </Scene>
+
+
+
         </div>
       </Dropzone>
     );

@@ -1,9 +1,6 @@
-import 'aframe';
-import 'aframe-mouse-cursor-component';
-import { Entity, Scene, Options } from 'aframe-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import { Entity, Scene, Options } from 'aframe-react';
 import VRProfiles from './VRProfiles.jsx';
 import VRAssets from './VRAssets.jsx';
 import VRPrimitive from './VRPrimitive.jsx';
@@ -44,6 +41,7 @@ class VRStories extends React.Component {
     this.setId([this.state.user], true);
     this.setAutoPlayOrSplash();
     this.clickInSkyListener();
+    this.createAssets();
   }
 
   // SINCE USER OF THIS MODULE WILL ONLY PROVIDE LIST OF FRIENDS AND NOT ANY KEYS
@@ -172,25 +170,48 @@ class VRStories extends React.Component {
       }, () => this.invokePlay());
     }
   }
-  
+
+  createAssets() {
+    let allStories = [];
+    this.state.friends.forEach(friend => {
+      friend.stories.forEach(story => {
+        allStories.push(story);
+      });
+    });
+    let splash = (<img id="-2,-2" key='-2' src={this.props.splashScreen} crossOrigin="anonymous"/>);
+    
+    let assets = allStories.map((story, i) => {
+      let id = story.id + ',' + story.index;
+      if (story.type.slice(0, 5) === 'image') {
+        return (
+          <img id={id} key={i} src={story.src} crossOrigin="anonymous"/>
+        );
+      } else {
+        return (
+          <video id={id} key={i} src={story.src} crossOrigin="anonymous" onEnded={() => this.props.playNext()}/>
+        );
+      }
+    });
+    assets.push(splash);
+
+    this.props.assetsCallback(assets);
+          
+    
+  }
 
   render () {
     const { currentStory, friends, user, splashScreen } = this.state;
 
     return (
-      <Scene
-        vr-mode-ui="enabled: true"
-      >
+      <Entity>
         <VRProfiles
           friends={friends}
           currentStory={currentStory}
           onFriendClick={this.onFriendClick}
           toggleInEntity={this.toggleInEntity}
         />
-        <VRAssets user={user} friends={friends} playNext={this.playNext} splashScreen={splashScreen}/>
         <VRPrimitive currentStory={currentStory}/>
-        {this.props.VRCursor}
-      </Scene>
+      </Entity>
     );
   }
 }
