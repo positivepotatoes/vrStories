@@ -1,10 +1,14 @@
 import React from 'react';
 import axios from 'axios';
+import 'aframe';
+import 'aframe-mouse-cursor-component';
+import { Entity, Scene, Options } from 'aframe-react';
 import Dropzone from 'react-dropzone';
 import VRStories from './VRStories.jsx';
 import MediaFrame from './MediaFrame.jsx';
 import { Header, Container } from 'semantic-ui-react';
 import VRCursor from './VRCursor.jsx';
+// import VRAssets from './VRAssets.jsx';
 
 class Home extends React.Component {
   constructor(props) {
@@ -12,6 +16,7 @@ class Home extends React.Component {
     this.state = {
       user: {},
       friends: null,
+      assets: [],
       // States below are used for react-dropzone
       accept: '',
       files: [],
@@ -39,6 +44,9 @@ class Home extends React.Component {
       });
   }
 
+  assetsCallback(assets) {
+    this.setState({ assets });
+  }
 
   // Functions below are used for react-dropzone
   onDragEnter() {
@@ -96,8 +104,7 @@ class Home extends React.Component {
         MozFilter: 'blur(3px)',
         OFilter: 'blur(3px)',
         msFilter: 'blur(3px)',
-        filter: 'blur(3px)',
-
+        filter: 'blur(3px)'
       };
     }
 
@@ -120,7 +127,7 @@ class Home extends React.Component {
         autoPlayStart={false}
         splashScreen={'/splash.jpg'}
         defaultDuration={5000}
-        VRCursor={<VRCursor/>}
+        assetsCallback={this.assetsCallback.bind(this)}
       />;
     }
 
@@ -138,7 +145,15 @@ class Home extends React.Component {
           <Container>
             <Header size='large' textAlign='center'>VR Stories</Header>
           </Container>
-          { vRStories }
+
+          <Scene vr-mode-ui="enabled: true">
+            <a-assets>
+              {this.state.assets}
+            </a-assets>
+
+            { vRStories }
+            <VRCursor/>
+          </Scene>
         </div>
       </Dropzone>
     );

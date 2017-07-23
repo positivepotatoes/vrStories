@@ -1,9 +1,6 @@
-import 'aframe';
-import 'aframe-mouse-cursor-component';
-import { Entity, Scene, Options } from 'aframe-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import { Entity, Scene, Options } from 'aframe-react';
 import VRProfiles from './VRProfiles.jsx';
 import VRAssets from './VRAssets.jsx';
 import VRPrimitive from './VRPrimitive.jsx';
@@ -13,10 +10,10 @@ class VRStories extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: props.user,
-      friends: props.friends,
-      autoPlayNext: props.autoPlayNext,
-      autoPlayStart: props.autoPlayStart,
+      user: props.user || {},
+      friends: props.friends || [],
+      autoPlayNext: props.autoPlayNext || false,
+      autoPlayStart: props.autoPlayStart || false,
       defaultDuration: props.defaultDuration || 7000,
       splashScreen: {
         id: -2,
@@ -44,6 +41,7 @@ class VRStories extends React.Component {
     this.setId([this.state.user], true);
     this.setAutoPlayOrSplash();
     this.clickInSkyListener();
+    this.createAssets();
   }
 
   // SINCE USER OF THIS MODULE WILL ONLY PROVIDE LIST OF FRIENDS AND NOT ANY KEYS
@@ -85,6 +83,14 @@ class VRStories extends React.Component {
       this.setSplashScreen();
     }
   }
+    
+  clickInSkyListener() {
+    document.body.addEventListener('click', () => {
+      if (!this.state.inEntity && (this.state.currentStory.id !== -2)) {
+        this.playNext();
+      }
+    });
+  }
 
   // THIS NEEDS TO BE INVOKED EVERYTIME THE STATE OF THE CURRENT STORY IS CHANGED
   invokePlay() {
@@ -94,7 +100,6 @@ class VRStories extends React.Component {
 
     if (this.state.currentStory.type.slice(0, 5) === 'image') {
       this.state.photosInTimeout = setTimeout(function() {
-        console.log('INVOKING SET TIMEOUT CALLBACK, THIS SHOULD ONLY SHOW WHEN YOU LET PHOTOS TIMEOUT. IF YOU SEE THIS RANDOMLY APPEARING, LET ME KNOW');
         that.playNext();
       }, this.state.defaultDuration);
     } else {
@@ -130,14 +135,6 @@ class VRStories extends React.Component {
       }
     }
   }
-  
-  clickInSkyListener() {
-    document.body.addEventListener('click', () => {
-      if (!this.state.inEntity && (this.state.currentStory.id !== -2)) {
-        this.playNext();
-      }
-    });
-  }
 
   // THIS FUNCTION WILL UPDATE currentStory TO BE THE NEXT STORY
   playNextStoryOfFriend() {
@@ -172,25 +169,48 @@ class VRStories extends React.Component {
       }, () => this.invokePlay());
     }
   }
-  
+
+  createAssets() {
+    let allStories = [];
+    this.state.friends.forEach(friend => {
+      friend.stories.forEach(story => {
+        allStories.push(story);
+      });
+    });
+    let splash = (<img id="-2,-2" key='-2' src={this.props.splashScreen} crossOrigin="anonymous"/>);
+    
+    let assets = allStories.map((story, i) => {
+      let id = story.id + ',' + story.index;
+      if (story.type.slice(0, 5) === 'image') {
+        return (
+          <img id={id} key={i} src={story.src} crossOrigin="anonymous"/>
+        );
+      } else {
+        return (
+          <video id={id} key={i} src={story.src} crossOrigin="anonymous" onEnded={() => this.props.playNext()}/>
+        );
+      }
+    });
+    assets.push(splash);
+
+    this.props.assetsCallback(assets);
+          
+    
+  }
 
   render () {
     const { currentStory, friends, user, splashScreen } = this.state;
 
     return (
-      <Scene
-        vr-mode-ui="enabled: true"
-      >
+      <Entity>
         <VRProfiles
           friends={friends}
           currentStory={currentStory}
           onFriendClick={this.onFriendClick}
           toggleInEntity={this.toggleInEntity}
         />
-        <VRAssets user={user} friends={friends} playNext={this.playNext} splashScreen={splashScreen}/>
         <VRPrimitive currentStory={currentStory}/>
-        {this.props.VRCursor}
-      </Scene>
+      </Entity>
     );
   }
 }
