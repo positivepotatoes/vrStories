@@ -1,6 +1,6 @@
 {
   "knex": {
-    "connection": "process.env.PG_URI",
+    "connection": "PG_URI",
     "migrations": {
       "tableName": "knex_migrations",
       "directory": "db/migrations"

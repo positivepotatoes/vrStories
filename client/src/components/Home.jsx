@@ -1,10 +1,14 @@
 import React from 'react';
 import axios from 'axios';
+import 'aframe';
+import 'aframe-mouse-cursor-component';
+import { Entity, Scene, Options } from 'aframe-react';
 import Dropzone from 'react-dropzone';
 import VRStories from './VRStories.jsx';
 import MediaFrame from './MediaFrame.jsx';
-import { Header } from 'semantic-ui-react';
+import { Header, Container } from 'semantic-ui-react';
 import VRCursor from './VRCursor.jsx';
+// import VRAssets from './VRAssets.jsx';
 
 class Home extends React.Component {
   constructor(props) {
@@ -12,6 +16,7 @@ class Home extends React.Component {
     this.state = {
       user: {},
       friends: null,
+      assets: [],
       // States below are used for react-dropzone
       accept: '',
       files: [],
@@ -39,6 +44,9 @@ class Home extends React.Component {
       });
   }
 
+  assetsCallback(assets) {
+    this.setState({ assets });
+  }
 
   // Functions below are used for react-dropzone
   onDragEnter() {
@@ -57,7 +65,7 @@ class Home extends React.Component {
     console.log('acceptedFiles:', files);
     let formData = new FormData();
     formData.append('file', files[0]);
-    formData.append('userId', this.state.user.profile.id);
+    formData.append('userId', this.state.user.profile.uploadId);
     axios.post('/api/upload', formData);
     this.setState({
       files,
@@ -76,15 +84,29 @@ class Home extends React.Component {
 
     const overlayStyle = {
       position: 'absolute',
+      zIndex: 1000,
       top: 0,
       right: 0,
       bottom: 0,
       left: 0,
-      padding: '2.5em 0',
+      padding: '30em 0',
       background: 'rgba(0,0,0,0.5)',
       textAlign: 'center',
-      color: '#fff'
+      verticalAlign: 'middle',
+      color: '#fff',
+      transform: 'scale(1.1)'
     };
+
+    let blur = {};
+    if (dropzoneActive) {
+      blur = {
+        WebkitFilter: 'blur(3px)',
+        MozFilter: 'blur(3px)',
+        OFilter: 'blur(3px)',
+        msFilter: 'blur(3px)',
+        filter: 'blur(3px)'
+      };
+    }
 
     let mediaFrame, vRStories;
 
@@ -103,24 +125,36 @@ class Home extends React.Component {
         friends={friends}
         autoPlayNext={true}
         autoPlayStart={false}
-        splashScreen={'https://s3-us-west-1.amazonaws.com/vrstories/splash.jpg'}
+        splashScreen={'/splash.jpg'}
         defaultDuration={5000}
-        VRCursor={<VRCursor/>}
+        assetsCallback={this.assetsCallback.bind(this)}
       />;
     }
 
     return (
       <Dropzone
-        disableClick
         style={{}}
+        disableClick
         accept={accept}
         onDrop={this.onDrop.bind(this)}
         onDragEnter={this.onDragEnter.bind(this)}
         onDragLeave={this.onDragLeave.bind(this)}
       >
-        { dropzoneActive && <div style={overlayStyle}>Drop file to upload to your story</div> }
-        {/* CHANGE vRIndex TO mediaFrame IF YOU WANT TO USE REGULAR/NON VR PLAYER*/}
-        {vRStories}        
+        { dropzoneActive && <div style={overlayStyle}>Drop to share your story</div> }
+        <div style={blur} className='app'>
+          <Container>
+            <Header size='large' textAlign='center'>VR Stories</Header>
+          </Container>
+
+          <Scene vr-mode-ui="enabled: true">
+            <a-assets>
+              {this.state.assets}
+            </a-assets>
+
+            { vRStories }
+            <VRCursor/>
+          </Scene>
+        </div>
       </Dropzone>
     );
   }
