@@ -44,6 +44,9 @@ class Home extends React.Component {
       });
   }
 
+  assetsCallback(assets) {
+    this.setState({ assets });
+  }
 
   // Functions below are used for react-dropzone
   onDragEnter() {
@@ -76,13 +79,6 @@ class Home extends React.Component {
     });
   }
 
-  assetsCallback(assets) {
-    console.log('getting assets back', assets);
-    this.setState({
-      assets: assets
-    });
-  }
-
   render() {
     const { user, friends, accept, files, dropzoneActive } = this.state;
 
@@ -108,12 +104,11 @@ class Home extends React.Component {
         MozFilter: 'blur(3px)',
         OFilter: 'blur(3px)',
         msFilter: 'blur(3px)',
-        filter: 'blur(3px)',
-
+        filter: 'blur(3px)'
       };
     }
 
-    let mediaFrame, vRStories, assets;
+    let mediaFrame, vRStories;
 
     if (this.state.friends) {
       mediaFrame = <MediaFrame 
@@ -134,7 +129,6 @@ class Home extends React.Component {
         defaultDuration={5000}
         assetsCallback={this.assetsCallback.bind(this)}
       />;
-      assets = this.state.assets.map(asset => asset);
     }
 
     return (
@@ -152,20 +146,14 @@ class Home extends React.Component {
             <Header size='large' textAlign='center'>VR Stories</Header>
           </Container>
 
-          <Scene
-            vr-mode-ui="enabled: true"
-          >
+          <Scene vr-mode-ui="enabled: true">
             <a-assets>
-              {assets}
+              {this.state.assets}
             </a-assets>
-            
 
             { vRStories }
             <VRCursor/>
           </Scene>
-
-
-
         </div>
       </Dropzone>
     );

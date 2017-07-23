@@ -10,10 +10,10 @@ class VRStories extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: props.user,
-      friends: props.friends,
-      autoPlayNext: props.autoPlayNext,
-      autoPlayStart: props.autoPlayStart,
+      user: props.user || {},
+      friends: props.friends || [],
+      autoPlayNext: props.autoPlayNext || false,
+      autoPlayStart: props.autoPlayStart || false,
       defaultDuration: props.defaultDuration || 7000,
       splashScreen: {
         id: -2,
@@ -83,6 +83,14 @@ class VRStories extends React.Component {
       this.setSplashScreen();
     }
   }
+    
+  clickInSkyListener() {
+    document.body.addEventListener('click', () => {
+      if (!this.state.inEntity && (this.state.currentStory.id !== -2)) {
+        this.playNext();
+      }
+    });
+  }
 
   // THIS NEEDS TO BE INVOKED EVERYTIME THE STATE OF THE CURRENT STORY IS CHANGED
   invokePlay() {
@@ -92,7 +100,6 @@ class VRStories extends React.Component {
 
     if (this.state.currentStory.type.slice(0, 5) === 'image') {
       this.state.photosInTimeout = setTimeout(function() {
-        console.log('INVOKING SET TIMEOUT CALLBACK, THIS SHOULD ONLY SHOW WHEN YOU LET PHOTOS TIMEOUT. IF YOU SEE THIS RANDOMLY APPEARING, LET ME KNOW');
         that.playNext();
       }, this.state.defaultDuration);
     } else {
@@ -127,14 +134,6 @@ class VRStories extends React.Component {
         nextstate(0);
       }
     }
-  }
-  
-  clickInSkyListener() {
-    document.body.addEventListener('click', () => {
-      if (!this.state.inEntity && (this.state.currentStory.id !== -2)) {
-        this.playNext();
-      }
-    });
   }
 
   // THIS FUNCTION WILL UPDATE currentStory TO BE THE NEXT STORY
