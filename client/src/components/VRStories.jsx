@@ -83,7 +83,10 @@ class VRStories extends React.Component {
       return totalDuration;
     };
 
-    // console.log('duration', getDuration(this.state.currentStories.length) );
+    let totalDuration = getDuration(this.state.currentStories.length);
+    let startingDuration = getDuration(this.state.currentStory.index);
+
+    console.log('duration', startingDuration, ' out of ', totalDuration);
   }
 
   pauseStories() {
@@ -122,16 +125,8 @@ class VRStories extends React.Component {
 
     if (this.state.currentStory.type.slice(0, 5) === 'image') {
       setStoryTimeout(this.state.defaultDuration);
-      // this.state.storyInTimeout = setTimeout(function() {
-      //   console.log('timeout getting called');
-      //   that.playNext();
-      // }, this.state.defaultDuration);
     } else {
       story.play();
-      // this.state.storyInTimeout = setTimeout(function() {
-      //   console.log('timeout getting called');
-      //   that.playNext();
-      // }, story.duration * 1000);
       setStoryTimeout(story.duration * 1000);
     }
 
@@ -152,7 +147,7 @@ class VRStories extends React.Component {
 
   // THIS FUNCTION WILL PLAY THE NEXT STORY OF currentStories AND IF AUTOPLAY IS ON, THE NEXT FRIEND'S STORIES WILL BE PLAYED
   playNext() {
-    const { friends, autoPlayNext, currentStories, currentStory, lastClickedFriendIndex, splashScreen } = this.state;
+    const { friends, autoPlayNext, currentStories, currentStory, lastClickedFriendIndex } = this.state;
     let nextStoryIndex = currentStory.index + 1;
     let nextFriendIndex = currentStory.id + 1;
     let reachedLastStory = nextStoryIndex === currentStories.length;
@@ -217,17 +212,17 @@ class VRStories extends React.Component {
         allStories.push(story);
       });
     });
-    let splashScreenAsset = (<img id="-2,-2" key='-2' src={this.props.splashScreen} crossOrigin="anonymous"/>);
+    let splashScreenAsset = (<img id='-2,-2' key='-2' src={this.props.splashScreen} crossOrigin='anonymous'/>);
     
     let assets = allStories.map((story, i) => {
       let id = story.id + ',' + story.index;
       if (story.type.slice(0, 5) === 'image') {
         return (
-          <img id={id} key={i} src={story.src} crossOrigin="anonymous"/>
+          <img id={id} key={i} src={story.src} crossOrigin='anonymous'/>
         );
       } else {
         return (
-          <video id={id} key={i} src={story.src} crossOrigin="anonymous"/>
+          <video id={id} key={i} src={story.src} crossOrigin='anonymous'/>
         );
       }
     });
