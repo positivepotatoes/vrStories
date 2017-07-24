@@ -4,6 +4,7 @@ import { Entity, Scene, Options } from 'aframe-react';
 import VRProfiles from './VRProfiles.jsx';
 import VRAssets from './VRAssets.jsx';
 import VRPrimitive from './VRPrimitive.jsx';
+import VRExit from './VRExit.jsx';
 import mockData from './mockData.js';
 
 class VRStories extends React.Component {
@@ -25,7 +26,12 @@ class VRStories extends React.Component {
       inEntity: false,
       currentStory: {},
       currentStories: [],
-      photosInTimeout: null,
+      storyInTimeout: null,
+      durationInTimeout: null,
+      currentStoriesDuration: {
+        current: 0,
+        total: 0
+      },
       lastClickedFriendIndex: null,
       // USE FOR MOCK DATA
       // friends: mockData.friends,
@@ -44,6 +50,12 @@ class VRStories extends React.Component {
     this.createAssets();
   }
 
+  toggleInEntity() {
+    this.setState({
+      inEntity: !this.state.inEntity
+    });
+  }
+
   // SINCE USER OF THIS MODULE WILL ONLY PROVIDE LIST OF FRIENDS AND NOT ANY KEYS
   // WE BUILT THIS HELPER FUNCTION TO IDENTIFY EVERY VIDEO TO EACH FRIEND
   setId(data, isUser = false) {
@@ -57,16 +69,47 @@ class VRStories extends React.Component {
     });
   }
 
+  countStoriesDuration() {
+    let that = this;
+    this.state.durationInTimeout = setInterval(() => {
+      that.setState({
+        currentStoriesDuration: {
+          current: that.state.currentStoriesDuration.current + .1,
+          total: that.state.currentStoriesDuration.total
+        }
+      });
+    }, 100);
+  }
+
+  setInitialStoriesDuration() {
+    const getDuration = (n) => {
+      let totalDuration = 0;
+      for (var i = 0; i < n; i++) {
+        let storyObject = this.state.currentStories[i];
+        let storyDom = document.getElementById(storyObject.id + ',' + storyObject.index);
+        if (!storyDom.duration) {
+          totalDuration += this.state.defaultDuration / 1000;
+        } else {
+          totalDuration += storyDom.duration;
+        }
+      }
+      return totalDuration;
+    };
+
+    this.setState({
+      currentStoriesDuration: {
+        current: getDuration(this.state.currentStory.index),
+        total: getDuration(this.state.currentStories.length)
+      }
+    });
+    this.countStoriesDuration();
+  }
+
   pauseStories() {
     let stories = Array.prototype.slice.call(document.getElementsByTagName('video'));
     stories.forEach(story => story.pause());
-    clearTimeout(this.state.photosInTimeout);
-  }
-
-  toggleInEntity() {
-    this.setState({
-      inEntity: !this.state.inEntity
-    });
+    clearTimeout(this.state.storyInTimeout);
+    clearInterval(this.state.durationInTimeout);
   }
 
   setSplashScreen() {
@@ -83,40 +126,50 @@ class VRStories extends React.Component {
       this.setSplashScreen();
     }
   }
-    
-  clickInSkyListener() {
-    document.body.addEventListener('click', () => {
-      if (!this.state.inEntity && (this.state.currentStory.id !== -2)) {
-        this.playNext();
-      }
-    });
-  }
 
   // THIS NEEDS TO BE INVOKED EVERYTIME THE STATE OF THE CURRENT STORY IS CHANGED
   invokePlay() {
-    let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
     let that = this;
+    let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
+    const setStoryTimeout = (duration) => {
+      this.state.storyInTimeout = setTimeout(function() {
+        that.playNext();
+      }, duration);
+    };
+
     this.pauseStories();
 
     if (this.state.currentStory.type.slice(0, 5) === 'image') {
-      this.state.photosInTimeout = setTimeout(function() {
-        that.playNext();
-      }, this.state.defaultDuration);
+      setStoryTimeout(this.state.defaultDuration);
     } else {
       story.play();
+      setStoryTimeout(story.duration * 1000);
+    }
+
+    this.setInitialStoriesDuration();
+  }
+
+  // THIS FUNCTION WILL UPDATE currentStory TO BE THE NEXT STORY
+  playNextStoryOfFriend() {
+    const { currentStories, currentStory } = this.state;
+    let nextStoryIndex = currentStory.index + 1;
+    
+    if (nextStoryIndex < currentStories.length) {
+      this.setState({
+        currentStory: currentStories[nextStoryIndex]
+      }, () => this.invokePlay());
     }
   }
 
   // THIS FUNCTION WILL PLAY THE NEXT STORY OF currentStories AND IF AUTOPLAY IS ON, THE NEXT FRIEND'S STORIES WILL BE PLAYED
-  // THIS GETS CALLED WHEN VIDEO ENDS PLAYING
   playNext() {
-    const { friends, autoPlayNext, currentStories, currentStory, lastClickedFriendIndex, splashScreen } = this.state;
+    const { friends, autoPlayNext, currentStories, currentStory, lastClickedFriendIndex } = this.state;
     let nextStoryIndex = currentStory.index + 1;
     let nextFriendIndex = currentStory.id + 1;
-
+    let reachedLastStory = nextStoryIndex === currentStories.length;
     this.playNextStoryOfFriend();
 
-    if (autoPlayNext && nextStoryIndex === currentStories.length) {
+    if (autoPlayNext && reachedLastStory) {
       let nextstate = (i) => {
         if (lastClickedFriendIndex === i) {
           this.setSplashScreen();
@@ -133,19 +186,17 @@ class VRStories extends React.Component {
       } else {
         nextstate(0);
       }
+    } else if (!autoPlayNext && reachedLastStory) {
+      this.setSplashScreen();
     }
   }
 
-  // THIS FUNCTION WILL UPDATE currentStory TO BE THE NEXT STORY
-  playNextStoryOfFriend() {
-    const { currentStories, currentStory } = this.state;
-    let nextStoryIndex = currentStory.index + 1;
-    
-    if (nextStoryIndex < currentStories.length) {
-      this.setState({
-        currentStory: currentStories[nextStoryIndex]
-      }, () => this.invokePlay());
-    }
+  clickInSkyListener() {
+    document.body.addEventListener('click', () => {
+      if (!this.state.inEntity && (this.state.currentStory.id !== -2)) {
+        this.playNext();
+      }
+    });
   }
 
   // THIS FUNCTION WILL UPDATE THE STATE OF THE MOST RECENTLY CLICKED FRIEND
@@ -177,29 +228,27 @@ class VRStories extends React.Component {
         allStories.push(story);
       });
     });
-    let splash = (<img id="-2,-2" key='-2' src={this.props.splashScreen} crossOrigin="anonymous"/>);
+    let splashScreenAsset = (<img id='-2,-2' key='-2' src={this.props.splashScreen} crossOrigin='anonymous'/>);
     
     let assets = allStories.map((story, i) => {
       let id = story.id + ',' + story.index;
       if (story.type.slice(0, 5) === 'image') {
         return (
-          <img id={id} key={i} src={story.src} crossOrigin="anonymous"/>
+          <img id={id} key={i} src={story.src} crossOrigin='anonymous'/>
         );
       } else {
         return (
-          <video id={id} key={i} src={story.src} crossOrigin="anonymous" onEnded={() => this.props.playNext()}/>
+          <video id={id} key={i} src={story.src} crossOrigin='anonymous'/>
         );
       }
     });
-    assets.push(splash);
+    assets.push(splashScreenAsset);
 
     this.props.assetsCallback(assets);
-          
-    
   }
 
   render () {
-    const { currentStory, friends, user, splashScreen } = this.state;
+    const { currentStory, friends, user, splashScreen, currentStoriesDuration } = this.state;
 
     return (
       <Entity>
@@ -208,8 +257,11 @@ class VRStories extends React.Component {
           currentStory={currentStory}
           onFriendClick={this.onFriendClick}
           toggleInEntity={this.toggleInEntity}
+          currentStoriesDuration={currentStoriesDuration}
         />
         <VRPrimitive currentStory={currentStory}/>
+
+        <VRExit toggleInEntity={this.toggleInEntity} exitCallback={this.props.exitCallback}/>
       </Entity>
     );
   }

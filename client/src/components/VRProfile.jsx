@@ -13,7 +13,8 @@ const VRProfile = props => {
 
 
   if (props.currentStory.id === props.friend.profile.id) {
-    playing = ` I AM PLAYING!!! ${props.currentStory.index}`;
+    // console.log(typeof props.currentStoriesDuration.current.toFixed(2), 'TETE')
+    playing = ` PLAYING ${props.currentStoriesDuration.current.toFixed(2)} out of ${props.currentStoriesDuration.total.toFixed(2)}`;
     picRadius = 1.2;
   }
 
@@ -25,7 +26,7 @@ const VRProfile = props => {
         material={{src: props.friend.profile.img_url}}
         animation__rotate={{property: 'rotation', dur: 2000, loop: true, to: '360 360 360'}}
         animation__scale={{property: 'scale', dir: 'alternate', dur: 100, loop: true, to: '1.1 1.1 1.1'}}
-        events={{click: (() => props.onFriendClick(props.friend)), mouseenter: (() => props.toggleInEntity()), mouseleave: (() => props.toggleInEntity())}}>
+        events={{click: (() => props.onFriendClick(props.friend)), mouseenter: props.toggleInEntity, mouseleave: props.toggleInEntity}}>
       </Entity>
       <Entity text={{value: props.friend.profile.first + playing, align: 'center', color: 'white', width: 6}} position={{y: -1.8}}/>
     </Entity>

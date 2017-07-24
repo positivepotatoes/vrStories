@@ -5,7 +5,7 @@ import Login from './components/Login.jsx';
 import Home from './components/Home.jsx';
 import FriendList from './components/FriendList.jsx';
 import MediaFrame from './components/MediaFrame.jsx';
-import { Header, Container } from 'semantic-ui-react';
+import { Header, Container, Segment, Grid, Button } from 'semantic-ui-react';
 
 class App extends React.Component {
   constructor(props) {
@@ -14,6 +14,7 @@ class App extends React.Component {
       authenticated: false,
     };
     this.verify = this.verify.bind(this);
+    
   }
 
   componentDidMount() {
@@ -35,12 +36,21 @@ class App extends React.Component {
     return (
       <div>
         {!authenticated
-          ? <div>
-            <Container textAlign='center'>
-              <Header size='large' >VR Stories</Header>
-              <a href='/login'>Login with Facebook</a>
-            </Container>
-          </div>
+          ? <Grid>
+            <Grid.Row color='black' id='login'>
+              <Button href='/login' floated='left'>Login with Facebook</Button>
+            </Grid.Row>
+
+            <Grid.Row color='black' id='banner' textAlign='center'> 
+              <Header inverted >
+                  VRStories
+              </Header>
+            </Grid.Row>
+
+            <Grid.Row id='tag'>
+                GitHub: positivepotatoes 
+            </Grid.Row>
+          </Grid>
           : <Home/>
         }
       </div>
