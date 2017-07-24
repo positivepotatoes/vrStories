@@ -126,7 +126,7 @@ class Home extends React.Component {
             <VRStories 
               user={user}
               friends={friends}
-              autoPlayNext={true}
+              autoPlayNext={false}
               autoPlayStart={false}
               splashScreen={'/splash.jpg'}
               defaultDuration={5000}

@@ -157,6 +157,8 @@ class VRStories extends React.Component {
       } else {
         nextstate(0);
       }
+    } else {
+      this.setSplashScreen();
     }
   }
 
