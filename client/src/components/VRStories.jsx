@@ -27,6 +27,10 @@ class VRStories extends React.Component {
       currentStory: {},
       currentStories: [],
       storyInTimeout: null,
+      storyStoryDuration: {
+        current: 1,
+        total: 10
+      },
       lastClickedFriendIndex: null,
       // USE FOR MOCK DATA
       // friends: mockData.friends,
@@ -64,17 +68,22 @@ class VRStories extends React.Component {
     });
   }
 
-  getDurations() {
-    let totalDuration = 0;
-    this.state.currentStories.forEach(story => {
-      var story = document.getElementById(story.id + ',' + story.index);
-      if (!story.duration) {
-        totalDuration += this.state.defaultDuration / 1000;
-      } else {
-        totalDuration += story.duration;
+  setProgressIndicator() {
+    const getDuration = (n) => {
+      let totalDuration = 0;
+      for (var i = 0; i < n; i++) {
+        let storyObject = this.state.currentStories[i];
+        let storyDom = document.getElementById(storyObject.id + ',' + storyObject.index);
+        if (!storyDom.duration) {
+          totalDuration += this.state.defaultDuration / 1000;
+        } else {
+          totalDuration += storyDom.duration;
+        }
       }
-    });
-    console.log('duration', totalDuration);
+      return totalDuration;
+    };
+
+    console.log('duration', getDuration(this.state.currentStories.length) );
   }
 
   pauseStories() {
@@ -117,7 +126,7 @@ class VRStories extends React.Component {
       setStoryTimeout(story.duration * 1000);
     }
 
-    this.getDurations();
+    this.setProgressIndicator();
   }
 
   // THIS FUNCTION WILL UPDATE currentStory TO BE THE NEXT STORY
