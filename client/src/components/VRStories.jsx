@@ -83,7 +83,7 @@ class VRStories extends React.Component {
       return totalDuration;
     };
 
-    console.log('duration', getDuration(this.state.currentStories.length) );
+    // console.log('duration', getDuration(this.state.currentStories.length) );
   }
 
   pauseStories() {
@@ -113,6 +113,7 @@ class VRStories extends React.Component {
     let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
     const setStoryTimeout = (duration) => {
       this.state.storyInTimeout = setTimeout(function() {
+        console.log('timeout getting called');
         that.playNext();
       }, duration);
     };
@@ -120,10 +121,19 @@ class VRStories extends React.Component {
     this.pauseStories();
 
     if (this.state.currentStory.type.slice(0, 5) === 'image') {
-      setStoryTimeout(this.state.defaultDuration);
+      console.log('playing image');
+      // setStoryTimeout(this.state.defaultDuration);
+      this.state.storyInTimeout = setTimeout(function() {
+        console.log('timeout getting called');
+        that.playNext();
+      }, this.state.defaultDuration);
     } else {
       story.play();
-      setStoryTimeout(story.duration * 1000);
+      this.state.storyInTimeout = setTimeout(function() {
+        console.log('timeout getting called');
+        that.playNext();
+      }, story.duration * 1000);
+      // setStoryTimeout(story.duration * 1000);
     }
 
     this.setProgressIndicator();
@@ -133,6 +143,8 @@ class VRStories extends React.Component {
   playNextStoryOfFriend() {
     const { currentStories, currentStory } = this.state;
     let nextStoryIndex = currentStory.index + 1;
+
+    console.log('next stoory to play', currentStories[nextStoryIndex]);
     
     if (nextStoryIndex < currentStories.length) {
       this.setState({
@@ -146,7 +158,6 @@ class VRStories extends React.Component {
     const { friends, autoPlayNext, currentStories, currentStory, lastClickedFriendIndex, splashScreen } = this.state;
     let nextStoryIndex = currentStory.index + 1;
     let nextFriendIndex = currentStory.id + 1;
-
     this.playNextStoryOfFriend();
 
     if (autoPlayNext && nextStoryIndex === currentStories.length) {
