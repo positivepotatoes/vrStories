@@ -13,7 +13,8 @@ const VRProfile = props => {
 
 
   if (props.currentStory.id === props.friend.profile.id) {
-    playing = ` PLAYING ${props.currentStoriesDuration.current} out of ${props.currentStoriesDuration.total}`;
+    // console.log(typeof props.currentStoriesDuration.current.toFixed(2), 'TETE')
+    playing = ` PLAYING ${props.currentStoriesDuration.current.toFixed(2)} out of ${props.currentStoriesDuration.total.toFixed(2)}`;
     picRadius = 1.2;
   }
 

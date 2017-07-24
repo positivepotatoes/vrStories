@@ -28,7 +28,10 @@ class VRStories extends React.Component {
       currentStories: [],
       storyInTimeout: null,
       durationInTimeout: null,
-      currentStoriesDuration: {},
+      currentStoriesDuration: {
+        current: 0,
+        total: 0
+      },
       lastClickedFriendIndex: null,
       // USE FOR MOCK DATA
       // friends: mockData.friends,
@@ -71,11 +74,11 @@ class VRStories extends React.Component {
     this.state.durationInTimeout = setInterval(() => {
       that.setState({
         currentStoriesDuration: {
-          current: that.state.currentStoriesDuration.current + 1,
+          current: that.state.currentStoriesDuration.current + .1,
           total: that.state.currentStoriesDuration.total
         }
       });
-    }, 1000);
+    }, 100);
   }
 
   setInitialStoriesDuration() {
