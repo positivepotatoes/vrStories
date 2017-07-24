@@ -44,6 +44,7 @@ class VRStories extends React.Component {
   }
 
   componentWillMount() {
+    this.removeFriendsWithNoStories();
     this.setId(this.state.friends);
     this.setId([this.state.user], true);
     this.setAutoPlayOrSplash();
@@ -54,6 +55,12 @@ class VRStories extends React.Component {
   toggleInEntity() {
     this.setState({
       inEntity: !this.state.inEntity
+    });
+  }
+
+  removeFriendsWithNoStories() {
+    this.setState({
+      friends: this.state.friends.filter(friend => friend.stories.length > 1)
     });
   }
 
@@ -130,6 +137,10 @@ class VRStories extends React.Component {
 
   // THIS NEEDS TO BE INVOKED EVERYTIME THE STATE OF THE CURRENT STORY IS CHANGED
   invokePlay() {
+    if (this.state.currentStories.length === 0) {
+      this.playNext();
+    }
+
     let that = this;
     let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
     const setStoryTimeout = (duration) => {

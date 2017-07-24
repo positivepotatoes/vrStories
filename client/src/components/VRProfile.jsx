@@ -21,7 +21,7 @@ const VRProfile = props => {
     let progressRadius = .1;
     let progress = ratioCompleted * picRadius * 2;
     let progressXPos = -picRadius + (picRadius * ratioCompleted);
-    let progressYPos = -picRadius * 1.4;
+    let progressYPos = -picRadius * 1.45;
     
     progressBar = 
       <Entity 
@@ -37,7 +37,6 @@ const VRProfile = props => {
         material={{color: '#b2b2b2', opacity: .3}}
         position={{y: progressYPos}}
       />;
-
   }
 
 
