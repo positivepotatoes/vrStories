@@ -42,7 +42,9 @@ class VRProfiles extends React.Component {
     return (
 
       <Entity>
-      
+        <a-entity light="type: directional; color: #FFF; intensity: 1" position="0 1 1"></a-entity>
+
+        
         <Entity
           geometry={{primitive: 'box', width: 2, height: 2, depth: 0.15}}
           material={{color: 'white', opacity: 0.5}}
