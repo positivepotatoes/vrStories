@@ -121,19 +121,18 @@ class VRStories extends React.Component {
     this.pauseStories();
 
     if (this.state.currentStory.type.slice(0, 5) === 'image') {
-      console.log('playing image');
-      // setStoryTimeout(this.state.defaultDuration);
-      this.state.storyInTimeout = setTimeout(function() {
-        console.log('timeout getting called');
-        that.playNext();
-      }, this.state.defaultDuration);
+      setStoryTimeout(this.state.defaultDuration);
+      // this.state.storyInTimeout = setTimeout(function() {
+      //   console.log('timeout getting called');
+      //   that.playNext();
+      // }, this.state.defaultDuration);
     } else {
       story.play();
-      this.state.storyInTimeout = setTimeout(function() {
-        console.log('timeout getting called');
-        that.playNext();
-      }, story.duration * 1000);
-      // setStoryTimeout(story.duration * 1000);
+      // this.state.storyInTimeout = setTimeout(function() {
+      //   console.log('timeout getting called');
+      //   that.playNext();
+      // }, story.duration * 1000);
+      setStoryTimeout(story.duration * 1000);
     }
 
     this.setProgressIndicator();
@@ -143,8 +142,6 @@ class VRStories extends React.Component {
   playNextStoryOfFriend() {
     const { currentStories, currentStory } = this.state;
     let nextStoryIndex = currentStory.index + 1;
-
-    console.log('next stoory to play', currentStories[nextStoryIndex]);
     
     if (nextStoryIndex < currentStories.length) {
       this.setState({
@@ -158,9 +155,10 @@ class VRStories extends React.Component {
     const { friends, autoPlayNext, currentStories, currentStory, lastClickedFriendIndex, splashScreen } = this.state;
     let nextStoryIndex = currentStory.index + 1;
     let nextFriendIndex = currentStory.id + 1;
+    let reachedLastStory = nextStoryIndex === currentStories.length;
     this.playNextStoryOfFriend();
 
-    if (autoPlayNext && nextStoryIndex === currentStories.length) {
+    if (autoPlayNext && reachedLastStory) {
       let nextstate = (i) => {
         if (lastClickedFriendIndex === i) {
           this.setSplashScreen();
@@ -177,7 +175,7 @@ class VRStories extends React.Component {
       } else {
         nextstate(0);
       }
-    } else {
+    } else if (!autoPlayNext && reachedLastStory) {
       this.setSplashScreen();
     }
   }
@@ -229,7 +227,7 @@ class VRStories extends React.Component {
         );
       } else {
         return (
-          <video id={id} key={i} src={story.src} crossOrigin="anonymous" onEnded={() => this.props.playNext()}/>
+          <video id={id} key={i} src={story.src} crossOrigin="anonymous"/>
         );
       }
     });

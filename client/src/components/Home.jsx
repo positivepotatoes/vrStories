@@ -129,7 +129,7 @@ class Home extends React.Component {
               autoPlayNext={true}
               autoPlayStart={false}
               splashScreen={'/splash.jpg'}
-              defaultDuration={5000}
+              defaultDuration={1000}
               assetsCallback={this.assetsCallback.bind(this)}
               exitCallback={this.toggleInVRMode.bind(this)}
             />
