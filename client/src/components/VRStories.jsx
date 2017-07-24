@@ -27,10 +27,8 @@ class VRStories extends React.Component {
       currentStory: {},
       currentStories: [],
       storyInTimeout: null,
-      storyStoryDuration: {
-        current: 1,
-        total: 10
-      },
+      durationInTimeout: null,
+      currentStoriesDuration: {},
       lastClickedFriendIndex: null,
       // USE FOR MOCK DATA
       // friends: mockData.friends,
@@ -68,7 +66,19 @@ class VRStories extends React.Component {
     });
   }
 
-  setProgressIndicator() {
+  countStoriesDuration() {
+    let that = this;
+    this.state.durationInTimeout = setInterval(() => {
+      that.setState({
+        currentStoriesDuration: {
+          current: that.state.currentStoriesDuration.current + 1,
+          total: that.state.currentStoriesDuration.total
+        }
+      });
+    }, 1000);
+  }
+
+  setInitialStoriesDuration() {
     const getDuration = (n) => {
       let totalDuration = 0;
       for (var i = 0; i < n; i++) {
@@ -83,16 +93,20 @@ class VRStories extends React.Component {
       return totalDuration;
     };
 
-    let totalDuration = getDuration(this.state.currentStories.length);
-    let startingDuration = getDuration(this.state.currentStory.index);
-
-    console.log('duration', startingDuration, ' out of ', totalDuration);
+    this.setState({
+      currentStoriesDuration: {
+        current: getDuration(this.state.currentStory.index),
+        total: getDuration(this.state.currentStories.length)
+      }
+    });
+    this.countStoriesDuration();
   }
 
   pauseStories() {
     let stories = Array.prototype.slice.call(document.getElementsByTagName('video'));
     stories.forEach(story => story.pause());
     clearTimeout(this.state.storyInTimeout);
+    clearInterval(this.state.durationInTimeout);
   }
 
   setSplashScreen() {
@@ -116,7 +130,6 @@ class VRStories extends React.Component {
     let story = document.getElementById(this.state.currentStory.id + ',' + this.state.currentStory.index);
     const setStoryTimeout = (duration) => {
       this.state.storyInTimeout = setTimeout(function() {
-        console.log('timeout getting called');
         that.playNext();
       }, duration);
     };
@@ -130,7 +143,7 @@ class VRStories extends React.Component {
       setStoryTimeout(story.duration * 1000);
     }
 
-    this.setProgressIndicator();
+    this.setInitialStoriesDuration();
   }
 
   // THIS FUNCTION WILL UPDATE currentStory TO BE THE NEXT STORY
@@ -232,7 +245,7 @@ class VRStories extends React.Component {
   }
 
   render () {
-    const { currentStory, friends, user, splashScreen } = this.state;
+    const { currentStory, friends, user, splashScreen, currentStoriesDuration } = this.state;
 
     return (
       <Entity>
@@ -241,6 +254,7 @@ class VRStories extends React.Component {
           currentStory={currentStory}
           onFriendClick={this.onFriendClick}
           toggleInEntity={this.toggleInEntity}
+          currentStoriesDuration={currentStoriesDuration}
         />
         <VRPrimitive currentStory={currentStory}/>
 

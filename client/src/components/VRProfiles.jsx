@@ -77,6 +77,7 @@ class VRProfiles extends React.Component {
                 toggleInEntity={this.props.toggleInEntity}
                 currentStory={this.props.currentStory}
                 onFriendClick={this.props.onFriendClick}
+                currentStoriesDuration={this.props.currentStoriesDuration}
               />
             );
           })
