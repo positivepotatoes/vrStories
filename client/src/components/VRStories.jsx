@@ -6,6 +6,7 @@ import VRAssets from './VRAssets.jsx';
 import VRPrimitive from './VRPrimitive.jsx';
 import VRExit from './VRExit.jsx';
 import mockData from './mockData.js';
+import 'aframe-animation-component';
 
 class VRStories extends React.Component {
   constructor(props) {
