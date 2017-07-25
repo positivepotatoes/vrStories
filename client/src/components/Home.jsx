@@ -2,12 +2,12 @@ import React from 'react';
 import axios from 'axios';
 import 'aframe';
 import 'aframe-mouse-cursor-component';
-import { Entity, Scene, Options } from 'aframe-react';
 import Dropzone from 'react-dropzone';
 import MediaFrame from './MediaFrame.jsx';
 import VRStories from './VRStories.jsx';
 import VRCursor from './VRCursor.jsx';
 // import VRAssets from './VRAssets.jsx';
+// import VRScene from 'aframe-react-stories';
 
 class Home extends React.Component {
   constructor(props) {
@@ -118,7 +118,7 @@ class Home extends React.Component {
     if (this.state.friends) {
       if (this.state.inVRMode) {
         scene = 
-          <Scene vr-mode-ui="enabled: true">
+          <a-scene vr-mode-ui="enabled: true">
             <a-assets>
               {this.state.assets}
             </a-assets>
@@ -134,7 +134,7 @@ class Home extends React.Component {
               exitCallback={this.toggleInVRMode.bind(this)}
             />
             <VRCursor/>
-          </Scene>;
+          </a-scene>;
       } else {
         scene = 
           <div>

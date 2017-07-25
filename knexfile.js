@@ -16,4 +16,4 @@ let knex = {
   }
 };
 
-knex.connection ? module.exports = knex :  module.exports = config['knex'];
+knex.connection ? module.exports = knex : module.exports = config['knex'];
