@@ -112,7 +112,7 @@ module.exports.getFriends = (req, res) => {
         });
         friends.push({ 'profile': { 'first': profile.first, 'last': profile.last, 'display': profile.display, 'img_url': profile.img_url }, 'stories': stories });
       });
-      let send = { 'user': user, 'friends': friends };
+      let send = { 'user': user, 'friends': friends, 'profile_id': friendList.id };
       res.status(200).send(send);
     })
     .error(err => {

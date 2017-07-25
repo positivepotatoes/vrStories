@@ -18,7 +18,9 @@ class Home extends React.Component {
       // States below are used for react-dropzone
       accept: '',
       files: [],
-      dropzoneActive: false
+      dropzoneActive: false,
+      //  for view count:
+      dBProfileId: null
     };
     this.fetch = this.fetch.bind(this);
   }
@@ -35,7 +37,8 @@ class Home extends React.Component {
             .then(response => {
               this.setState({
                 user: response.data.user,
-                friends: response.data.friends
+                friends: response.data.friends,
+                dBProfileId: response.data.profile_id
               });
             });
         });
@@ -83,6 +86,10 @@ class Home extends React.Component {
     });
   }
 
+  saveViewCountToDB() {
+    console.log('invoked save views to DB!');
+  }
+
   render() {
     const { user, friends, accept, files, dropzoneActive } = this.state;
 
@@ -115,12 +122,12 @@ class Home extends React.Component {
     let scene;
     if (this.state.friends) {
       if (this.state.inVRMode) {
-        scene = 
+        scene =
           <a-scene vr-mode-ui="enabled: true">
             <a-assets>
               {this.state.assets}
             </a-assets>
-            <VRStories 
+            <VRStories
               user={user}
               friends={friends}
               autoPlayNext={true}
@@ -129,13 +136,14 @@ class Home extends React.Component {
               defaultDuration={6000}
               assetsCallback={this.assetsCallback.bind(this)}
               exitCallback={this.toggleInVRMode.bind(this)}
-            /> 
+              viewCountCallback={this.saveViewCountToDB.bind(this)}
+            />
             <VRCursor/>
           </a-scene>;
       } else {
-        scene = 
+        scene =
           <div>
-            <MediaFrame 
+            <MediaFrame
               user={user}
               friends={friends}
               autoPlayNext={true}
