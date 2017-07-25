@@ -4,10 +4,8 @@ import 'aframe';
 import 'aframe-mouse-cursor-component';
 import Dropzone from 'react-dropzone';
 import MediaFrame from './MediaFrame.jsx';
-import VRStories from './VRStories.jsx';
 import VRCursor from './VRCursor.jsx';
-// import VRAssets from './VRAssets.jsx';
-// import VRScene from 'aframe-react-stories';
+import VRStories from 'aframe-react-stories';
 
 class Home extends React.Component {
   constructor(props) {
@@ -122,7 +120,6 @@ class Home extends React.Component {
             <a-assets>
               {this.state.assets}
             </a-assets>
-
             <VRStories 
               user={user}
               friends={friends}
@@ -132,7 +129,7 @@ class Home extends React.Component {
               defaultDuration={6000}
               assetsCallback={this.assetsCallback.bind(this)}
               exitCallback={this.toggleInVRMode.bind(this)}
-            />
+            /> 
             <VRCursor/>
           </a-scene>;
       } else {
