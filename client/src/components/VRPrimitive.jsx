@@ -12,9 +12,9 @@ const VRPrimitive = (props) => {
   }
 
   return (
-    <Entity>
+    <a-entity>
       {primitive}
-    </Entity>
+    </a-entity>
   );
 };
 
