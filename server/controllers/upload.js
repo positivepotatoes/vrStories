@@ -1,18 +1,14 @@
-const AWS = require('aws-sdk');
-const AWSconfig = require('config')['AWS'];
 const models = require('../../db/models');
-
-AWS.config.update({
-  accessKeyId: AWSconfig.s3.accessKeyId,
-  secretAccessKey: AWSconfig.s3.secretAccessKey
-});
-
-let s3 = new AWS.S3();
+const s3 = require('../middleware/s3.js').s3;
 
 module.exports.save = (req, res) => {
   var key = Date.now().toString();
   var userId = req.body.userId;
-  var awsLink = 'https://s3-us-west-1.amazonaws.com/vrstories/' + key;
+  if (req.files[0].mimetype === 'image/jpeg') {
+    var awsLink = `http://localhost:3000/api/stories/story/${key}` || `https://vrstoriesstaging.herokuapp.com/api/stories/story/${key}` || `https://vrstories.herokuapp.com/api/stories/story/${key}`;
+  } else if (req.files[0].mimetype === 'video/mp4') {
+    var awsLink = 'https://s3-us-west-1.amazonaws.com/vrstories/' + key;
+  }
   // send aws link & userId to db
   models.Story.forge({ profile_id: userId, aws_link: awsLink, metadata: req.files[0].mimetype })
     .save();
