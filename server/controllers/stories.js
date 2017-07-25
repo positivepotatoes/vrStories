@@ -1,4 +1,5 @@
 const models = require('../../db/models');
+const s3 = require('../middleware/s3.js').s3;
 
 module.exports.getAll = (req, res) => {
   console.log(`AYE COREY, MAKE A DB QUERY TO GET ALL STORIES RELATED TO USER ID ${req.params.id}`);
@@ -18,4 +19,15 @@ module.exports.getLatestStory = (req, res) => {
     .then(stories => {
       res.status(200).send(stories.last().attributes.aws_link);
     });
+};
+
+module.exports.getStoryByKey = (req, res) => {
+  let params = { Bucket: 'vrstories', Key: req.params.id };
+  s3.getObject(params, (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(data.Body);
+    }
+  });
 };
