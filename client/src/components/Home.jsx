@@ -101,14 +101,21 @@ class Home extends React.Component {
       transform: 'scale(1.1)'
     };
 
-    let blur = {};
+    let blur = {
+      position: 'absolute',
+      height: '100%',
+      width: '100%'
+    };
     if (dropzoneActive) {
       blur = {
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
         WebkitFilter: 'blur(3px)',
         MozFilter: 'blur(3px)',
         OFilter: 'blur(3px)',
         msFilter: 'blur(3px)',
-        filter: 'blur(3px)'
+        filter: 'blur(3px)',
       };
     }
 
