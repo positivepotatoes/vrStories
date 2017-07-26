@@ -15,6 +15,7 @@
     "aframe-mouse-cursor-component": "^0.5.2",
     "aframe-particle-system-component": "^1.0.10",
     "aframe-react": "^4.3.0",
+    "aframe-react-stories": "^1.0.0",
     "aws-sdk": "^2.85.0",
     "axios": "^0.16.2",
     "babel-core": "^6.24.1",

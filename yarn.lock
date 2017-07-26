@@ -55,6 +55,12 @@ aframe-particle-system-component@^1.0.10:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/aframe-particle-system-component/-/aframe-particle-system-component-1.0.10.tgz#dc2174072f4ef7d1757a1bfd3d86be4e8768bb30"
 
+aframe-react-stories@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/aframe-react-stories/-/aframe-react-stories-1.0.0.tgz#ce14900f39453b72daf6caf32beedcd646ab43d4"
+  dependencies:
+    react "^15.5.4"
+
 aframe-react@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/aframe-react/-/aframe-react-4.3.0.tgz#43eba68be4a1e88830aac404e90ac033945fbf54"
@@ -4413,7 +4419,7 @@ react-router@^4.1.1:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react@^15.6.1:
+react@^15.5.4, react@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
   dependencies:
