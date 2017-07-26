@@ -3,3 +3,4 @@ module.exports.auth = require('./auth');
 module.exports.profiles = require('./profiles');
 module.exports.stories = require('./stories');
 module.exports.upload = require('./upload');
+module.exports.views = require('./views');

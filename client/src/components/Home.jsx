@@ -86,8 +86,9 @@ class Home extends React.Component {
     });
   }
 
-  saveViewCountToDB() {
-    console.log('invoked save views to DB!');
+  saveViewCountToDB(storyId) {
+    console.log('invoked save views to DB with story id:', storyId);
+    axios.post('api/views/addview', { storyId: storyId, profileId: this.state.dBProfileId });
   }
 
   render() {

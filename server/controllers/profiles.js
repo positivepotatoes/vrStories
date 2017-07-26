@@ -108,7 +108,7 @@ module.exports.getFriends = (req, res) => {
       friendList.friends.forEach((profile) => {
         let stories = [];
         profile.stories.forEach((story) => {
-          stories.push({ 'type': story.metadata, 'src': story.aws_link });
+          stories.push({ 'type': story.metadata, 'src': story.aws_link, 'storyDBId': story.id });
         });
         friends.push({ 'profile': { 'first': profile.first, 'last': profile.last, 'display': profile.display, 'img_url': profile.img_url }, 'stories': stories });
       });
