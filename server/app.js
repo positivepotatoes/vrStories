@@ -25,6 +25,7 @@ app.use('/api', routes.api);
 app.use('/api/profiles', routes.profiles);
 app.use('/api/stories', routes.stories);
 app.use('/api/upload', routes.upload);
+app.use('/api/views', routes.views);
 
 // ADDED BY DAVID WILL PROBABLY REMOVE, THIS IS FOR REACT HASH ROUTER BUT LEAVING FOR NOW JUST IN CASE
 // app.get('*', (req, res) => {
