@@ -7,14 +7,16 @@ module.exports.addView = (req, res) => {
         models.View.forge({ profile_id: req.body.profileId, story_id: req.body.storyId })
           .save();
       }
-      res.end();
     });
 
   models.Profile.where({ id: req.body.profileId })
-  // .increment('views', 1)
     .fetch()
     .then(profile => {
       let currentViewCount = profile.attributes.views;
-      profile.views = currentViewCount++;
+      models.Profile.where({ id: req.body.profileId })
+        .save({ views: currentViewCount + 1 }, {patch: true})
+        .then(() => {
+          res.end();
+        });
     });
 };
