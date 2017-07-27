@@ -3,16 +3,8 @@
 
 
 "@tweenjs/tween.js@^16.8.0":
-<<<<<<< HEAD
-  version "16.10.0"
-  resolved "https://registry.yarnpkg.com/@tweenjs/tween.js/-/tween.js-16.10.0.tgz#0671ed1134e5b8e8227a978fd5c07b7332a44538"
-||||||| merged common ancestors
-  version "16.8.0"
-  resolved "https://registry.yarnpkg.com/@tweenjs/tween.js/-/tween.js-16.8.0.tgz#5c43965901fd9554b270e21251f4d18ee49069d3"
-=======
   version "16.11.0"
   resolved "https://registry.yarnpkg.com/@tweenjs/tween.js/-/tween.js-16.11.0.tgz#6e7a8a3d6c78a057ecd5605087930406d4e05800"
->>>>>>> 5b24a6d6f572c2ecd1bea16806e187118e98cba9
 
 abbrev@1:
   version "1.1.0"
