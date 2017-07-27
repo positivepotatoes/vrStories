@@ -1,5 +1,5 @@
 # Project specific
-config/development.json
+# config/development.json
 config/staging.json
 config/test.json
 
@@ -35,7 +35,3 @@ public/dist/bundle.js
 # see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
 node_modules/
 bower_components/
-
-#docker
-dockerfile
-
