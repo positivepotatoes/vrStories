@@ -9,4 +9,12 @@ module.exports.addView = (req, res) => {
       }
       res.end();
     });
+
+  models.Profile.where({ id: req.body.profileId })
+  // .increment('views', 1)
+    .fetch()
+    .then(profile => {
+      let currentViewCount = profile.attributes.views;
+      profile.views = currentViewCount++;
+    });
 };
