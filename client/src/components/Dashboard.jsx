@@ -6,7 +6,7 @@ class Dashboard extends React.Component {
     super(props);
     this.state = {
       mostActiveUser: null,
-      mostPopularStory: null
+      mostPopularStoryUser: null
     };
     this.fetch = this.fetch.bind(this);
   }
@@ -20,15 +20,15 @@ class Dashboard extends React.Component {
     axios.get('/api/dashboard/mostactiveuser')
       .then(response => {
         context.setState({
-          mostActiveUser: response.data.first + response.data.last
+          mostActiveUser: response.data.first + ' ' + response.data.last
         });
       });
-    // axios.get('/api/dashboard/mos')
-    //   .then(response => {
-    //     context.setState({
-    //       mostPopularStory: response.data
-    //     })
-    //   });
+    axios.get('/api/dashboard/mostpopstoryuser')
+      .then(response => {
+        context.setState({
+          mostPopularStoryUser: response.data.first + ' ' + response.data.last
+        });
+      });
   }
 
   render() {
@@ -37,7 +37,7 @@ class Dashboard extends React.Component {
       <div>
         <h1>🚀 Dashboard 🚀</h1>
         <h4>User that viewed the most stories: {this.state.mostActiveUser}</h4>
-        <h4>💥 Most Popular Story: {this.state.mostPopularStory}💥</h4>
+        <h4>User with the Most Popular Story: 💥 {this.state.mostPopularStoryUser} 💥</h4>
       </div>
     );
   }
