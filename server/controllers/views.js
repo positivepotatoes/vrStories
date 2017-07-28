@@ -1,6 +1,7 @@
 const models = require('../../db/models');
 
 module.exports.addView = (req, res) => {
+  console.log('req.body:', req.body);
   models.View.where({ profile_id: req.body.profileId, story_id: req.body.storyId }).fetch()
     .then(view => {
       if (view === null) {
@@ -14,6 +15,17 @@ module.exports.addView = (req, res) => {
     .then(profile => {
       let currentViewCount = profile.attributes.views;
       models.Profile.where({ id: req.body.profileId })
+        .save({ views: currentViewCount + 1 }, {patch: true})
+        .then(() => {
+          res.end();
+        });
+    });
+
+  models.Story.where({ id: req.body.storyId })
+    .fetch()
+    .then(story => {
+      let currentViewCount = story.attributes.views;
+      models.Story.where({ id: req.body.storyId })
         .save({ views: currentViewCount + 1 }, {patch: true})
         .then(() => {
           res.end();
