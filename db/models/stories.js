@@ -6,10 +6,6 @@ const Story = db.Model.extend({
   profile: function() {
     return this.belongsTo(Profile, 'profile_id');
   }
-  // ,
-  // views: function() {
-  //   return this.hasMany('View');
-  // }
 });
 
 module.exports = db.model('Story', Story);
