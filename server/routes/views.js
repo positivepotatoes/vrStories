@@ -7,6 +7,6 @@ router.route('/addview')
   .post(ViewController.addView);
 
 router.route('/ownstoryviews/:id')
-  .get(ViewController.getOwnStoryViews)
+  .get(ViewController.getOwnStoryViews);
 
 module.exports = router;

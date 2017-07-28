@@ -35,15 +35,12 @@ module.exports.addView = (req, res) => {
 module.exports.getOwnStoryViews = (req, res) => {
   models.View.where({ story_id: req.params.id })
     .fetchAll({ withRelated: ['profile'] })
-    // .fetchAll()
     .then(response => {
-      // console.log('response in getOwnStoryViews:', response);
       let viewers = response.toJSON();
-      console.log('JSONresponse in getOwnStoryViews:', viewers);
       let namesToSend = [];
       viewers.forEach(viewer => {
-        namesToSend
-      })
-      res.end();
-    })
-}
+        namesToSend.push(viewer.profile.display);
+      });
+      res.send(namesToSend);
+    });
+};
