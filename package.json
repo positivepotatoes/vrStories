@@ -4,7 +4,8 @@
   "scripts": {
     "dev-start": "nodemon server/index.js",
     "start": "node server/index.js",
-    "build": "webpack --watch",
+    "build": "webpack -p --config ./webpack.config.babel.js --progress",
+    "dev-build": "webpack --watch",
     "heroku-postbuild": "webpack -p --config ./webpack.config.babel.js --progress"
   },
   "author": "Hack Reactor",
