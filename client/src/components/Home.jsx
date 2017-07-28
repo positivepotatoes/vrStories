@@ -95,6 +95,8 @@ class Home extends React.Component {
 
   ownStoryViewsCallback() {
     console.log('ownStoryViewsCallback invoked!');
+    // get people who viewed a story with given id:
+    axios.get('/api/views/ownstoryviews/:id')
   }
 
   render() {
