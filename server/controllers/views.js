@@ -1,7 +1,6 @@
 const models = require('../../db/models');
 
 module.exports.addView = (req, res) => {
-  console.log('req.body:', req.body);
   models.View.where({ profile_id: req.body.profileId, story_id: req.body.storyId }).fetch()
     .then(view => {
       if (view === null) {
@@ -30,5 +29,18 @@ module.exports.addView = (req, res) => {
         .then(() => {
           res.end();
         });
+    });
+};
+
+module.exports.getOwnStoryViews = (req, res) => {
+  models.View.where({ story_id: req.params.id })
+    .fetchAll({ withRelated: ['profile'] })
+    .then(response => {
+      let viewers = response.toJSON();
+      let namesToSend = [];
+      viewers.forEach(viewer => {
+        namesToSend.push(viewer.profile.display);
+      });
+      res.send(namesToSend);
     });
 };
