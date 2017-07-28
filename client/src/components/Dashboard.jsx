@@ -36,7 +36,7 @@ class Dashboard extends React.Component {
     return (
       <div>
         <h1>🚀 Dashboard 🚀</h1>
-        <h4>User viewed the most stories: {this.state.mostActiveUser}</h4>
+        <h4>User that viewed the most stories: {this.state.mostActiveUser}</h4>
         <h4>💥 Most Popular Story: {this.state.mostPopularStory}💥</h4>
       </div>
     );
