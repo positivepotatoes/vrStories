@@ -6,6 +6,7 @@ import Dropzone from 'react-dropzone';
 import MediaFrame from './MediaFrame.jsx';
 import VRCursor from './VRCursor.jsx';
 import VRStories from 'aframe-react-stories';
+import 'aframe-animation-component';
 
 class Home extends React.Component {
   constructor(props) {
