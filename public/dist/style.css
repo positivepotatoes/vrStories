@@ -1,0 +1,25 @@
+/*.abc {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border: 5px solid red;
+}*/
+
+#login {
+  padding: 3vh;
+}
+
+#banner {
+  height: 40vh;
+  font-size: 20vh;
+  padding-top: 18vh;
+}
+
+#tag {
+  padding-left: 3vh;
+  font-size: 2vh;
+  /*text-shadow: 2px 2px #f2f2f2;*/
+  color: #7c7c7c;
+}
