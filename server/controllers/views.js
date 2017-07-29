@@ -33,6 +33,7 @@ module.exports.addView = (req, res) => {
 };
 
 module.exports.getOwnStoryViews = (req, res) => {
+  console.log('req.params.id:', req.params.id);
   models.View.where({ story_id: req.params.id })
     .fetchAll({ withRelated: ['profile'] })
     .then(response => {

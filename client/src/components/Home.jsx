@@ -23,7 +23,8 @@ class Home extends React.Component {
       dropzoneActive: false,
       //  for view count:
       dBProfileId: null,
-      viewers: []
+      viewers: [],
+      storyDBId: null
     };
     this.fetch = this.fetch.bind(this);
   }
@@ -94,16 +95,12 @@ class Home extends React.Component {
     axios.post('api/views/addview', { storyId: storyId, profileId: this.state.dBProfileId });
   }
 
-  ownStoryViewsCallback(profileId) {
-    console.log('ownStoryViewsCallback invoked!');
-    // get people who viewed a story with given id:
-    axios.get(`/api/views/ownstoryviews/${profileId}`)
-      .then(response => {
-        this.setState({
-          viewers: response.data,
-          viewsButton: true
-        });
-      });
+  ownStoryViewsCallback(storyId) {
+    console.log('ownStoryViewsCallback invoked with story id:', storyId);
+    this.setState({
+      viewsButton: true,
+      storyDBId: storyId
+    });
   }
 
   render() {
@@ -150,7 +147,7 @@ class Home extends React.Component {
             <a-assets>
               {this.state.assets}
             </a-assets>
-            <VRViewsButton viewers={this.state.viewers}/>
+            {this.state.viewsButton && <VRViewsButton storyId={this.state.storyDBId} viewers={this.state.viewers}/>}
             <VRStories
               user={user}
               friends={friends}
