@@ -11,25 +11,25 @@
   },
 
   "redis": {
-    "connection": "process.env.REDIS_URL"
+    "connection": "REDIS_URL"
   },
 
   "AWS": {
     "s3" : { 
-      "accessKeyId" : "process.env.S3_ACCESS_KEY_ID",
-      "secretAccessKey": "process.env.S3_SECRET_ACCESS_KEY"
+      "accessKeyId" : "S3_ACCESS_KEY_ID",
+      "secretAccessKey": "S3_SECRET_ACCESS_KEY"
     }
   },
 
   "postgres": {
-    "url": "process.env.POSTGRES_URL"
+    "url": "POSTGRES_URL"
   },
 
   "passport": {
     "Facebook": {
-      "clientID": "process.env.FACEBOOK_CLIENT_ID",
-      "clientSecret": "process.env.FACEBOOK_CLIENT_SECRET",
-      "callbackURL": "process.env.FACEBOOK_CALLBACK_URL"
+      "clientID": "FACEBOOK_CLIENT_ID",
+      "clientSecret": "FACEBOOK_CLIENT_SECRET",
+      "callbackURL": "FACEBOOK_CALLBACK_URL"
     }
   }
 }
