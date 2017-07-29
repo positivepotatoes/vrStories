@@ -19,4 +19,28 @@ module.exports.addView = (req, res) => {
           res.end();
         });
     });
+
+  models.Story.where({ id: req.body.storyId })
+    .fetch()
+    .then(story => {
+      let currentViewCount = story.attributes.views;
+      models.Story.where({ id: req.body.storyId })
+        .save({ views: currentViewCount + 1 }, {patch: true})
+        .then(() => {
+          res.end();
+        });
+    });
+};
+
+module.exports.getOwnStoryViews = (req, res) => {
+  models.View.where({ story_id: req.params.id })
+    .fetchAll({ withRelated: ['profile'] })
+    .then(response => {
+      let viewers = response.toJSON();
+      let namesToSend = [];
+      viewers.forEach(viewer => {
+        namesToSend.push(viewer.profile.display);
+      });
+      res.send(namesToSend);
+    });
 };
