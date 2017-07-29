@@ -7,7 +7,7 @@ import MediaFrame from './MediaFrame.jsx';
 import VRCursor from './VRCursor.jsx';
 import VRStories from 'aframe-react-stories';
 import 'aframe-animation-component';
-import VRViews from './VRViews.jsx';
+import VRViewsButton from './VRViewsButton.jsx';
 
 class Home extends React.Component {
   constructor(props) {
@@ -23,8 +23,7 @@ class Home extends React.Component {
       dropzoneActive: false,
       //  for view count:
       dBProfileId: null,
-      viewers: [],
-      views: false
+      viewers: []
     };
     this.fetch = this.fetch.bind(this);
   }
@@ -102,7 +101,7 @@ class Home extends React.Component {
       .then(response => {
         this.setState({
           viewers: response.data,
-          views: true
+          viewsButton: true
         });
       });
   }
@@ -151,7 +150,7 @@ class Home extends React.Component {
             <a-assets>
               {this.state.assets}
             </a-assets>
-            {this.state.views && <VRViews viewers={this.state.viewers}/> }
+            <VRViewsButton viewers={this.state.viewers}/>
             <VRStories
               user={user}
               friends={friends}
