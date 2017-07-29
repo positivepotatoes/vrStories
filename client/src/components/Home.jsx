@@ -23,7 +23,8 @@ class Home extends React.Component {
       dropzoneActive: false,
       //  for view count:
       dBProfileId: null,
-      viewers: []
+      viewers: [],
+      views: false
     };
     this.fetch = this.fetch.bind(this);
   }
@@ -100,7 +101,8 @@ class Home extends React.Component {
     axios.get(`/api/views/ownstoryviews/${profileId}`)
       .then(response => {
         this.setState({
-          viewers: response.data
+          viewers: response.data,
+          views: true
         });
       });
   }
@@ -149,7 +151,7 @@ class Home extends React.Component {
             <a-assets>
               {this.state.assets}
             </a-assets>
-            <VRViews viewers={this.state.viewers}/>
+            {this.state.views && <VRViews viewers={this.state.viewers}/> }
             <VRStories
               user={user}
               friends={friends}
