@@ -92,7 +92,7 @@ module.exports.getFriends = (req, res) => {
       let friendList = response.toJSON()[0];
       let userStories = [];
       friendList.stories.forEach((story) => {
-        userStories.push({ 'type': story.metadata, 'src': story.aws_link, 'uploadId': story.profile_id });
+        userStories.push({ 'type': story.metadata, 'src': story.aws_link, 'uploadId': story.profile_id, 'storyDBId': story.id });
       });
       let user = {
         profile: {
