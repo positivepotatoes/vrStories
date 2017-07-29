@@ -7,7 +7,7 @@ import MediaFrame from './MediaFrame.jsx';
 import VRCursor from './VRCursor.jsx';
 import VRStories from 'aframe-react-stories';
 import 'aframe-animation-component';
-import VRViews from './VRViews.jsx';
+import VRViewsButton from './VRViewsButton.jsx';
 
 class Home extends React.Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class Home extends React.Component {
       //  for view count:
       dBProfileId: null,
       viewers: [],
-      views: false
+      storyDBId: null
     };
     this.fetch = this.fetch.bind(this);
   }
@@ -95,16 +95,12 @@ class Home extends React.Component {
     axios.post('api/views/addview', { storyId: storyId, profileId: this.state.dBProfileId });
   }
 
-  ownStoryViewsCallback(profileId) {
-    console.log('ownStoryViewsCallback invoked!');
-    // get people who viewed a story with given id:
-    axios.get(`/api/views/ownstoryviews/${profileId}`)
-      .then(response => {
-        this.setState({
-          viewers: response.data,
-          views: true
-        });
-      });
+  ownStoryViewsCallback(storyId) {
+    console.log('ownStoryViewsCallback invoked with story id:', storyId);
+    this.setState({
+      viewsButton: true,
+      storyDBId: storyId
+    });
   }
 
   render() {
@@ -151,7 +147,7 @@ class Home extends React.Component {
             <a-assets>
               {this.state.assets}
             </a-assets>
-            {this.state.views && <VRViews viewers={this.state.viewers}/> }
+            {this.state.viewsButton && <VRViewsButton storyId={this.state.storyDBId} viewers={this.state.viewers}/>}
             <VRStories
               user={user}
               friends={friends}
