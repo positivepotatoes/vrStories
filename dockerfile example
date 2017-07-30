@@ -1,0 +1,32 @@
+FROM node:8.2
+
+# Create and set the working directory
+RUN mkdir -p /public
+WORKDIR /public
+
+# Copy the current directory contents into the container 
+COPY . /public
+
+# Define environment variable
+ENV PORT=3030
+ENV REDIS_URL=STRING
+ENV PG_URI=STRING
+ENV PG_HOST=STRING
+ENV PG_DB=STRING
+ENV PG_AUTH=STRING
+ENV PG_USER=STRING
+ENV S3_ACCESS_KEY_ID=STRING
+ENV S3_SECRET_ACCESS_KEY=STRING
+ENV FACEBOOK_CLIENT_ID=STRING
+ENV FACEBOOK_CLIENT_SECRET=STRING
+
+# Install any needed packages with yarn (should be bundled with official node image)
+RUN yarn
+RUN ["yarn", "build"]
+
+# Run when the container launches
+
+CMD ["yarn", "start"]
+
+# Make port 3030 available to the world outside this container
+EXPOSE 3030
