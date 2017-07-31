@@ -24,7 +24,8 @@ class Home extends React.Component {
       //  for view count:
       dBProfileId: null,
       viewers: [],
-      storyDBId: null
+      storyDBId: null,
+      viewsButton: false
     };
     this.fetch = this.fetch.bind(this);
   }
@@ -90,18 +91,37 @@ class Home extends React.Component {
     });
   }
 
-  saveViewCountToDB(storyId) {
-    console.log('invoked save views to DB with story id:', storyId);
-    axios.post('api/views/addview', { storyId: storyId, profileId: this.state.dBProfileId });
+  viewCountCallback(currentStory) {
+    console.log('invoked viewCountCallback with story:', currentStory);
+    if (currentStory.id === -1) {
+      console.log('own story!');
+      //  it's own story -> get viewers data
+      this.setState({
+        viewsButton: true,
+        storyDBId: currentStory.storyDBId
+      });
+    } else if (currentStory.id === -2) {
+      //  splash screen -> hide viewsButton
+      this.setState({
+        viewsButton: false
+      });
+    } else {
+      console.log('NOT own story!');
+      //  not own story -> save view to db
+      axios.post('api/views/addview', { storyId: currentStory.storyDBId, profileId: this.state.dBProfileId });
+    }
+
+    // console.log('invoked save views to DB with story id:', storyId);
+    // axios.post('api/views/addview', { storyId: storyId, profileId: this.state.dBProfileId });
   }
 
-  ownStoryViewsCallback(storyId) {
-    console.log('ownStoryViewsCallback invoked with story id:', storyId);
-    this.setState({
-      viewsButton: true,
-      storyDBId: storyId
-    });
-  }
+  // ownStoryViewsCallback(storyId) {
+  //   console.log('ownStoryViewsCallback invoked with story id:', storyId);
+  //   this.setState({
+  //     viewsButton: true,
+  //     storyDBId: storyId
+  //   });
+  // }
 
   render() {
     const { user, friends, accept, files, dropzoneActive } = this.state;
@@ -157,8 +177,7 @@ class Home extends React.Component {
               defaultDuration={6000}
               assetsCallback={this.assetsCallback.bind(this)}
               exitCallback={this.toggleInVRMode.bind(this)}
-              viewCountCallback={this.saveViewCountToDB.bind(this)}
-              ownStoryViewsCallback={this.ownStoryViewsCallback.bind(this)}
+              viewCountCallback={this.viewCountCallback.bind(this)}
             />
             <VRCursor/>
           </a-scene>;

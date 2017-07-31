@@ -33,7 +33,7 @@ class VRViewsButton extends React.Component {
       <a-entity>
         <a-plane onClick={() => this.onShowViewersClick(this.props.storyId)} color="white" opacity="0.5" position="-2.790 -4.007 -2.807">{this.state.buttonText}</a-plane>
         <a-text value={this.state.viewsPanel ? 'Hide users who viewed this story' : 'Show users who viewed this story'} color="white" opacity="0.5" position="-2.790 -4.007 -2.807"></a-text>
-        { this.state.viewsPanel && this.state.viewers && <VRViews viewers={this.props.viewers}/> }
+        { this.state.viewsPanel && this.state.viewers && <VRViews viewers={this.state.viewers}/> }
       </a-entity>
     );
   }
