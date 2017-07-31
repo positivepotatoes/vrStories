@@ -24,7 +24,8 @@ class Home extends React.Component {
       //  for view count:
       dBProfileId: null,
       viewers: [],
-      storyDBId: null
+      storyDBId: null,
+      viewsButton: false
     };
     this.fetch = this.fetch.bind(this);
   }
@@ -92,12 +93,17 @@ class Home extends React.Component {
 
   viewCountCallback(currentStory) {
     console.log('invoked viewCountCallback with story:', currentStory);
-    if (currentStory.id < 0) {
+    if (currentStory.id === -1) {
       console.log('own story!');
       //  it's own story -> get viewers data
       this.setState({
         viewsButton: true,
         storyDBId: currentStory.storyDBId
+      });
+    } else if (currentStory.id === -2) {
+      //  splash screen -> hide viewsButton
+      this.setState({
+        viewsButton: false
       });
     } else {
       console.log('NOT own story!');
