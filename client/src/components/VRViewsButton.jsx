@@ -12,9 +12,11 @@ class VRViewsButton extends React.Component {
       viewers: undefined
     };
     this.onShowViewersClick = this.onShowViewersClick.bind(this);
+    this.getViewers = this.getViewers.bind(this);
   }
 
-  onShowViewersClick(storyId) {
+  getViewers(storyId) {
+    console.log('getViewers invoked!');
     // get people who viewed a story with given id:
     axios.get(`/api/views/ownstoryviews/${storyId}`)
       .then(response => {
@@ -22,6 +24,16 @@ class VRViewsButton extends React.Component {
           viewers: response.data
         });
       });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.storyId !== this.props.storyId) {
+      this.getViewers(this.props.storyId);
+    }
+  }
+
+  onShowViewersClick(storyId) {
+    this.getViewers(storyId);
     this.setState({
       viewsPanel: !this.state.viewsPanel,
       buttonText: 'Hide users who viewed this story'
