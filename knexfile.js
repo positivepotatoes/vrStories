@@ -3,6 +3,7 @@ const config = require('config');
 let knex = {
   'client': 'postgresql',
   'connection': process.env.PG_URI,
+  'ssl': true,
   'pool': {
     'min': 1,
     'max': 2

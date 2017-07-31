@@ -1,5 +1,5 @@
 # Project specific
-#config/development.json
+config/development.json
 config/staging.json
 config/test.json
 
