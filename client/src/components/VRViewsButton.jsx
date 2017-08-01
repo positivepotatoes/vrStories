@@ -8,7 +8,7 @@ class VRViewsButton extends React.Component {
     super(props);
     this.state = {
       viewsPanel: false,
-      buttonText: 'Show users who viewed this story',
+      buttonText: 'Show users\nwho viewed\nthis story',
       viewers: undefined
     };
     this.onShowViewersClick = this.onShowViewersClick.bind(this);
@@ -16,7 +16,6 @@ class VRViewsButton extends React.Component {
   }
 
   getViewers(storyId) {
-    console.log('getViewers invoked!');
     // get people who viewed a story with given id:
     axios.get(`/api/views/ownstoryviews/${storyId}`)
       .then(response => {
@@ -36,15 +35,15 @@ class VRViewsButton extends React.Component {
     this.getViewers(storyId);
     this.setState({
       viewsPanel: !this.state.viewsPanel,
-      buttonText: 'Hide users who viewed this story'
+      buttonText: 'Hide users\nwho viewed\nthis story'
     });
   }
 
   render() {
     return (
       <a-entity>
-        <a-plane onClick={() => this.onShowViewersClick(this.props.storyId)} color="white" opacity="0.5" position="-2.790 -4.007 -2.807">{this.state.buttonText}</a-plane>
-        <a-text value={this.state.viewsPanel ? 'Hide users who viewed this story' : 'Show users who viewed this story'} color="white" opacity="0.5" position="-2.790 -4.007 -2.807"></a-text>
+        <a-plane onClick={() => this.onShowViewersClick(this.props.storyId)} color="white" opacity="0.5" position="-0.5 -1.05 -1.5" height="0.2" width="0.3" rotation="0 15 0">{this.state.buttonText}</a-plane>
+        <a-text value={this.state.viewsPanel ? 'Hide users\nwho viewed\nthis story' : 'Show users\nwho viewed\nthis story'} color="white" opacity="0.5" position="-0.5 -1.05 -1.5" width="1" rotation="0 15 0"></a-text>
         { this.state.viewsPanel && this.state.viewers && <VRViews viewers={this.state.viewers}/> }
       </a-entity>
     );
