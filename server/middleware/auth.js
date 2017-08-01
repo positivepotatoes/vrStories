@@ -42,7 +42,6 @@ if (process.env.REDIS_URL) {
 redisClient.on('ready', function() {
   console.log('Redis ready');
 }).on('error', function(err) {
-  // You should assume here that the connection is lost, or compromised.
   console.log('Redis error', err);
 });
 
