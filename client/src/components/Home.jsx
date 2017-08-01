@@ -7,7 +7,7 @@ import MediaFrame from './MediaFrame.jsx';
 import VRCursor from './VRCursor.jsx';
 import VRStories from 'aframe-react-stories';
 import 'aframe-animation-component';
-import VRViews from './VRViews.jsx';
+import VRViewsButton from './VRViewsButton.jsx';
 
 class Home extends React.Component {
   constructor(props) {
@@ -24,7 +24,8 @@ class Home extends React.Component {
       //  for view count:
       dBProfileId: null,
       viewers: [],
-      views: false
+      storyDBId: null,
+      viewsButton: false
     };
     this.fetch = this.fetch.bind(this);
   }
@@ -73,7 +74,6 @@ class Home extends React.Component {
   }
 
   onDrop(files) {
-    console.log('acceptedFiles:', files);
     let formData = new FormData();
     formData.append('file', files[0]);
     formData.append('userId', this.state.user.profile.uploadId);
@@ -90,21 +90,22 @@ class Home extends React.Component {
     });
   }
 
-  saveViewCountToDB(storyId) {
-    console.log('invoked save views to DB with story id:', storyId);
-    axios.post('api/views/addview', { storyId: storyId, profileId: this.state.dBProfileId });
-  }
-
-  ownStoryViewsCallback(profileId) {
-    console.log('ownStoryViewsCallback invoked!');
-    // get people who viewed a story with given id:
-    axios.get(`/api/views/ownstoryviews/${profileId}`)
-      .then(response => {
-        this.setState({
-          viewers: response.data,
-          views: true
-        });
+  viewCountCallback(currentStory) {
+    if (currentStory.id === -1) {
+      //  it's own story -> get viewers data
+      this.setState({
+        viewsButton: true,
+        storyDBId: currentStory.storyDBId
       });
+    } else if (currentStory.id === -2) {
+      //  splash screen -> hide viewsButton
+      this.setState({
+        viewsButton: false
+      });
+    } else {
+      //  not own story -> save view to db
+      axios.post('api/views/addview', { storyId: currentStory.storyDBId, profileId: this.state.dBProfileId });
+    }
   }
 
   render() {
@@ -151,7 +152,7 @@ class Home extends React.Component {
             <a-assets>
               {this.state.assets}
             </a-assets>
-            {this.state.views && <VRViews viewers={this.state.viewers}/> }
+            {this.state.viewsButton && <VRViewsButton storyId={this.state.storyDBId} viewers={this.state.viewers}/>}
             <VRStories
               user={user}
               friends={friends}
@@ -161,8 +162,7 @@ class Home extends React.Component {
               defaultDuration={6000}
               assetsCallback={this.assetsCallback.bind(this)}
               exitCallback={this.toggleInVRMode.bind(this)}
-              viewCountCallback={this.saveViewCountToDB.bind(this)}
-              ownStoryViewsCallback={this.ownStoryViewsCallback.bind(this)}
+              viewCountCallback={this.viewCountCallback.bind(this)}
             />
             <VRCursor/>
           </a-scene>;
