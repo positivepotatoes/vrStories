@@ -105,6 +105,9 @@ class Home extends React.Component {
     } else {
       //  not own story -> save view to db
       axios.post('api/views/addview', { storyId: currentStory.storyDBId, profileId: this.state.dBProfileId });
+      this.setState({
+        viewsButton: false
+      });
     }
   }
 
