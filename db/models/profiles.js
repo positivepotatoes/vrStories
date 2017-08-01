@@ -5,7 +5,16 @@ const Profile = db.Model.extend({
   auths: function() {
     return this.hasMany('Auth');
   },
+  // stories: function() {
+  //   return this.hasMany('Story');
+  // },
   stories: function() {
+    let currentTime = Date.now();
+    let date7DaysAgo = currentTime - 6.048e+8;
+    console.log('this.hasMany(\'Story\'):', this.hasMany('Story').relatedData.target.where);
+    // return this.hasMany('Story').model.relatedData.target.where('created_at', '>', date7DaysAgo);
+    // .where({ metadata: 'video/mp4' });
+    console.log('this.hasMany(\'Story\'):', this.hasMany('Story'));
     return this.hasMany('Story');
   },
   friends: function() {
