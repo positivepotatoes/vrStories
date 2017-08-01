@@ -24,6 +24,3 @@ class VRViews extends React.Component {
 
 export default VRViews;
 
-// "-3.76 -0.8 -9.01"
-// <a-text value={this.props.viewers} position="-3.76 -0.8 -9.01"></a-text>
-// {`0 ${textPos} -10`}

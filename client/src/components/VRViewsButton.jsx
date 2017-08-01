@@ -16,7 +16,6 @@ class VRViewsButton extends React.Component {
   }
 
   getViewers(storyId) {
-    // get people who viewed a story with given id:
     axios.get(`/api/views/ownstoryviews/${storyId}`)
       .then(response => {
         this.setState({
