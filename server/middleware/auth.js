@@ -13,14 +13,14 @@ module.exports.verify = (req, res, next) => {
 let redisSession, redisClient;
 
 if (process.env.REDIS_URL) {
-  const params = url.parse(process.env.REDIS_URL);
-  const auth = params.auth.split(':');
-  redisClient = require('redis').createClient(params.port, params.hostname);
-  redisClient.auth(params.auth.split(':')[1]);
+  // const params = url.parse(process.env.REDIS_URL);
+  // const auth = params.auth.split(':');
+  redisClient = require('redis').createClient(process.env.REDIS_URL);
+  // redisClient.auth(params.auth.split(':')[1]);
   redisSession = session({
-    store: new RedisStore({
-      client: redisClient
-    }),
+  //   store: new RedisStore({
+  //     client: redisClient
+  //   }),
     secret: 'more laughter, more love, more life',
     resave: false,
     saveUninitialized: false
