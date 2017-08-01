@@ -160,9 +160,10 @@ class Home extends React.Component {
               autoPlayStart={false}
               splashScreen={'/splash.jpg'}
               defaultDuration={6000}
+              enableAnimation={true}
               assetsCallback={this.assetsCallback.bind(this)}
               exitCallback={this.toggleInVRMode.bind(this)}
-              viewCountCallback={this.viewCountCallback.bind(this)}
+              viewCallback={this.viewCountCallback.bind(this)}
             />
             <VRCursor/>
           </a-scene>;
