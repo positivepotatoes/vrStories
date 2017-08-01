@@ -74,7 +74,6 @@ class Home extends React.Component {
   }
 
   onDrop(files) {
-    console.log('acceptedFiles:', files);
     let formData = new FormData();
     formData.append('file', files[0]);
     formData.append('userId', this.state.user.profile.uploadId);
@@ -92,9 +91,7 @@ class Home extends React.Component {
   }
 
   viewCountCallback(currentStory) {
-    console.log('invoked viewCountCallback with story:', currentStory);
     if (currentStory.id === -1) {
-      console.log('own story!');
       //  it's own story -> get viewers data
       this.setState({
         viewsButton: true,
@@ -106,22 +103,10 @@ class Home extends React.Component {
         viewsButton: false
       });
     } else {
-      console.log('NOT own story!');
       //  not own story -> save view to db
       axios.post('api/views/addview', { storyId: currentStory.storyDBId, profileId: this.state.dBProfileId });
     }
-
-    // console.log('invoked save views to DB with story id:', storyId);
-    // axios.post('api/views/addview', { storyId: storyId, profileId: this.state.dBProfileId });
   }
-
-  // ownStoryViewsCallback(storyId) {
-  //   console.log('ownStoryViewsCallback invoked with story id:', storyId);
-  //   this.setState({
-  //     viewsButton: true,
-  //     storyDBId: storyId
-  //   });
-  // }
 
   render() {
     const { user, friends, accept, files, dropzoneActive } = this.state;
