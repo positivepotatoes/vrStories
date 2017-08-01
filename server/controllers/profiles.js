@@ -95,22 +95,20 @@ module.exports.getFriends = (req, res) => {
         userStories.push({ 'type': story.metadata, 'src': story.aws_link, 'uploadId': story.profile_id, 'storyDBId': story.id });
       });
       let user = {
-        profile: {
-          uploadId: friendList.id,
-          first: friendList.first,
-          last: friendList.last,
-          display: friendList.display,
-          img_url: friendList.img_url
-        },
+        uploadId: friendList.id,
+        first: friendList.first,
+        last: friendList.last,
+        displayName: friendList.first,
+        img_url: friendList.img_url,
         stories: userStories
       };
       let friends = [];
       friendList.friends.forEach((profile) => {
         let stories = [];
         profile.stories.forEach((story) => {
-          stories.push({ 'type': story.metadata, 'src': story.aws_link, 'storyDBId': story.id});
+          stories.push({ 'type': story.metadata, 'src': story.aws_link, 'storyDBId': story.id });
         });
-        friends.push({ 'profile': { 'first': profile.first, 'last': profile.last, 'display': profile.display, 'img_url': profile.img_url }, 'stories': stories });
+        friends.push({ 'first': profile.first, 'last': profile.last, 'displayName': profile.first, 'img_url': profile.img_url, 'stories': stories });
       });
       let send = { 'user': user, 'friends': friends, 'profile_id': friendList.id };
       res.status(200).send(send);

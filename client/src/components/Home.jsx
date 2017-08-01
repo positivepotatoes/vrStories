@@ -76,7 +76,7 @@ class Home extends React.Component {
   onDrop(files) {
     let formData = new FormData();
     formData.append('file', files[0]);
-    formData.append('userId', this.state.user.profile.uploadId);
+    formData.append('userId', this.state.user.uploadId);
     axios.post('/api/upload', formData);
     this.setState({
       files,
