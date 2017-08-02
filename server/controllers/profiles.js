@@ -1,9 +1,13 @@
 const models = require('../../db/models');
 
 module.exports.getFriends = (req, res) => {
+  debugger;
+  let currentTime = Date.now();
+  let date7DaysAgo = (currentTime - 6.048e+8).toString();
   models.Profile.where({ id: req.params.id })
-    .fetchAll({ withRelated: ['friends', 'friends.stories', 'stories'] })
+    .fetchAll({ withRelated: ['friends', 'friends.stories', { 'friends.stories': function(query) { query.where('created_at', '>', date7DaysAgo); } }, 'stories' ] })
     .then((response) => {
+      console.log('RESPONSE:', response);
       if (!response) {
         throw response;
       }
@@ -38,3 +42,6 @@ module.exports.getFriends = (req, res) => {
       res.sendStatus(404);
     });
 };
+
+
+// { stories: function(query) { query.where('created_at', '>', date7DaysAgo) } }
