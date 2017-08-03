@@ -38,11 +38,11 @@ class MediaFrame extends React.Component {
   setId(data) {
     if (Array.isArray(data)) {
       data.forEach((user, i) => {
-        user.profile.id = i + 1;
+        user.id = i + 1;
         user.stories.forEach(story => story.id = i + 1);
       });
     } else {
-      data.profile.id = 0;
+      data.id = 0;
       data.stories.forEach(story => story.id = 0);
     }
   }
