@@ -27,16 +27,16 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 
 ## Usage
 
-> Some usage instructions
+> Social-media style stories in VR using aframe-react-stories npm module
 
 ## Requirements
 
 - Node 6.9.x
 - Redis 3.2.x
 - Postgresql 9.6.x
-- React Native
 - ReactJS
-- ReactVR
+- A-Frame
+- aframe-react-stories npm module
 
 ## Development
 
@@ -58,7 +58,7 @@ yarn global add grunt-cli knex eslint
 
 ## App Configuration
 
-Override settings `config/default.json` in any environment by making a copy of `config/ENV.example.json` and naming it `config/ENV.json` and setting the appropriate variable. 
+Override settings `config/default.json` in any environment by making a copy of `config/ENV.example.json` and naming it `config/ENV.json` and setting the appropriate variable.
 
 For environments that require use of environment variables, you can supply variables as defined in `config/custom-environment-variables.json`.
 
@@ -104,5 +104,3 @@ To run server: `yarn run start`
 To run tests: `yarn run test`
 
 To run your redis server for the session store `redis-server`
-
-
