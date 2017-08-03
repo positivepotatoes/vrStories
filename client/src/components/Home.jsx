@@ -5,7 +5,7 @@ import 'aframe-mouse-cursor-component';
 import Dropzone from 'react-dropzone';
 import MediaFrame from './MediaFrame.jsx';
 import VRCursor from './VRCursor.jsx';
-import VRStories from 'aframe-react-stories';
+import Stories from 'aframe-react-stories';
 import 'aframe-animation-component';
 import VRViewsButton from './VRViewsButton.jsx';
 
@@ -156,7 +156,7 @@ class Home extends React.Component {
               {this.state.assets}
             </a-assets>
             {this.state.viewsButton && <VRViewsButton storyId={this.state.storyDBId} viewers={this.state.viewers}/>}
-            <VRStories
+            <Stories
               user={user}
               friends={friends}
               autoPlayNext={true}
