@@ -5,10 +5,10 @@ const Profile = db.Model.extend({
   auths: function() {
     return this.hasMany('Auth');
   },
+  // stories: function() {
+  //   return this.hasMany('Story');
+  // },
   stories: function() {
-    return this.hasMany('Story');
-  },
-  recentStories: function() {
     let now = Date.now();
     let sevenDaysAgo = now - 6.048e+8;
     let date = new Date(sevenDaysAgo);

@@ -2,7 +2,7 @@ const models = require('../../db/models');
 
 module.exports.getFriends = (req, res) => {
   models.Profile.where({ id: req.params.id })
-    .fetchAll({ withRelated: ['friends', 'friends.recentStories', 'recentStories'] })
+    .fetchAll({ withRelated: ['friends', 'friends.stories', 'stories'] })
     .then((response) => {
       if (!response) {
         throw response;
