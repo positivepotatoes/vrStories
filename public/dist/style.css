@@ -13,8 +13,8 @@
 
 #banner {
   height: 40vh;
-  font-size: 20vh;
-  padding-top: 18vh;
+  font-size: calc(4vw + 6vh + 2vmin);
+  padding-top: 22vh;
 }
 
 #tag {
