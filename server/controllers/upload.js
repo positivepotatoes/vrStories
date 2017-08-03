@@ -18,7 +18,7 @@ module.exports.save = (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      console.log('Successfully uploaded data to vrstoriesorid bucket');
+      console.log('Successfully uploaded data to vrstoriesprod bucket');
       res.end();
     }
   });
