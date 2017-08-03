@@ -55,18 +55,11 @@ aframe-particle-system-component@^1.0.10:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/aframe-particle-system-component/-/aframe-particle-system-component-1.0.10.tgz#dc2174072f4ef7d1757a1bfd3d86be4e8768bb30"
 
-aframe-react-stories@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/aframe-react-stories/-/aframe-react-stories-2.0.1.tgz#f052ff85f5f66120c552c2d59c48c1402eb04bd3"
+aframe-react-stories@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/aframe-react-stories/-/aframe-react-stories-2.0.2.tgz#f7c8de0c8bc9d291e62c5c4be30a3614e2b781da"
   dependencies:
-    aframe "^0.6.1"
-    aframe-animation-component "^3.2.5"
-    aframe-particle-system-component "^1.0.10"
-    aframe-react "^4.3.0"
-    babel-polyfill "^6.23.0"
     react "^15.5.4"
-    react-dom "^15.6.1"
-    webpack "^2.6.1"
 
 aframe-react@^4.3.0:
   version "4.3.0"
@@ -5548,7 +5541,7 @@ webpack-sources@^1.0.1:
     source-list-map "^2.0.0"
     source-map "~0.5.3"
 
-webpack@^2.3.2, webpack@^2.6.1:
+webpack@^2.3.2:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-2.7.0.tgz#b2a1226804373ffd3d03ea9c6bd525067034f6b1"
   dependencies:
