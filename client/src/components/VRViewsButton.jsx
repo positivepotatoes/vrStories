@@ -43,7 +43,7 @@ class VRViewsButton extends React.Component {
     return (
       <a-entity>
         <a-box onClick={() => this.onShowViewersClick(this.props.storyId)} 
-               color="c6c6c6" 
+               color="#c6c6c6" 
                opacity="0.55" 
                position="0 -0.8 -3" 
                height="0.235" 
