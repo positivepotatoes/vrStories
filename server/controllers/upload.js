@@ -5,7 +5,7 @@ module.exports.save = (req, res) => {
   var key = Date.now().toString();
   var userId = req.body.userId;
   if (req.files[0].mimetype === 'image/jpeg') {
-    var awsLink = `http://localhost:3000/api/stories/story/${key}` || `https://vrstoriesstaging.herokuapp.com/api/stories/story/${key}` || `https://vrstories.herokuapp.com/api/stories/story/${key}` || `http://54.183.200.202//api/stories/story/${key}`;
+    var awsLink = `http://13.56.129.219/api/stories/story/${key}`;
   } else if (req.files[0].mimetype === 'video/mp4') {
     var awsLink = 'https://s3-us-west-1.amazonaws.com/vrstoriesprod/' + key;
   }
