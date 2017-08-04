@@ -22,7 +22,7 @@ class App extends React.Component {
   componentDidMount() {
     this.verify();
   }
-
+  
   verify() {
     axios.get('/verify')
       .then(response => {
