@@ -18,7 +18,7 @@
     "aframe-react": "^4.3.0",
     "aframe-react-stories": "^2.0.2",
     "aws-sdk": "^2.85.0",
-    "axios": "^0.16.2",
+    "axios": "^0.21.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.24.0",
