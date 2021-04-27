@@ -52,7 +52,7 @@
     "react-dom": "^15.6.1",
     "react-dropzone": "^3.13.3",
     "react-router-dom": "^4.1.1",
-    "redis": "^2.7.1",
+    "redis": "^3.1.1",
     "semantic-ui-react": "^0.71.0",
     "url": "^0.11.0",
     "webpack": "^2.3.2"
