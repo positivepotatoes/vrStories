@@ -17,7 +17,7 @@
     "aframe-particle-system-component": "^1.0.10",
     "aframe-react": "^4.3.0",
     "aframe-react-stories": "^2.0.2",
-    "aws-sdk": "^2.85.0",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.16.2",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
